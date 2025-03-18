@@ -1,4 +1,21 @@
 {
-	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello {name}!"
+    "$schema": "https://inlang.com/schema/inlang-message-format",
+    "trains_running_all": "All trains are running normally.",
+    "trains_running_some": "Some trains are not running.",
+    "hello_world": "Hello {name}!",
+    "mbta_alert_effect": {
+        "SHUTTLE": "Shuttle"
+    },
+    "mbta_alert_effect_with_line_default": "{line} {effect}",
+    "mbta_alert_effect_with_line": {
+        "SHUTTLE": "{line} Shuttle",
+        "SERVICE_CHANGE": "{line} Service Change"
+    },
+    "mbta_lines_name": {
+        "Mattapan": "Mattapan Trolley",
+        "Blue": "Blue line",
+        "Green": "Green line",
+        "Orange": "Orange line",
+        "Red": "Red line"
+    }
 }

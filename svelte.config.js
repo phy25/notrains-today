@@ -17,6 +17,10 @@ const config = {
 			precompress: false,
 			strict: true
 		})
+	},
+
+	compilerOptions: {
+		runes: true,
 	}
 };
 
