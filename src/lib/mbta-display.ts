@@ -18,6 +18,14 @@ export const LINE_NAMES = {
     'Green': m['mbta_lines_name.Green'](),
 }
 
+const ROUTE_PILL_MAPPING: Record<string, string> = {
+    'Mattapan': 'M',
+    'Red': 'RL',
+    'Orange': 'OL',
+    'Blue': 'BL',
+    'Green': 'GL',
+};
+
 export const effectRawDisplayFormat = (effect: string) => {
     return effect.replace('_', ' ')
         .toLowerCase()
@@ -49,4 +57,11 @@ export const getLineName = (line: keyof typeof LINE_NAMES) => {
     }
     // TODO: fall back to use official name; ID should not be displayed in general
     return line;
+}
+
+export const getPillName = (route_id: string, route_attributes: any) => {
+    if (route_id in ROUTE_PILL_MAPPING) {
+        return ROUTE_PILL_MAPPING[route_id];
+    }
+    return route_attributes?.short_name || route_attributes?.long_name || route_id;
 }

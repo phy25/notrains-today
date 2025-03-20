@@ -15,6 +15,8 @@ import { getLocalTimeZone, today } from "@internationalized/date";
 	import CalendarDay from "./calendar-day.svelte";
 	import { m } from "$lib/paraglide/messages";
 	import { getLocale } from "$lib/paraglide/runtime";
+	import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
+	import { getPillName } from "$lib/mbta-display";
 
 let dayValue = $state(today(getLocalTimeZone()));
 let dayString = $derived(dayValue.toString())
@@ -69,8 +71,11 @@ let dayString = $derived(dayValue.toString())
                                         {#if alertsByDay.has(dateString)}
                                         <div>
                                             {#each alertsByDay.get(dateString) || [] as alert}
-                                                {@const color = (routeMap.get(alert.attributes.informed_entity[0].route) as any).attributes?.color}
-                                                <span style="color: {color ? '#' + color : 'inherit'}">⬤</span>
+                                                {@const route_id = alert.attributes.informed_entity[0].route}
+                                                {@const attributes = (routeMap.get(alert.attributes.informed_entity[0].route) as any).attributes}
+                                                {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
+                                                {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
+                                                <MbtaRouteBadge type="auto" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />{' '}
                                             {/each}
                                         </div>
                                         {/if}
@@ -100,11 +105,17 @@ let dayString = $derived(dayValue.toString())
 .calendar-cell{
     max-width: 100%;
     width: 10em;
+    height: 2em;
+    /* https://stackoverflow.com/a/11275916 height essentially is min-height, as tables always stretch */
+    vertical-align: top;
+}
+.calendar-day {
+    height: 100%;
 }
 .calendar-day:not([data-disabled]):not([data-unavailable]){
     cursor: pointer;
 }
 .calendar-day[data-selected] {
-    border: 1px solid #000;
+    background-color: #eee;
 }
 </style>
