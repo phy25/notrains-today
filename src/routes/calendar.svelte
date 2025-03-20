@@ -3,7 +3,7 @@ import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
-import { getPillName } from "$lib/mbta-display";
+import { getAlertBadgeSecondarySymbol, getPillName } from "$lib/mbta-display";
 import CalendarDay from "./calendar-day.svelte";
 import { Calendar } from "bits-ui";
 import { now, toCalendarDate } from "@internationalized/date";
@@ -80,7 +80,12 @@ const routeMap = $derived(new Map(data_included
                                                 {@const attributes = (routeMap.get(alert.attributes.informed_entity[0].route) as any).attributes}
                                                 {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
                                                 {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
-                                                <MbtaRouteBadge type="auto" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />{' '}
+                                                
+                                                <div class="badge-group">
+                                                    <MbtaRouteBadge type="auto" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
+                                                    <span class="badge-secondary-symbol" style="color: {color};">{getAlertBadgeSecondarySymbol(alert)}</span>
+                                                </div>
+                                                {' '}
                                             {/each}
                                         </div>
                                         {/if}
@@ -107,10 +112,13 @@ const routeMap = $derived(new Map(data_included
 {/if}
 
 <style>
+.badge-group {
+    display: inline-block;
+}
 .calendar-cell{
     max-width: 100%;
-    width: 10em;
-    height: 2em;
+    width: 9em;
+    height: 2.5em;
     /* https://stackoverflow.com/a/11275916 height essentially is min-height, as tables always stretch */
     vertical-align: top;
 }
@@ -122,5 +130,9 @@ const routeMap = $derived(new Map(data_included
 }
 .calendar-day[data-selected] {
     background-color: #eee;
+}
+.badge-secondary-symbol {
+    font-family: math;
+    vertical-align: middle;
 }
 </style>
