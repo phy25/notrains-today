@@ -14,15 +14,12 @@ const { data }: PageProps = $props();
 const routeMap: Map<string, any> = $derived(new Map(data.included
     .filter((entity: any) => entity.type === 'route')
     .map((route: any) => [route.id, route])));
-    $inspect(routeMap);
 const alertsByDay = $derived(getAlertsAsDays(data.data, routeMap));
 
 let currentServiceTime = now('America/New_York');
-console.log(currentServiceTime);
 if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
     currentServiceTime = currentServiceTime.subtract({days: 1});
 }
-console.log(currentServiceTime);
 const currentServiceDate = toCalendarDate(currentServiceTime);
 const trainStatus = $derived(!alertsByDay.get(currentServiceDate.toString())?.length);
 </script>

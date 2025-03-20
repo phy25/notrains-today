@@ -6,7 +6,7 @@ import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 import { getAlertBadgeSecondarySymbol, getPillName } from "$lib/mbta-display";
 import CalendarDay from "./calendar-day.svelte";
 import { Calendar } from "bits-ui";
-import { now, toCalendarDate } from "@internationalized/date";
+import { now, toCalendarDate, parseDate } from "@internationalized/date";
 
 const { alerts = [], alertsByDay: _alertsByDay = null, routeMap } = $props();
 const alertsByDay = $derived(_alertsByDay || getAlertsAsDays(alerts, routeMap));
@@ -19,6 +19,13 @@ if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
 }
 const currentServiceDate = toCalendarDate(currentServiceTime);
 
+const maxValue = $derived.by(() => {
+    const fixedMaxValue = currentServiceDate.add({months: 2});
+    const sortedDates = [...alertsByDay.keys()].sort();
+    const maxAlertDate = parseDate(sortedDates[sortedDates.length - 1]);
+    return fixedMaxValue.compare(maxAlertDate) > 0 ? fixedMaxValue : maxAlertDate;
+});
+
 let dayValue = $state(currentServiceDate);
 let dayString = $derived(dayValue.toString());
 </script>
@@ -29,7 +36,10 @@ let dayString = $derived(dayValue.toString());
   disableDaysOutsideMonth={false}
   type="single"
   bind:value={dayValue}
+  minValue={currentServiceDate}
+  maxValue={maxValue}
   locale={getLocale()}
+  preventDeselect={true}
 >
   {#snippet children({ months, weekdays })}
     <Calendar.Header class="flex items-center justify-between">
