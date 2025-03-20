@@ -30,3 +30,10 @@ export interface MbtaAlert {
     };
     type: string;
 }
+
+export const QUERY_ROUTE_TYPE_MAPPING: Record<string, string> = {
+    'subway': '0,1',
+    'bus': '3',
+    'commuter-rail': '2',
+    'ferry': '4',
+};

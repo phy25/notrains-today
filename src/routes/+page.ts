@@ -1,11 +1,20 @@
 import { filterHighPriorityAlerts, overrideAlerts } from '$lib/mbta-overides';
+import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 import type { PageLoad } from './$types';
 
 export const ssr = false;
 
-export const load = (async ({ fetch }) => {
-    const route_type = !!window ? parseInt(window.location.search.slice(1)) : '0';
-    const response = await fetch('https://api-v3.mbta.com/alerts?include=routes&filter%5Bactivity%5D=RIDE&filter%5Broute_type%5D=' + route_type, {
+export const load = (async ({ fetch, url }) => {
+    // parse route_type from query string in browser
+    const query_route_type = new URLSearchParams(url.search).get('route_type');
+    let route_type = 'subway';
+    if (query_route_type && (query_route_type in QUERY_ROUTE_TYPE_MAPPING)) {
+        route_type = query_route_type;
+    }
+
+    console.log('route_type:', route_type);
+
+    const response = await fetch('https://api-v3.mbta.com/alerts?include=routes&filter%5Bactivity%5D=RIDE&filter%5Broute_type%5D=' + QUERY_ROUTE_TYPE_MAPPING[route_type], {
         headers: {
             'Accept': 'application/vnd.api+json',
         }

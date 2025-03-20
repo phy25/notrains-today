@@ -2,21 +2,19 @@
 import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
 
 const { alerts, data_included } = $props();
-const alertsByDay = getAlertsAsDays(alerts);
+const alertsByDay = $derived(getAlertsAsDays(alerts));
 const currentTime = new Date();
 const showNightOwl = currentTime.getHours() < MBTA_SERVICE_START_HOUR || currentTime.getHours() >= 23;
 
-const sortedDays = [...alertsByDay.keys()]
-    .sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
-
-const routeMap = new Map(data_included
+const routeMap = $derived(new Map(data_included
     .filter((entity: any) => entity.type === 'route')
-    .map((route: any) => [route.id, route]));
+    .map((route: any) => [route.id, route])));
 
 import { Calendar } from "bits-ui";
 import { getLocalTimeZone, today } from "@internationalized/date";
 	import CalendarDay from "./calendar-day.svelte";
 	import { m } from "$lib/paraglide/messages";
+	import { getLocale } from "$lib/paraglide/runtime";
 
 let dayValue = $state(today(getLocalTimeZone()));
 let dayString = $derived(dayValue.toString())
@@ -28,6 +26,7 @@ let dayString = $derived(dayValue.toString())
   disableDaysOutsideMonth={false}
   type="single"
   bind:value={dayValue}
+  locale={getLocale()}
 >
   {#snippet children({ months, weekdays })}
     <Calendar.Header class="flex items-center justify-between">
@@ -65,13 +64,15 @@ let dayString = $derived(dayValue.toString())
                             >
                                 {#snippet child({ props })}
                                     <div {...props} class="calendar-day">
-                                        {date.day}
+                                        <div>{date.day}</div>
                             
                                         {#if alertsByDay.has(dateString)}
-                                        {#each alertsByDay.get(dateString) || [] as alert}
-                                            {@const color = (routeMap.get(alert.attributes.informed_entity[0].route) as any).attributes?.color}
-                                            <span style="color: {color ? '#' + color : 'inherit'}">⬤</span>
-                                        {/each}
+                                        <div>
+                                            {#each alertsByDay.get(dateString) || [] as alert}
+                                                {@const color = (routeMap.get(alert.attributes.informed_entity[0].route) as any).attributes?.color}
+                                                <span style="color: {color ? '#' + color : 'inherit'}">⬤</span>
+                                            {/each}
+                                        </div>
                                         {/if}
                                     </div>
                                 {/snippet}
