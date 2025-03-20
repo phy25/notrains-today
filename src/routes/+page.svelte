@@ -5,12 +5,21 @@ import Calendar from './calendar.svelte';
 import { m } from '$lib/paraglide/messages';
 import type { PageProps } from './$types';
 import { EFFECT_MESSAGES, LINE_NAMES, getEffectWithLineMessage } from '$lib/mbta-display';
-import { MBTA_SERVICE_START_HOUR } from '$lib/calendar';
-import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
+import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
 import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
+import { now, toCalendarDate } from "@internationalized/date";
 
 const { data }: PageProps = $props();
-const trainStatus = $derived(data.data.length === 0);
+const alertsByDay = $derived(getAlertsAsDays(data.data));
+
+let currentServiceTime = now('America/New_York');
+console.log(currentServiceTime);
+if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
+    currentServiceTime = currentServiceTime.subtract({days: 1});
+}
+console.log(currentServiceTime);
+const currentServiceDate = toCalendarDate(currentServiceTime);
+const trainStatus = $derived(!alertsByDay.get(currentServiceDate.toString())?.length);
 </script>
 
 <h1>{trainStatus ? m.trains_running_all() : m.trains_running_some()}</h1>
@@ -22,7 +31,7 @@ const trainStatus = $derived(data.data.length === 0);
 </p>
 
 {#if data.data.length > 0}
-    <Calendar alerts={data.data} data_included={data.included} />
+    <Calendar alertsByDay={alertsByDay} data_included={data.included} />
     <hr>
     {#each data.data as alert}
         {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}

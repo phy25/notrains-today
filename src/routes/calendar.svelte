@@ -1,25 +1,30 @@
 <script lang="ts">
 import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
+import { m } from "$lib/paraglide/messages";
+import { getLocale } from "$lib/paraglide/runtime";
+import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
+import { getPillName } from "$lib/mbta-display";
+import CalendarDay from "./calendar-day.svelte";
+import { Calendar } from "bits-ui";
+import { now, toCalendarDate } from "@internationalized/date";
 
-const { alerts, data_included } = $props();
-const alertsByDay = $derived(getAlertsAsDays(alerts));
-const currentTime = new Date();
-const showNightOwl = currentTime.getHours() < MBTA_SERVICE_START_HOUR || currentTime.getHours() >= 23;
+const { alerts = [], alertsByDay: _alertsByDay = null, data_included } = $props();
+const alertsByDay = $derived(_alertsByDay || getAlertsAsDays(alerts));
+
+let currentServiceTime = now('America/New_York');
+
+const showNightOwl = currentServiceTime.hour < MBTA_SERVICE_START_HOUR || currentServiceTime.hour >= 23;
+if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
+    currentServiceTime = currentServiceTime.subtract({days: 1});
+}
+const currentServiceDate = toCalendarDate(currentServiceTime);
+
+let dayValue = $state(currentServiceDate);
+let dayString = $derived(dayValue.toString());
 
 const routeMap = $derived(new Map(data_included
     .filter((entity: any) => entity.type === 'route')
     .map((route: any) => [route.id, route])));
-
-import { Calendar } from "bits-ui";
-import { getLocalTimeZone, today } from "@internationalized/date";
-	import CalendarDay from "./calendar-day.svelte";
-	import { m } from "$lib/paraglide/messages";
-	import { getLocale } from "$lib/paraglide/runtime";
-	import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
-	import { getPillName } from "$lib/mbta-display";
-
-let dayValue = $state(today(getLocalTimeZone()));
-let dayString = $derived(dayValue.toString())
 </script>
 
 <Calendar.Root
