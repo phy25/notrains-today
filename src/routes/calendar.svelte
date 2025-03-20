@@ -22,7 +22,7 @@ const currentServiceDate = toCalendarDate(currentServiceTime);
 const maxValue = $derived.by(() => {
     const fixedMaxValue = currentServiceDate.add({months: 2});
     const sortedDates = [...alertsByDay.keys()].sort();
-    const maxAlertDate = parseDate(sortedDates[sortedDates.length - 1]);
+    const maxAlertDate = sortedDates.length ? parseDate(sortedDates[sortedDates.length - 1]) : fixedMaxValue;
     return fixedMaxValue.compare(maxAlertDate) > 0 ? fixedMaxValue : maxAlertDate;
 });
 
