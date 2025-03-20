@@ -1,9 +1,10 @@
 <script lang="ts">
 import { getDateString, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
-	import { EFFECT_MESSAGES, LINE_NAMES, getEffectWithLineMessage } from "$lib/mbta-display";
+	import { EFFECT_MESSAGES, LINE_NAMES, getEffectWithLineMessage, getPillName } from "$lib/mbta-display";
+	import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 import { m } from "$lib/paraglide/messages";
 
-const { day, alerts, showNightOwl } = $props();
+const { day, alerts, showNightOwl, routeMap } = $props();
 
 const currentTime = new Date();
 const currentServiceDate = new Date(currentTime);
@@ -16,8 +17,14 @@ if (showNightOwl) {
 <h2>{day}{#if showNightOwl && day == getDateString(currentServiceDate)}<small>{m.until_next_day_service_ending({hour: MBTA_SERVICE_START_HOUR})}</small>{/if}</h2>
 {#each alerts as alert}
     {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
-    {@const line = alert.attributes.informed_entity[0].route as keyof typeof LINE_NAMES}
-    <div>{alert.id} <mark>{getEffectWithLineMessage(effect, line)}</mark> {alert.attributes.short_header}</div>
+    {@const route_id = alert.attributes.informed_entity[0].route}
+    {@const attributes = (routeMap.get(route_id) as any).attributes}
+    {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
+    {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
+    <div>
+        <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
+        <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
+        {alert.id} {alert.attributes.short_header}</div>
 {/each}
 {/if}
 

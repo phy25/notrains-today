@@ -8,8 +8,8 @@ import CalendarDay from "./calendar-day.svelte";
 import { Calendar } from "bits-ui";
 import { now, toCalendarDate } from "@internationalized/date";
 
-const { alerts = [], alertsByDay: _alertsByDay = null, data_included } = $props();
-const alertsByDay = $derived(_alertsByDay || getAlertsAsDays(alerts));
+const { alerts = [], alertsByDay: _alertsByDay = null, routeMap } = $props();
+const alertsByDay = $derived(_alertsByDay || getAlertsAsDays(alerts, routeMap));
 
 let currentServiceTime = now('America/New_York');
 
@@ -21,10 +21,6 @@ const currentServiceDate = toCalendarDate(currentServiceTime);
 
 let dayValue = $state(currentServiceDate);
 let dayString = $derived(dayValue.toString());
-
-const routeMap = $derived(new Map(data_included
-    .filter((entity: any) => entity.type === 'route')
-    .map((route: any) => [route.id, route])));
 </script>
 
 <Calendar.Root
@@ -80,10 +76,14 @@ const routeMap = $derived(new Map(data_included
                                                 {@const attributes = (routeMap.get(alert.attributes.informed_entity[0].route) as any).attributes}
                                                 {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
                                                 {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
+                                                <!-- map 0 to 10 severity to 0.2 to 1 -->
+                                                {@const severityAsOpacity = alert.attributes.severity / 10 * 0.8 + 0.2}
                                                 
                                                 <div class="badge-group">
                                                     <MbtaRouteBadge type="auto" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
-                                                    <span class="badge-secondary-symbol" style="color: {color};">{getAlertBadgeSecondarySymbol(alert)}</span>
+                                                    <span class="badge-secondary-symbol" style:color={color} style:opacity={severityAsOpacity}>
+                                                        {getAlertBadgeSecondarySymbol(alert)}
+                                                    </span>
                                                 </div>
                                                 {' '}
                                             {/each}
@@ -106,7 +106,7 @@ const routeMap = $derived(new Map(data_included
 </Calendar.Root>
 
 {#if alertsByDay.get(dayString)}
-    <CalendarDay alerts={alertsByDay.get(dayString)} day={dayString} showNightOwl={showNightOwl} />
+    <CalendarDay alerts={alertsByDay.get(dayString)} day={dayString} showNightOwl={showNightOwl} routeMap={routeMap} />
 {:else}
     <p>{m.calendar_day_no_alerts()}</p>
 {/if}

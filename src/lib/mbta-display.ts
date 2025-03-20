@@ -68,14 +68,14 @@ export const getPillName = (route_id: string, route_attributes: any) => {
 }
 
 export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert) => {
-    // if informed entities includes multiple lines, do not proceed and return a generic symbol
     const uniqueRoutes = alert.attributes.informed_entity
         .map((entity) => entity.route)
         .filter((route, index, arr) => route && arr.indexOf(route) === index);
-
+    // if informed entities includes multiple lines, do not proceed and return a generic symbol
     if (uniqueRoutes.length > 1) {
-        return '';
+        return '…';
     }
+    
     // if informed entities includes a stop, attempt to determine direction
     if (alert.attributes.informed_entity.find((entity) => entity.stop)) {
         // red line alerts do not have branch information through route_pattern, determine branch
@@ -83,7 +83,7 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert) => {
             return getAlertBadgeSecondarySymbolForRedLine(alert);
         }
         // TOOD: determine direction for general cases
-        return '●';
+        return '•';
     }
     return '▣';
 }
