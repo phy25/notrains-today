@@ -4,7 +4,7 @@ import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 import DayDetail from "./day-detail.svelte";
 import { Calendar } from "bits-ui";
-import { now, toCalendarDate, parseDate, startOfMonth } from "@internationalized/date";
+import { now, toCalendarDate, parseDate, type DateValue } from "@internationalized/date";
 import { MBTA_TIMEZONE } from "$lib/mbta-types";
 import CalendarCell from "./calendar-cell.svelte";
 
@@ -34,16 +34,25 @@ let stickyWeekDom: HTMLDivElement;
 let mainCalendarEndY: number = -1;
 let stickyWeekShowing = $state(false);
 $effect(() => {
+  dayValue; // re-run when dayValue changes
 	if (mainCalendarDom && stickyWeekDom) {
-    mainCalendarEndY = mainCalendarDom.offsetHeight + mainCalendarDom.offsetTop - stickyWeekDom.offsetHeight;
+    window.requestAnimationFrame(() => {
+      mainCalendarEndY = mainCalendarDom.offsetHeight + mainCalendarDom.offsetTop - stickyWeekDom.offsetHeight;
+      onWindowScroll();
+    });
   }
 });
 
-const onWindowScroll = (event: UIEvent) => {
-  const scrollY = (event.currentTarget as Window)?.scrollY || 0;
-  if (stickyWeekDom) {
-    stickyWeekShowing = scrollY > mainCalendarEndY;
-  }
+const onWindowScroll = () => {
+  stickyWeekShowing = window.scrollY >= mainCalendarEndY;
+};
+
+const onStickyWeekValueChange = (value?: DateValue) => {
+  setTimeout(() => {
+    window.scrollTo({
+      top: mainCalendarEndY + 1,
+    });
+  }, 0);
 };
 </script>
 
@@ -106,6 +115,7 @@ const onWindowScroll = (event: UIEvent) => {
     disableDaysOutsideMonth={false}
     type="single"
     bind:value={dayValue}
+    onValueChange={onStickyWeekValueChange}
     minValue={currentServiceDate}
     maxValue={maxValue}
     locale={getLocale()}
@@ -146,6 +156,7 @@ const onWindowScroll = (event: UIEvent) => {
 {/if}
 
 <style>
-.calendar-sticky-week {visibility: hidden; display: flex; position: fixed; top: 0; background: #fff;}
+:global([data-bits-calendar-grid]) {table-layout: fixed; width: 100%;}
+.calendar-sticky-week {visibility: hidden; display: flex; position: fixed; top: 0; left: 0; width: 100%; padding: 0 8px; background: #fff; box-sizing: border-box;}
 .calendar-sticky-week.show {visibility: visible; }
 </style>

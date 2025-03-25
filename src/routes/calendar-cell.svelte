@@ -47,8 +47,6 @@
     display: inline-block;
 }
 .calendar-cell{
-    max-width: 100%;
-    width: 9em;
     height: 2.5em;
     /* https://stackoverflow.com/a/11275916 height essentially is min-height, as tables always stretch */
     vertical-align: top;
