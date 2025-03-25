@@ -3,8 +3,10 @@
     "hello_world": "你好 {name}！",
     "trains_running_all": "所有列车均正常运行。",
     "trains_running_some": "部分列车运行异常。",
+    "no_alert": "无异常",
     "mbta_alert_effect": {
-        "SHUTTLE": "摆渡车"
+        "SHUTTLE": "摆渡车",
+        "STATION_CLOSURE": "车站关闭"
     },
     "mbta_alert_effect_with_line": {
         "SHUTTLE": "{line}摆渡车",

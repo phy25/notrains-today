@@ -8,7 +8,8 @@ import { EFFECT_MESSAGES, getEffectWithLineMessage, getPillName } from '$lib/mbt
 import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
 import { MBTA_TIMEZONE, QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 import { now, toCalendarDate } from "@internationalized/date";
-	import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
+import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
+import Glance from './glance.svelte';
 
 const { data }: PageProps = $props();
 const routeMap: Map<string, any> = $derived(new Map(data.included
@@ -25,6 +26,8 @@ const trainStatus = $derived(!alertsByDay.get(currentServiceDate.toString())?.le
 </script>
 
 <h1>{trainStatus ? m.trains_running_all() : m.trains_running_some()}</h1>
+
+<Glance></Glance>
 
 <p>
     {#each Object.keys(QUERY_ROUTE_TYPE_MAPPING) as type}

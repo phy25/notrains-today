@@ -3,8 +3,10 @@
     "trains_running_all": "All trains are running normally.",
     "trains_running_some": "Some trains are not running.",
     "hello_world": "Hello {name}!",
+    "no_alert": "No alert",
     "mbta_alert_effect": {
-        "SHUTTLE": "Shuttle"
+        "SHUTTLE": "Shuttle",
+        "STATION_CLOSURE": "Station Closure"
     },
     "mbta_alert_effect_with_line_default": "{line} {effect}",
     "mbta_alert_effect_with_line": {

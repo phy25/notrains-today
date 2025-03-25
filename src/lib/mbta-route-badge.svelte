@@ -23,7 +23,7 @@
         height: 1em;
         align-items: center;
         justify-content: center;
-        font-size: 1em;
+        font-size: var(--badge-size, 1em);
         white-space: nowrap;
         vertical-align: 0.1em;
     }
