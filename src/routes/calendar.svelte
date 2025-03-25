@@ -6,12 +6,13 @@ import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 import { getAlertBadgeSecondarySymbol, getPillName } from "$lib/mbta-display";
 import CalendarDay from "./calendar-day.svelte";
 import { Calendar } from "bits-ui";
-import { now, toCalendarDate, parseDate } from "@internationalized/date";
+import { now, toCalendarDate, parseDate, startOfMonth } from "@internationalized/date";
+import { MBTA_TIMEZONE } from "$lib/mbta-types";
 
 const { alerts = [], alertsByDay: _alertsByDay = null, routeMap } = $props();
 const alertsByDay = $derived(_alertsByDay || getAlertsAsDays(alerts, routeMap));
 
-let currentServiceTime = now('America/New_York');
+let currentServiceTime = now(MBTA_TIMEZONE);
 
 const showNightOwl = currentServiceTime.hour < MBTA_SERVICE_START_HOUR || currentServiceTime.hour >= 23;
 if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
@@ -78,21 +79,19 @@ let dayString = $derived(dayValue.toString());
                                 {#snippet child({ props })}
                                     <div {...props} class="calendar-day">
                                         <div>{date.day}</div>
-                            
-                                        {#if alertsByDay.has(dateString)}
+                                        {#if alertsByDay.has(dateString) && currentServiceDate.toString() <= dateString}
                                         <div>
                                             {#each alertsByDay.get(dateString) || [] as alert}
                                                 {@const route_id = alert.attributes.informed_entity[0].route}
-                                                {@const attributes = (routeMap.get(alert.attributes.informed_entity[0].route) as any).attributes}
+                                                {@const attributes = (routeMap.get(alert.attributes.informed_entity[0].route) as any)?.attributes}
                                                 {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
                                                 {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
-                                                <!-- map 0 to 10 severity to 0.2 to 1 -->
-                                                {@const severityAsOpacity = alert.attributes.severity / 10 * 0.8 + 0.2}
+                                                {@const severityAsOpacity = 1}
                                                 
                                                 <div class="badge-group">
                                                     <MbtaRouteBadge type="auto" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
                                                     <span class="badge-secondary-symbol" style:color={color} style:opacity={severityAsOpacity}>
-                                                        {getAlertBadgeSecondarySymbol(alert)}
+                                                        {getAlertBadgeSecondarySymbol(alert, dateString)}
                                                     </span>
                                                 </div>
                                                 {' '}

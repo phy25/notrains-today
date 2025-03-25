@@ -1,5 +1,6 @@
 import { m } from '$lib/paraglide/messages';
-import type { MbtaAlert } from './mbta-types';
+import { parseDate, parseZonedDateTime, toCalendarDate } from "@internationalized/date";
+import { MBTA_TIMEZONE, type MbtaAlert } from './mbta-types';
 
 export const EFFECT_MESSAGES = {
     'SHUTTLE': m['mbta_alert_effect.SHUTTLE'](),
@@ -67,7 +68,7 @@ export const getPillName = (route_id: string, route_attributes: any) => {
     return route_attributes?.short_name || route_attributes?.long_name || route_id;
 }
 
-export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert) => {
+export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString: string) => {
     const uniqueRoutes = alert.attributes.informed_entity
         .map((entity) => entity.route)
         .filter((route, index, arr) => route && arr.indexOf(route) === index);
@@ -80,12 +81,51 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert) => {
     if (alert.attributes.informed_entity.find((entity) => entity.stop)) {
         // red line alerts do not have branch information through route_pattern, determine branch
         if (uniqueRoutes[0] === 'Red') {
-            return getAlertBadgeSecondarySymbolForRedLine(alert);
+            return getAlertBadgeSecondarySymbolForRedLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
         }
+        if (uniqueRoutes[0] === 'Blue') {
+            return getAlertBadgeSecondarySymbolForBlueLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+        }
+
+        // detour impacting multiple stops, show detour symbol
+        if (alert.attributes.informed_entity.every(entity => entity.stop) && alert.attributes.informed_entity.length > 1) {
+            if (alert.attributes.effect === 'DETOUR') {
+                return '🚧︎' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+            }
+        }        
+
+        if (alert.attributes.effect === 'STOP_CLOSURE') {
+            return '↷' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+        }
+        
         // TOOD: determine direction for general cases
-        return '•';
+        return '•' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
     }
-    return '▣';
+
+    if (alert.attributes.effect === 'DELAY') {
+        return '⧗' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+    }
+
+    return '▣' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+}
+
+export const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayString: string) => {
+    // find the time range we are currently in
+    const serviceDay = parseDate(serviceDayString);
+
+    const periodStartingAtCurrentDay = alert.attributes.active_period.filter((period => {
+        const startTime = parseZonedDateTime(period.start + '['+ MBTA_TIMEZONE + ']');
+        const endTime = parseZonedDateTime(period.end  + '['+ MBTA_TIMEZONE + ']');
+        return toCalendarDate(startTime).compare(serviceDay) == 0 && serviceDay.compare(toCalendarDate(endTime)) <= 0;
+    }));
+    if (periodStartingAtCurrentDay.length === 0) {
+        return '';
+    }
+    const currentPeriodStart = new Date(periodStartingAtCurrentDay[0].start);
+    if (currentPeriodStart.getHours() > 17) {
+        return '⏾';
+    }
+    return '';
 }
 
 // https://api-v3.mbta.com/trips/canonical-Red-C2-0?include=stops matching place-
@@ -157,4 +197,15 @@ const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
     }
     // assume all stops are affected. we could be wrong
     return '▣';
+}
+
+const getAlertBadgeSecondarySymbolForBlueLine = (alert: MbtaAlert) => {
+    // single stop, Bowdoin TODO this needs to be more generalized
+    console.log(alert);
+    if (alert.attributes.informed_entity
+            .filter(entity => entity.stop && entity.stop.startsWith('place-'))
+            .every(entity => entity.stop === 'place-bomnl')) {
+        return '⤟';
+    }
+    return '•';
 }

@@ -37,3 +37,5 @@ export const QUERY_ROUTE_TYPE_MAPPING: Record<string, string> = {
     'commuter-rail': '2',
     'ferry': '4',
 };
+
+export const MBTA_TIMEZONE = 'America/New_York';

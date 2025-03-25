@@ -8,7 +8,77 @@
         },
         {
             "type": "insert",
-            "item": null
+            "note": "Blue line test",
+            "item": {
+                "attributes": {
+                    "active_period": [
+                        {
+                            "end": "2025-04-15T02:59:00-04:00",
+                            "start": "2025-04-11T19:00:00-04:00"
+                        }
+                    ],
+                    "banner": null,
+                    "cause": "MAINTENANCE",
+                    "created_at": "2025-03-17T14:34:27-04:00",
+                    "description": "This work will also take place on the weekends of April 11 - 14 & 25 - 28\r\n\nCrowding:\r\nRiders should expect crowding at stations during peak travel times today. If possible, riders are encouraged to travel outside of peak hours.\r\n\nTrain Frequency:\r\nRiders should expect increased wait times for Blue Line trains during this work. Expect trains every 8 to 10 minutes on weekdays. Expect trains every 9 to 13 minutes during the weekend.\r\n\nAirport Bus Alternatives:\r\nRiders travelling between Downtown Boston and Airport Station can use the SL1 or SL3 Bus. The SL1 runs every 15 minutes or better between South Station and Logan Airport Terminals. The SL3 Bus runs every 15 minutes or better between South Station and Airport Station.",
+                    "duration_certainty": "KNOWN",
+                    "effect": "STATION_CLOSURE",
+                    "header": "Bowdoin station will be closed through end of service today, April 14. Riders can use Government Center, a four minute walk from Bowdoin. There will be longer wait times between trains throughout this work.",
+                    "image": "https://cdn.mbta.com/sites/default/files/styles/max_2600x2600/public/media/2025-02/2025-02-24-blue-line-bowdoin-wonderland-mar-7-9-diversion-diagram.png?itok=wgNsjHP3 ",
+                    "image_alternative_text": "Diagram of the Blue Line disruption",
+                    "informed_entity": [
+                        {
+                            "stop": "70038",
+                            "route_type": 1,
+                            "route": "Blue",
+                            "activities": [
+                                "BOARD",
+                                "EXIT"
+                            ]
+                        },
+                        {
+                            "stop": "70838",
+                            "route_type": 1,
+                            "route": "Blue",
+                            "activities": [
+                                "BOARD",
+                                "EXIT"
+                            ]
+                        },
+                        {
+                            "stop": "place-bomnl",
+                            "route_type": 1,
+                            "route": "Blue",
+                            "activities": [
+                                "BOARD",
+                                "EXIT"
+                            ]
+                        }
+                    ],
+                    "lifecycle": "NEW",
+                    "service_effect": "Bowdoin closed",
+                    "severity": 7,
+                    "short_header": "Bowdoin station will be closed from Fri, Apr 11, at 7 PM, through end of service on Mon, Apr 14. Riders can use Government Center.",
+                    "timeframe": "through tomorrow",
+                    "updated_at": "2025-03-24T10:56:06-04:00",
+                    "url": null
+                },
+                "id": "override-632758",
+                "links": {
+                    "self": "/alerts/override-632758"
+                },
+                "relationships": {
+                    "routes": {
+                        "data": [
+                            {
+                                "id": "Blue",
+                                "type": "route"
+                            }
+                        ]
+                    }
+                },
+                "type": "alert"
+            }
         }
     ]
 }
