@@ -25,6 +25,7 @@
         justify-content: center;
         font-size: 1em;
         white-space: nowrap;
+        vertical-align: 0.1em;
     }
     .route-badge span {
         line-height: 1rem;
