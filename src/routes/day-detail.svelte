@@ -21,10 +21,30 @@ if (showNightOwl) {
     {@const attributes = (routeMap.get(route_id) as any).attributes}
     {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
     {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
+    {@const descriptionArr = alert.attributes?.description.split(/\r?\n/g)}
     <div>
-        <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
-        <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
-        {alert.id} {alert.attributes.short_header}</div>
+        <p>
+            <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
+            <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
+            {alert.id}
+        </p>
+        <p>
+            {alert.attributes.header}
+        </p>
+        <p>
+            {#each descriptionArr as text, index}
+                {#if index > 0}
+                    <br />
+                {/if}
+                {text}
+            {/each}
+        </p>
+        {#if alert.attributes.image}
+        <p>
+            <img src={alert.attributes.image} alt={alert.attributes.image_alternative_text} style="max-width: 100%; max-height: 50vh;" />
+        </p>
+        {/if}
+    </div>
 {/each}
 {/if}
 
