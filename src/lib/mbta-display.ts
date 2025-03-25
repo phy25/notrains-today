@@ -201,7 +201,6 @@ const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
 
 const getAlertBadgeSecondarySymbolForBlueLine = (alert: MbtaAlert) => {
     // single stop, Bowdoin TODO this needs to be more generalized
-    console.log(alert);
     if (alert.attributes.informed_entity
             .filter(entity => entity.stop && entity.stop.startsWith('place-'))
             .every(entity => entity.stop === 'place-bomnl')) {
