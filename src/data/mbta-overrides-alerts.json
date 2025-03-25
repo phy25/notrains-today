@@ -13,6 +13,65 @@
             "note": "Commuter rail new service notice being posted too broadly"
         },
         {
+            "type": "replace",
+            "match_id": "633281",
+            "match_updated_at": "2025-03-20T15:58:41-04:00",
+            "note": "Issue only impacts one station rather than the entire route",
+            "item": {
+                "attributes": {
+                    "active_period": [
+                        {
+                            "end": "2025-04-14T02:59:00-04:00",
+                            "start": "2025-04-11T20:30:00-04:00"
+                        }
+                    ],
+                    "banner": null,
+                    "cause": "UNKNOWN_CAUSE",
+                    "created_at": "2025-03-20T15:58:41-04:00",
+                    "description": null,
+                    "duration_certainty": "KNOWN",
+                    "effect": "SERVICE_CHANGE",
+                    "header": "Green Line B Branch: Service will originate / terminate at the Lake Street platform, just outside of Boston College Station, from 8:30 PM on Friday, April 11 through the end of service on Sunday, April 13. This to allow for maintenance work in the BC yard",
+                    "image": null,
+                    "image_alternative_text": null,
+                    "informed_entity": [
+                        {
+                            "route_type": 0,
+                            "route": "Green-B",
+                            "stop": "place-lake",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        }
+                    ],
+                    "lifecycle": "UPCOMING",
+                    "service_effect": "Green Line B branch notice",
+                    "severity": 1,
+                    "short_header": "Green Ln B: Service will originate / terminate at the Lake St platform. just outside of BC Sta, from 8:30pm on Fri, Apr 11 through April 13.",
+                    "timeframe": "April 11-14",
+                    "updated_at": "2025-03-20T15:58:41-04:00",
+                    "url": null
+                },
+                "id": "633281",
+                "links": {
+                    "self": "/alerts/633281"
+                },
+                "relationships": {
+                    "routes": {
+                        "data": [
+                            {
+                                "id": "Green-B",
+                                "type": "route"
+                            }
+                        ]
+                    }
+                },
+                "type": "alert"
+            }
+        },
+        {
             "type": "insert",
             "note": "Blue line test",
             "item": {
