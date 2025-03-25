@@ -21,7 +21,7 @@ if (showNightOwl) {
     {@const attributes = (routeMap.get(route_id) as any).attributes}
     {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
     {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
-    {@const descriptionArr = alert.attributes?.description.split(/\r?\n/g)}
+    {@const descriptionArr = alert.attributes?.description?.split(/\r?\n/g) || []}
     <div>
         <p>
             <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
@@ -31,6 +31,7 @@ if (showNightOwl) {
         <p>
             {alert.attributes.header}
         </p>
+        {#if descriptionArr.length > 0}
         <p>
             {#each descriptionArr as text, index}
                 {#if index > 0}
@@ -39,6 +40,7 @@ if (showNightOwl) {
                 {text}
             {/each}
         </p>
+        {/if}
         {#if alert.attributes.image}
         <p>
             <img src={alert.attributes.image} alt={alert.attributes.image_alternative_text} style="max-width: 100%; max-height: 50vh;" />
