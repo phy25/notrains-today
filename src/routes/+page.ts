@@ -14,7 +14,7 @@ export const load = (async ({ fetch, url }) => {
 
     console.log('route_type:', route_type);
 
-    const response = await fetch('https://api-v3.mbta.com/alerts?include=routes&filter%5Bactivity%5D=RIDE&filter%5Broute_type%5D=' + QUERY_ROUTE_TYPE_MAPPING[route_type], {
+    const response = await fetch('https://api-v3.mbta.com/alerts?include=routes&filter%5Broute_type%5D=' + QUERY_ROUTE_TYPE_MAPPING[route_type], {
         headers: {
             'Accept': 'application/vnd.api+json',
         }
