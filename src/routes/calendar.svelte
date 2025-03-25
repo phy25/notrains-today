@@ -2,12 +2,11 @@
 import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
-import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
-import { getAlertBadgeSecondarySymbol, getPillName } from "$lib/mbta-display";
-import CalendarDay from "./calendar-day.svelte";
+import DayDetail from "./day-detail.svelte";
 import { Calendar } from "bits-ui";
 import { now, toCalendarDate, parseDate, startOfMonth } from "@internationalized/date";
 import { MBTA_TIMEZONE } from "$lib/mbta-types";
+import CalendarCell from "./calendar-cell.svelte";
 
 const { alerts = [], alertsByDay: _alertsByDay = null, routeMap } = $props();
 const alertsByDay = $derived(_alertsByDay || getAlertsAsDays(alerts, routeMap));
@@ -29,119 +28,124 @@ const maxValue = $derived.by(() => {
 
 let dayValue = $state(currentServiceDate);
 let dayString = $derived(dayValue.toString());
+
+let mainCalendarDom: HTMLDivElement;
+let stickyWeekDom: HTMLDivElement;
+let mainCalendarEndY: number = -1;
+let stickyWeekShowing = $state(false);
+$effect(() => {
+	if (mainCalendarDom && stickyWeekDom) {
+    mainCalendarEndY = mainCalendarDom.offsetHeight + mainCalendarDom.offsetTop - stickyWeekDom.offsetHeight;
+  }
+});
+
+const onWindowScroll = (event: UIEvent) => {
+  const scrollY = (event.currentTarget as Window)?.scrollY || 0;
+  if (stickyWeekDom) {
+    stickyWeekShowing = scrollY > mainCalendarEndY;
+  }
+};
 </script>
 
-<Calendar.Root
-  class="border-dark-10 bg-background-alt shadow-card mt-6 rounded-[15px] border p-[22px]"
-  weekdayFormat="short"
-  disableDaysOutsideMonth={false}
-  type="single"
-  bind:value={dayValue}
-  minValue={currentServiceDate}
-  maxValue={maxValue}
-  locale={getLocale()}
-  preventDeselect={true}
->
-  {#snippet children({ months, weekdays })}
-    <Calendar.Header class="flex items-center justify-between">
-      <Calendar.Heading class="text-[15px] font-medium" />
-    </Calendar.Header>
-    <div
-      class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-x-4 sm:space-y-0"
-    >
-      {#each months as month, i (i)}
-        <Calendar.Grid class="w-full border-collapse select-none space-y-1">
-          <Calendar.GridHead>
-            <Calendar.GridRow class="mb-1 flex w-full justify-between">
-              {#each weekdays as day}
-                <Calendar.HeadCell
-                  class="text-muted-foreground font-normal! w-10 rounded-md text-xs"
-                >
-                  <div>{day.slice(0, 2)}</div>
-                </Calendar.HeadCell>
-              {/each}
-            </Calendar.GridRow>
-          </Calendar.GridHead>
-          <Calendar.GridBody>
-            {#each month.weeks as weekDates}
-              <Calendar.GridRow class="flex w-full">
-                {#each weekDates as date}
-                  {@const dateString = date.toString()}
-                  <Calendar.Cell
-                    {date}
-                    month={month.value}
+<svelte:window on:scroll={onWindowScroll} />
+
+<div bind:this={mainCalendarDom}>
+  <Calendar.Root
+    class="border-dark-10 bg-background-alt shadow-card mt-6 rounded-[15px] border p-[22px]"
+    weekdayFormat="short"
+    disableDaysOutsideMonth={false}
+    type="single"
+    bind:value={dayValue}
+    minValue={currentServiceDate}
+    maxValue={maxValue}
+    locale={getLocale()}
+    preventDeselect={true}
+  >
+    {#snippet children({ months, weekdays })}
+      <Calendar.Header class="flex items-center justify-between">
+        <Calendar.Heading class="text-[15px] font-medium" />
+      </Calendar.Header>
+      <div
+        class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-x-4 sm:space-y-0"
+      >
+        {#each months as month, i (i)}
+          <Calendar.Grid class="w-full border-collapse select-none space-y-1">
+            <Calendar.GridHead>
+              <Calendar.GridRow class="mb-1 flex w-full justify-between">
+                {#each weekdays as day}
+                  <Calendar.HeadCell
+                    class="text-muted-foreground font-normal! w-10 rounded-md text-xs"
                   >
-                    {#snippet child({ props })}
-                        <td {...props} class="calendar-cell">
-                            <Calendar.Day
-                            class="rounded-9px text-foreground hover:border-foreground data-selected:bg-foreground data-disabled:text-foreground/30 data-selected:text-background data-unavailable:text-muted-foreground data-disabled:pointer-events-none data-outside-month:pointer-events-none data-selected:font-medium data-unavailable:line-through group relative inline-flex size-10 items-center justify-center whitespace-nowrap border border-transparent bg-transparent p-0 text-sm font-normal"
-                            >
-                                {#snippet child({ props })}
-                                    <div {...props} class="calendar-day">
-                                        <div>{date.day}</div>
-                                        {#if alertsByDay.has(dateString) && currentServiceDate.toString() <= dateString}
-                                        <div>
-                                            {#each alertsByDay.get(dateString) || [] as alert}
-                                                {@const route_id = alert.attributes.informed_entity[0].route}
-                                                {@const attributes = (routeMap.get(alert.attributes.informed_entity[0].route) as any)?.attributes}
-                                                {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
-                                                {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
-                                                {@const severityAsOpacity = 1}
-                                                
-                                                <div class="badge-group">
-                                                    <MbtaRouteBadge type="auto" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
-                                                    <span class="badge-secondary-symbol" style:color={color} style:opacity={severityAsOpacity}>
-                                                        {getAlertBadgeSecondarySymbol(alert, dateString)}
-                                                    </span>
-                                                </div>
-                                                {' '}
-                                            {/each}
-                                        </div>
-                                        {/if}
-                                    </div>
-                                {/snippet}
-                            </Calendar.Day>
-                        </td>
-                    {/snippet}
-                  </Calendar.Cell>
+                    <div>{day}</div>
+                  </Calendar.HeadCell>
                 {/each}
               </Calendar.GridRow>
-            {/each}
-          </Calendar.GridBody>
-        </Calendar.Grid>
-      {/each}
-    </div>
-  {/snippet}
-</Calendar.Root>
+            </Calendar.GridHead>
+            <Calendar.GridBody>
+              {#each month.weeks as weekDates}
+                <Calendar.GridRow>
+                  {#snippet child({ props })}
+                    <tr {...props} class="calendar-row">
+                      {#each weekDates as date}
+                        <CalendarCell {date} {month} {alertsByDay} {currentServiceDate} {routeMap}></CalendarCell>
+                      {/each}
+                    </tr>
+                  {/snippet}
+                </Calendar.GridRow>
+              {/each}
+            </Calendar.GridBody>
+          </Calendar.Grid>
+        {/each}
+      </div>
+    {/snippet}
+  </Calendar.Root>
+</div>
+
+<div class="calendar-sticky-week {stickyWeekShowing ? 'show' : ''}" bind:this={stickyWeekDom}>
+  <Calendar.Root
+    disableDaysOutsideMonth={false}
+    type="single"
+    bind:value={dayValue}
+    minValue={currentServiceDate}
+    maxValue={maxValue}
+    locale={getLocale()}
+    preventDeselect={true}
+  >
+    {#snippet children({ months, weekdays })}
+      <div
+        class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-x-4 sm:space-y-0"
+      >
+        {#each months as month, i (i)}
+          <Calendar.Grid class="w-full border-collapse select-none space-y-1">
+            <Calendar.GridBody>
+              {#each month.weeks as weekDates}
+                {#if weekDates.find(day => day.compare(dayValue) === 0)}
+                  <Calendar.GridRow>
+                    {#snippet child({ props })}
+                      <tr {...props} class="calendar-row">
+                        {#each weekDates as date}
+                          <CalendarCell {date} {month} {alertsByDay} {currentServiceDate} {routeMap}></CalendarCell>
+                        {/each}
+                      </tr>
+                    {/snippet}
+                  </Calendar.GridRow>
+                {/if}
+              {/each}
+            </Calendar.GridBody>
+          </Calendar.Grid>
+        {/each}
+      </div>
+    {/snippet}
+  </Calendar.Root>
+</div>
 
 {#if alertsByDay.get(dayString)}
-    <CalendarDay alerts={alertsByDay.get(dayString)} day={dayString} showNightOwl={showNightOwl} routeMap={routeMap} />
+    <DayDetail alerts={alertsByDay.get(dayString)} day={dayString} showNightOwl={showNightOwl} routeMap={routeMap} />
 {:else}
     <p>{m.calendar_day_no_alerts()}</p>
 {/if}
 
 <style>
-.badge-group {
-    display: inline-block;
-}
-.calendar-cell{
-    max-width: 100%;
-    width: 9em;
-    height: 2.5em;
-    /* https://stackoverflow.com/a/11275916 height essentially is min-height, as tables always stretch */
-    vertical-align: top;
-}
-.calendar-day {
-    height: 100%;
-}
-.calendar-day:not([data-disabled]):not([data-unavailable]){
-    cursor: pointer;
-}
-.calendar-day[data-selected] {
-    background-color: #eee;
-}
-.badge-secondary-symbol {
-    font-family: math;
-    vertical-align: middle;
-}
+.calendar-sticky-week {visibility: hidden; display: flex; position: fixed; top: 0; background: #fff;}
+.calendar-sticky-week.show {visibility: visible; }
 </style>
