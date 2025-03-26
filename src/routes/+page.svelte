@@ -58,6 +58,11 @@ const trainStatus = $derived(!alertsByDay.get(currentServiceDate.toString())?.le
 <p><em>{m.important_notes_service_day_end({hour: MBTA_SERVICE_START_HOUR - 1})}</em></p>
 
 <style>
+h1 {
+    margin: 0em 0 0.5em;
+    line-height: 1em;
+    font-size: 1.5rem;
+}
 mark {
     background-color: #ff0;
     color: #000;

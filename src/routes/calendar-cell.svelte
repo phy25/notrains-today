@@ -61,7 +61,7 @@
     background-color: #eee;
 }
 .badge-secondary-symbol {
-    font-family: math;
+    font-family: math, sans-serif;
     vertical-align: middle;
 }
 </style>

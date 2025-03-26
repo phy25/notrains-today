@@ -92,7 +92,7 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString:
             if (alert.attributes.effect === 'DETOUR') {
                 return '🚧︎' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
             }
-        }        
+        }
 
         if (alert.attributes.effect === 'STOP_CLOSURE') {
             return '↷' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
@@ -104,6 +104,10 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString:
 
     if (alert.attributes.effect === 'DELAY') {
         return '⧗' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+    }
+
+    if (alert.attributes.effect === 'SHUTTLE') {
+        return '🚌︎' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
     }
 
     return '▣' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);

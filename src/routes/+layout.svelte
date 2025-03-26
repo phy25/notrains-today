@@ -5,3 +5,9 @@
 </script>
 
 {@render children()}
+
+<style>
+:global {
+	body {font-size: 16px; font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;}
+}
+</style>

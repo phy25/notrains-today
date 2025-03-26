@@ -31,6 +31,11 @@ if (showNightOwl) {
         <p>
             {alert.attributes.header}
         </p>
+        {#if alert.attributes.image}
+        <p>
+            <img src={alert.attributes.image} alt={alert.attributes.image_alternative_text} style="max-width: 100%; max-height: 50vh;" />
+        </p>
+        {/if}
         {#if descriptionArr.length > 0}
         <p>
             {#each descriptionArr as text, index}
@@ -39,11 +44,6 @@ if (showNightOwl) {
                 {/if}
                 {text}
             {/each}
-        </p>
-        {/if}
-        {#if alert.attributes.image}
-        <p>
-            <img src={alert.attributes.image} alt={alert.attributes.image_alternative_text} style="max-width: 100%; max-height: 50vh;" />
         </p>
         {/if}
     </div>

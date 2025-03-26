@@ -43,7 +43,4 @@
         min-width: 1.1em;
         padding: 0 0.25em;
     }
-    .route-badge-long span {
-        
-    }
 </style>
