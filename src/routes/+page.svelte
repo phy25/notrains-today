@@ -37,24 +37,28 @@ const trainStatus = $derived(!alertsByDay.get(currentServiceDate.toString())?.le
 
 {#if data.data.length > 0}
     <Calendar alertsByDay={alertsByDay} routeMap={routeMap} />
-    <hr>
-    {#each data.data as alert}
-        {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
-        {@const route_id = alert.attributes.informed_entity[0].route}
-        {@const attributes = (routeMap.get(route_id) as any)?.attributes}
-        {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
-        {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
-        <div>
-            <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
-            <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
-            {alert.id} {alert.attributes.short_header}
-        </div>
-        <pre><code>{JSON.stringify(alert)}</code></pre>
-    {/each}
+    
+    <details>
+        <summary>All alerts for troubleshooting</summary>
+
+        {#each data.data as alert}
+            {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
+            {@const route_id = alert.attributes.informed_entity[0].route}
+            {@const attributes = (routeMap.get(route_id) as any)?.attributes}
+            {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
+            {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
+            <div>
+                <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
+                <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
+                {alert.id} {alert.attributes.short_header}
+            </div>
+            <pre><code>{JSON.stringify(alert)}</code></pre>
+        {/each}
+    </details>
 {/if}
 
-<LanguagePicker />
-<h2>notrains.today {m.important_notes()}</h2>
+
+<p>☺ notrains.today <LanguagePicker /></p>
 <p><em>{m.important_notes_service_day_end({hour: MBTA_SERVICE_START_HOUR - 1})}</em></p>
 
 <style>

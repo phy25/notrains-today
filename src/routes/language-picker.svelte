@@ -7,7 +7,5 @@
 	}
 </script>
 
-<div>
-	<button onclick={() => switchToLanguage('en')}>en</button>
-	<button onclick={() => switchToLanguage('zh-hans')}>zh-hans</button>
-</div>
+<button onclick={() => switchToLanguage('en')}>en</button>
+<button onclick={() => switchToLanguage('zh-hans')}>zh-hans</button>
