@@ -23,11 +23,11 @@
     </div>
     <div>
         <MbtaRouteBadge pillLabel="OL" type="long" color="#ed8b00" textColor="#FFF"></MbtaRouteBadge>
-        <span>✅</span> <span style="display: inline-block">{m.no_alert()}</span>
+        <span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
     </div>
     <div>
         <MbtaRouteBadge pillLabel="BL" type="long" color="#003da5" textColor="#FFF"></MbtaRouteBadge>
-        <span>◤</span> <span style="display: inline-block">{m["mbta_alert_effect.STATION_CLOSURE"]()}</span>
+        <span>◤</span> <span class="has-alert-text">{m["mbta_alert_effect.STATION_CLOSURE"]()}</span>
     </div>
     <div class="route-expanded">
         <MbtaRouteBadge pillLabel="Bus" type="long" color="#ffc72c" textColor="#000"></MbtaRouteBadge>
@@ -72,6 +72,13 @@
     align-content: baseline;
     align-items: flex-start;
     gap: 0.2em 0.1em;
+}
+.has-alert-text {
+    display: inline-block;
+    font-weight: bold;
+}
+.no-alert-text {
+    display: inline-block;
 }
 .badge-group {
     display: flex;
