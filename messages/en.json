@@ -1,7 +1,7 @@
 {
     "$schema": "https://inlang.com/schema/inlang-message-format",
-    "trains_running_all": "All trains are running normally.",
-    "trains_running_some": "Some trains are not running.",
+    "trains_running_all": "All trains are running normally today.",
+    "trains_running_some": "Some trains are not running today.",
     "hello_world": "Hello {name}!",
     "no_alert": "No alert",
     "mbta_alert_effect": {

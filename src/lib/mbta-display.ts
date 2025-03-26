@@ -204,7 +204,7 @@ const getAlertBadgeSecondarySymbolForBlueLine = (alert: MbtaAlert) => {
     if (alert.attributes.informed_entity
             .filter(entity => entity.stop && entity.stop.startsWith('place-'))
             .every(entity => entity.stop === 'place-bomnl')) {
-        return '⤟';
+        return '◤';
     }
     return '•';
 }

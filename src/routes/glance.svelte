@@ -7,23 +7,27 @@
 
 <div class="glance-rapid-transit-grid">
     <div class="route-with-branches">
-        <MbtaRouteBadge pillLabel="GL" type="long" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
-        <MbtaRouteBadge pillLabel="B" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
+        <div class="badge-group">
+            <MbtaRouteBadge pillLabel="GL" type="long" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
+            <MbtaRouteBadge pillLabel="B" type="secondary" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
+        </div>
         <MbtaRouteBadge pillLabel="C" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
         <MbtaRouteBadge pillLabel="D" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
         <MbtaRouteBadge pillLabel="E" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
     </div>
     <div class="route-with-branches">
-        <MbtaRouteBadge pillLabel="RL" type="long" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
-        <MbtaRouteBadge pillLabel="M" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
+        <div class="badge-group">
+            <MbtaRouteBadge pillLabel="RL" type="long" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
+            <MbtaRouteBadge pillLabel="M" type="secondary" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
+        </div>
     </div>
     <div>
         <MbtaRouteBadge pillLabel="OL" type="long" color="#ed8b00" textColor="#FFF"></MbtaRouteBadge>
-        ✅ <span style="display: inline-block">{m.no_alert()}</span>
+        <span>✅</span> <span style="display: inline-block">{m.no_alert()}</span>
     </div>
     <div>
         <MbtaRouteBadge pillLabel="BL" type="long" color="#003da5" textColor="#FFF"></MbtaRouteBadge>
-        ⤟ <span style="display: inline-block">{m["mbta_alert_effect.STATION_CLOSURE"]()}</span>
+        <span>◤</span> <span style="display: inline-block">{m["mbta_alert_effect.STATION_CLOSURE"]()}</span>
     </div>
     <div class="route-expanded">
         <MbtaRouteBadge pillLabel="Bus" type="long" color="#ffc72c" textColor="#000"></MbtaRouteBadge>
@@ -61,9 +65,15 @@
 
 .glance-rapid-transit-grid > div {
     --badge-size: 1.2em;
-    line-height: 1.5em;
-}
-.glance-rapid-transit-grid > div > span {
     line-height: 1.2em;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: baseline;
+    align-items: flex-start;
+    gap: 0.2em 0.1em;
+}
+.badge-group {
+    display: flex;
+    gap: 0;
 }
 </style>

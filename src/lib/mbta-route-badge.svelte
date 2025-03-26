@@ -5,7 +5,7 @@
 </script>
 
 {#if pillLabel.length < 3 && type !== 'long'}
-<span class="route-badge notranslate" style="background-color: {color}; color: {textColor};" title={fullName} aria-label={fullName}>
+<span class="route-badge notranslate {type === 'secondary' ? 'secondary' : ''}" style="background-color: {color}; color: {textColor};" title={fullName} aria-label={fullName}>
     <span>{pillLabel}</span>
 </span>
 {:else}
@@ -27,6 +27,12 @@
         white-space: nowrap;
         vertical-align: 0.1em;
     }
+    
+    .route-badge.secondary {
+        box-shadow: 0 0 0 0.1em var(--background-color, #FFF);
+        margin-left: -0.2em;
+    }
+
     .route-badge span {
         line-height: 1rem;
         font-size: 0.6em;
