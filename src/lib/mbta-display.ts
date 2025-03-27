@@ -127,7 +127,7 @@ export const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayStr
     }
     const currentPeriodStart = new Date(periodStartingAtCurrentDay[0].start);
     if (currentPeriodStart.getHours() > 17) {
-        return '⏾';
+        return '🌙︎';
     }
     return '';
 }

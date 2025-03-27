@@ -63,7 +63,7 @@ const trainStatus = $derived(!alertsByDay.get(currentServiceDate.toString())?.le
 
 <style>
 h1 {
-    margin: 0em 0 0.5em;
+    margin: 0.5em 0 0.7em;
     line-height: 1em;
     font-size: 1.5rem;
 }

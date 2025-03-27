@@ -63,5 +63,6 @@
 .badge-secondary-symbol {
     font-family: math, sans-serif;
     vertical-align: middle;
+    display: inline-block;
 }
 </style>
