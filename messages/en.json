@@ -25,5 +25,6 @@
     "important_notes": "Important notes",
     "important_notes_service_day_end": "For night owls, dates above reflect MBTA service days which end at {hour}:59am.",
     "until_next_day_service_ending": "(until {hour}am next day)",
+    "to_service_ending_night_owl": "– {hour}am today",
     "calendar_day_no_alerts": "No service alerts on the day"
 }

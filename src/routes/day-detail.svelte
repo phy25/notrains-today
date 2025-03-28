@@ -1,11 +1,16 @@
 <script lang="ts">
 import { getDateString, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
-	import { EFFECT_MESSAGES, LINE_NAMES, getEffectWithLineMessage, getPillName } from "$lib/mbta-display";
-	import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
+import { EFFECT_MESSAGES, LINE_NAMES, getEffectWithLineMessage, getPillName } from "$lib/mbta-display";
+import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
+import { MBTA_TIMEZONE } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
+import { getLocale } from "$lib/paraglide/runtime";
+import { parseDate, DateFormatter } from "@internationalized/date";
 
 const { day, alerts, showNightOwl, routeMap } = $props();
 
+const dayObject = $derived(parseDate(day));
+const dateFormatter = new DateFormatter(getLocale());
 const currentTime = new Date();
 const currentServiceDate = new Date(currentTime);
 if (showNightOwl) {
@@ -14,7 +19,7 @@ if (showNightOwl) {
 </script>
 
 {#if alerts && alerts.length > 0}
-<h2>{day}{#if showNightOwl && day == getDateString(currentServiceDate)}<small>{m.until_next_day_service_ending({hour: MBTA_SERVICE_START_HOUR})}</small>{/if}</h2>
+<h2>{dateFormatter.format(dayObject.toDate(MBTA_TIMEZONE))}{#if showNightOwl && day == getDateString(currentServiceDate)}<small>{m.to_service_ending_night_owl({hour: MBTA_SERVICE_START_HOUR})}</small>{/if}</h2>
 {#each alerts as alert}
     {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
     {@const route_id = alert.attributes.informed_entity[0].route}
