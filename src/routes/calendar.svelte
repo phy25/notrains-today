@@ -154,11 +154,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
   </Calendar.Root>
 </div>
 
-{#if alertsByDay.get(dayString)}
-    <DayDetail alerts={alertsByDay.get(dayString)} day={dayString} showNightOwl={showNightOwl} routeMap={routeMap} />
-{:else}
-    <p>{m.calendar_day_no_alerts()}</p>
-{/if}
+<DayDetail alerts={alertsByDay.get(dayString)} day={dayString} showNightOwl={showNightOwl} routeMap={routeMap} />
 
 <style>
 :global([data-bits-calendar-grid]) {table-layout: fixed; width: 100%;}

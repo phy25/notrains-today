@@ -44,7 +44,7 @@ const notrains_today_text_array = $derived((notrains_today ? m.trains_running_so
             </div>
         </div>
         <div class="tab-item">
-            <div class="tab-item-heading">Future</div>
+            <div class="tab-item-heading">{m.calendar()}</div>
         </div>
     </div>
 </div>
@@ -89,7 +89,6 @@ const notrains_today_text_array = $derived((notrains_today ? m.trains_running_so
 
 
 <p>☺ notrains.today <LanguagePicker /></p>
-<p><em>{m.important_notes_service_day_end({hour: MBTA_SERVICE_START_HOUR - 1})}</em></p>
 </div>
 
 <style>

@@ -18,8 +18,8 @@ if (showNightOwl) {
 }
 </script>
 
-{#if alerts && alerts.length > 0}
 <h2>{dateFormatter.format(dayObject.toDate(MBTA_TIMEZONE))}{#if showNightOwl && day == getDateString(currentServiceDate)}<small>{m.to_service_ending_night_owl({hour: MBTA_SERVICE_START_HOUR})}</small>{/if}</h2>
+{#if alerts && alerts.length > 0}
 {#each alerts as alert}
     {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
     {@const route_id = alert.attributes.informed_entity[0].route}
@@ -53,6 +53,8 @@ if (showNightOwl) {
         {/if}
     </div>
 {/each}
+{:else}
+<p>{m.calendar_day_no_alerts()}</p>
 {/if}
 
 <style>

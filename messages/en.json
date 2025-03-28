@@ -3,7 +3,7 @@
     "trains_running_all": "All trains are running normally today on {MBTA}.",
     "trains_running_some": "Some trains are not running today on {MBTA}.",
     "mbta_abbreviation": "MBTA",
-    "hello_world": "Hello {name}!",
+    "calendar": "Calendar",
     "no_alert": "No alert",
     "mbta_alert_effect": {
         "SHUTTLE": "Shuttle",

@@ -3,6 +3,8 @@
     "hello_world": "你好 {name}！",
     "trains_running_all": "今天 {MBTA} 的所有列车均正常运行。",
     "trains_running_some": "今天 {MBTA} 的部分列车运行异常。",
+    "calendar": "日历",
+    "mbta_abbreviation": "MBTA",
     "no_alert": "无异常",
     "mbta_alert_effect": {
         "SHUTTLE": "摆渡车",
