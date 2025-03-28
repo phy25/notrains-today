@@ -25,6 +25,10 @@ const currentServiceDate = toCalendarDate(currentServiceTime);
 const trainStatus = $derived(!alertsByDay.get(currentServiceDate.toString())?.length);
 </script>
 
+<div class="tab">
+    
+</div>
+
 <h1>{trainStatus ? m.trains_running_all() : m.trains_running_some()}</h1>
 
 <Glance></Glance>
