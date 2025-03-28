@@ -1,12 +1,14 @@
 {
     "$schema": "https://inlang.com/schema/inlang-message-format",
-    "trains_running_all": "All trains are running normally today.",
-    "trains_running_some": "Some trains are not running today.",
+    "trains_running_all": "All trains are running normally today on {MBTA}.",
+    "trains_running_some": "Some trains are not running today on {MBTA}.",
+    "mbta_abbreviation": "MBTA",
     "hello_world": "Hello {name}!",
     "no_alert": "No alert",
     "mbta_alert_effect": {
         "SHUTTLE": "Shuttle",
-        "STATION_CLOSURE": "Station Closure"
+        "STATION_CLOSURE": "Station Closure",
+        "ADDITIONAL_SERVICE": "Additional Service"
     },
     "mbta_alert_effect_with_line_default": "{line} {effect}",
     "mbta_alert_effect_with_line": {

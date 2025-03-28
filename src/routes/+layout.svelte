@@ -8,6 +8,6 @@
 
 <style>
 :global {
-	body {font-size: 16px; font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;}
+	body {font-size: 16px; font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif; margin: 0;}
 }
 </style>

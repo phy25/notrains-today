@@ -1,12 +1,13 @@
 {
     "$schema": "https://inlang.com/schema/inlang-message-format",
     "hello_world": "你好 {name}！",
-    "trains_running_all": "今天所有列车均正常运行。",
-    "trains_running_some": "今天部分列车运行异常。",
+    "trains_running_all": "今天 {MBTA} 的所有列车均正常运行。",
+    "trains_running_some": "今天{MBTA} 的部分列车运行异常。",
     "no_alert": "无异常",
     "mbta_alert_effect": {
         "SHUTTLE": "摆渡车",
-        "STATION_CLOSURE": "车站关闭"
+        "STATION_CLOSURE": "车站关闭",
+        "ADDITIONAL_SERVICE": "额外服务"
     },
     "mbta_alert_effect_with_line": {
         "SHUTTLE": "{line}摆渡车",

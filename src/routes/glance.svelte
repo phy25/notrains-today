@@ -20,6 +20,7 @@
             <MbtaRouteBadge pillLabel="RL" type="long" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
             <MbtaRouteBadge pillLabel="M" type="secondary" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
         </div>
+        <span>◤</span> <span class="has-alert-text">{m["mbta_alert_effect.ADDITIONAL_SERVICE"]()}</span>
     </div>
     <div>
         <MbtaRouteBadge pillLabel="OL" type="long" color="#ed8b00" textColor="#FFF"></MbtaRouteBadge>
@@ -46,7 +47,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 0.5em;
     width: 100%;
-    max-width: 60em;
+    max-width: 56em;
 }
 .glance-rapid-transit-grid > .route-with-branches {
     grid-row: 1 / span 1;
