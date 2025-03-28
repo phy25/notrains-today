@@ -98,6 +98,7 @@ const notrains_today_text_array = $derived((notrains_today ? m.trains_running_so
     padding: 0 0.4em;
     width: 100%;
     max-width: 56em;
+    box-sizing: border-box;
 }
 h1 {
     margin: 0.5em 0 0.7em;

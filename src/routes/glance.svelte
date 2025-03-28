@@ -7,13 +7,19 @@
 
 <div class="glance-rapid-transit-grid">
     <div class="route-with-branches">
-        <div class="badge-group">
-            <MbtaRouteBadge pillLabel="GL" type="long" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
-            <MbtaRouteBadge pillLabel="B" type="secondary" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
+        <div>
+            <div class="badge-group">
+                <MbtaRouteBadge pillLabel="GL" type="long" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
+                <MbtaRouteBadge pillLabel="B" type="secondary" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
+            </div>
+            <span>•🌙︎</span> <span class="has-alert-text">{m["mbta_alert_effect.SERVICE_CHANGE"]()}</span>
         </div>
-        <MbtaRouteBadge pillLabel="C" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
-        <MbtaRouteBadge pillLabel="D" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
-        <MbtaRouteBadge pillLabel="E" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
+        <div>
+            <MbtaRouteBadge pillLabel="C" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
+            <MbtaRouteBadge pillLabel="D" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
+            <MbtaRouteBadge pillLabel="E" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
+            <span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
+        </div>
     </div>
     <div class="route-with-branches">
         <div class="badge-group">
@@ -82,7 +88,7 @@
     display: inline-block;
 }
 .badge-group {
-    display: flex;
+    display: inline-flex;
     gap: 0;
 }
 </style>

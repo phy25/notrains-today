@@ -8,6 +8,7 @@
     "mbta_alert_effect": {
         "SHUTTLE": "Shuttle",
         "STATION_CLOSURE": "Station Closure",
+        "SERVICE_CHANGE": "Service Change",
         "ADDITIONAL_SERVICE": "Additional Service"
     },
     "mbta_alert_effect_with_line_default": "{line} {effect}",
