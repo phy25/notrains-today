@@ -2,7 +2,17 @@
 import { Calendar } from 'bits-ui';
 import CalendarCell from './calendar-cell.svelte';
 
-let { dayValue = $bindable(), onValueChange = undefined, minValue, maxValue, locale, alertsByDay, currentServiceDate, routeMap } = $props();
+let {
+    dayValue = $bindable(),
+    onValueChange = undefined,
+    minValue,
+    maxValue,
+    locale,
+    alertsByDay,
+    currentServiceDate,
+    routeMap,
+    linkToCalendar = false,
+} = $props();
 </script>
 
 <Calendar.Root
@@ -28,7 +38,7 @@ let { dayValue = $bindable(), onValueChange = undefined, minValue, maxValue, loc
                     {#snippet child({ props })}
                     <tr {...props} class="calendar-row">
                         {#each weekDates as date}
-                        <CalendarCell {date} {month} {alertsByDay} {currentServiceDate} {routeMap}></CalendarCell>
+                        <CalendarCell {date} {month} {alertsByDay} {currentServiceDate} {routeMap} linkToCalendar={linkToCalendar}></CalendarCell>
                         {/each}
                     </tr>
                     {/snippet}

@@ -47,7 +47,8 @@ const lookingAheadDateValue = $derived(data.current_service_date.compare(endOfWe
     alertsByDay={data.alertsByDay}
     routeMap={data.routeMap}
     currentServiceDate={data.current_service_date}
-    locale={getLocale()} />
+    locale={getLocale()}
+    linkToCalendar={true} />
 
 {#if data.data.length > 0}    
     <details>

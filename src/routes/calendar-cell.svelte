@@ -11,9 +11,10 @@
         alertsByDay: Map<string, MbtaAlert[]>;
         routeMap: Map<string, any>;
         currentServiceDate: DateValue;
+        linkToCalendar?: boolean;
     };
 
-    const {date, month, alertsByDay, routeMap, currentServiceDate}: CalendarCellProps = $props();
+    const {date, month, alertsByDay, routeMap, currentServiceDate, linkToCalendar = false}: CalendarCellProps = $props();
     const dateString = $derived(date.toString());
     const alerts: MbtaAlert[] = $derived.by(() => {
         if (alertsByDay.has(dateString) && currentServiceDate.toString() <= dateString) {
@@ -61,7 +62,7 @@
             class="rounded-9px text-foreground hover:border-foreground data-selected:bg-foreground data-disabled:text-foreground/30 data-selected:text-background data-unavailable:text-muted-foreground data-disabled:pointer-events-none data-outside-month:pointer-events-none data-selected:font-medium data-unavailable:line-through group relative inline-flex size-10 items-center justify-center whitespace-nowrap border border-transparent bg-transparent p-0 text-sm font-normal"
             >
                 {#snippet child({ props })}
-                    <div {...props} class="calendar-day {routeAlertsCount.size > 5 ? 'calendar-day--many-alerts' : ''}">
+                    <a {...props} class="calendar-day {routeAlertsCount.size > 5 ? 'calendar-day--many-alerts' : ''}" href={linkToCalendar && currentServiceDate.compare(date) !== 0 ? `./calendar?date=${dateString}` : undefined}>
                         <div>{date.day}</div>
                         {#if alertsPrioritizedDedupeRoutes.length}
                         <div>
@@ -81,7 +82,7 @@
                             {/each}
                         </div>
                         {/if}
-                    </div>
+                    </a>
                 {/snippet}
             </Calendar.Day>
         </td>
@@ -99,6 +100,9 @@
 }
 .calendar-day {
     height: 100%;
+    color: inherit;
+    text-decoration: none;
+    display: block;
 }
 .calendar-day:not([data-disabled]):not([data-unavailable]){
     cursor: pointer;

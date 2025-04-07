@@ -4,21 +4,12 @@ import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 import DayDetail from "./day-detail.svelte";
 import { Calendar } from "bits-ui";
-import { now, toCalendarDate, parseDate, type DateValue } from "@internationalized/date";
-import { MBTA_TIMEZONE } from "$lib/mbta-types";
+import { parseDate, type DateValue } from "@internationalized/date";
 import CalendarCell from "./calendar-cell.svelte";
-	import CalendarOneweek from "./calendar-oneweek.svelte";
+import CalendarOneweek from "./calendar-oneweek.svelte";
 
-const { alerts = [], alertsByDay: _alertsByDay = null, routeMap } = $props();
+let { dayValue = $bindable(), alerts = [], alertsByDay: _alertsByDay = null, routeMap, currentServiceDate, showNightOwl } = $props();
 const alertsByDay = $derived(_alertsByDay || getAlertsAsDays(alerts, routeMap));
-
-let currentServiceTime = now(MBTA_TIMEZONE);
-
-const showNightOwl = currentServiceTime.hour < MBTA_SERVICE_START_HOUR || currentServiceTime.hour >= 23;
-if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
-    currentServiceTime = currentServiceTime.subtract({days: 1});
-}
-const currentServiceDate = toCalendarDate(currentServiceTime);
 
 const maxValue = $derived.by(() => {
     const fixedMaxValue = currentServiceDate.add({months: 2});
@@ -27,7 +18,6 @@ const maxValue = $derived.by(() => {
     return fixedMaxValue.compare(maxAlertDate) > 0 ? fixedMaxValue : maxAlertDate;
 });
 
-let dayValue = $state(currentServiceDate);
 let dayString = $derived(dayValue.toString());
 
 let mainCalendarDom: HTMLElement;
