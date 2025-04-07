@@ -31,11 +31,10 @@ if (showNightOwl) {
     {@const descriptionArr = alert.attributes?.description?.split(/\r?\n/g) || []}
     <details>
         <summary>
-            <p>
-                <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
-                <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
-                {alert.id}
-            </p>
+            <!-- remove <p> to work with the marker. Temporary anyway. -->
+            <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
+            <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
+            {alert.id}
             <p>
                 {alert.attributes.header}
             </p>
