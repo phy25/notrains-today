@@ -3,9 +3,10 @@ import type { PageLoad } from './$types';
 export const ssr = false;
 
 export const load = (async ({ parent }) => {
-    const { data_async } = await parent();
-    const data = await data_async();
+    const parentData = await parent();
+    const data = await parentData.data_async();
     return {
+        ...parentData,
         ...data,
     };
 }) satisfies PageLoad;

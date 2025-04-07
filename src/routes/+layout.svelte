@@ -2,9 +2,12 @@
 	import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
 	import { m } from '$lib/paraglide/messages';
 	import type { LayoutProps } from './$types';
-	let { data, children }: LayoutProps = $props();
-	const notrains_today = true;
-	let tab_id = $derived.by(() => {
+	const { data, children }: LayoutProps = $props();
+	const notrains_today = $derived.by(async () => {
+		const { data: alerts } = await data.data_async();
+		return true;
+	});
+	const tab_id = $derived.by(() => {
 		if (data.route_id === '/calendar') {
 			return 'calendar';
 		}
@@ -18,28 +21,36 @@
         <a class="tab-item {tab_id === 'today' && 'selected'}" href="./">
             <div class="tab-item-heading">notrains.today</div>
             <div>
-                {#if notrains_today}
-                    <div class="badge-group">
-                        <MbtaRouteBadge pillLabel="RL" type="long" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
-                        <MbtaRouteBadge pillLabel="M" type="secondary" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
-                    </div>
-                {:else}
-                    <span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
-                {/if}
+				{#await notrains_today}
+					<!-- loading -->
+				{:then notrains_today}
+					{#if notrains_today}
+						<div class="badge-group">
+							<MbtaRouteBadge pillLabel="RL" type="long" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
+							<MbtaRouteBadge pillLabel="M" type="secondary" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
+						</div>
+					{:else}
+						<span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
+					{/if}
+				{/await}
             </div>
         </a>
         <a class="tab-item {tab_id === 'calendar' && 'selected'}" href="./calendar">
             <div class="tab-item-heading">{m.calendar()}</div>
             <div>
-                {#if !notrains_today}
-                    <div class="badge-group">
-                        <MbtaRouteBadge pillLabel="RL" type="long" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
-                        <MbtaRouteBadge pillLabel="M" type="secondary" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
-                    </div>
-                    (mock)
-                {:else}
-                    <span>✅</span> <span class="no-alert-text">{m.no_alert()} (mock)</span>
-                {/if}
+				{#await notrains_today}
+					<!-- loading -->
+				{:then notrains_today}
+					{#if !notrains_today}
+						<div class="badge-group">
+							<MbtaRouteBadge pillLabel="RL" type="long" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
+							<MbtaRouteBadge pillLabel="M" type="secondary" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
+						</div>
+						(mock)
+					{:else}
+						<span>✅</span> <span class="no-alert-text">{m.no_alert()} (mock)</span>
+					{/if}
+				{/await}
             </div>
         </a>
     </div>
