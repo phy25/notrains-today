@@ -27,20 +27,23 @@ if (showNightOwl) {
     {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
     {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
     {@const descriptionArr = alert.attributes?.description?.split(/\r?\n/g) || []}
-    <div>
-        <p>
-            <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
-            <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
-            {alert.id}
-        </p>
-        <p>
-            {alert.attributes.header}
-        </p>
-        {#if alert.attributes.image}
-        <p>
-            <img src={alert.attributes.image} alt={alert.attributes.image_alternative_text} style="max-width: 100%; max-height: 50vh;" />
-        </p>
-        {/if}
+    <details>
+        <summary>
+            <p>
+                <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
+                <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
+                {alert.id}
+            </p>
+            <p>
+                {alert.attributes.header}
+            </p>
+            {#if alert.attributes.image}
+            <p>
+                <img src={alert.attributes.image} alt={alert.attributes.image_alternative_text} style="max-width: 100%; max-height: 50vh;" />
+            </p>
+            {/if}
+        </summary>
+        
         {#if descriptionArr.length > 0}
         <p>
             {#each descriptionArr as text, index}
@@ -51,7 +54,7 @@ if (showNightOwl) {
             {/each}
         </p>
         {/if}
-    </div>
+    </details>
 {/each}
 {:else}
 <p>{m.calendar_day_no_alerts()}</p>
