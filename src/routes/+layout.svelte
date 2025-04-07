@@ -1,11 +1,37 @@
 <script lang="ts">	
+	import { getPillName } from '$lib/mbta-display';
 	import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
+	import type { MbtaAlert } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
 	import type { LayoutProps } from './$types';
 	const { data, children }: LayoutProps = $props();
-	const notrains_today = $derived.by(async () => {
-		const { data: alerts } = await data.data_async();
-		return true;
+	const alertsToRouteRenderingList = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
+		return alerts?.map(alert => alert.attributes.informed_entity[0].route)
+			?.filter((value, index, self) => self.indexOf(value) === index)
+			?.map(route_id => {
+				return {
+					route_id,
+					color: (routeMap.get(route_id)?.attributes?.color) ? '#' + routeMap.get(route_id)?.attributes?.color : 'inherit',
+					textColor: (routeMap.get(route_id)?.attributes?.text_color) ? '#' + routeMap.get(route_id)?.attributes?.text_color : 'inherit',
+					attributes: routeMap.get(route_id)?.attributes,
+				}
+			});
+	};
+	const alerts_today_route_list = $derived.by(async () => {
+		const { alertsByDay, routeMap } = await data.data_async();
+		return alertsToRouteRenderingList(alertsByDay.get(data.current_service_date.toString()) || [], routeMap);
+	});
+	const alerts_future_route_list = $derived.by(async () => {
+		const { alertsByDay, routeMap } = await data.data_async();
+		let targetDate = data.current_service_date;
+		const endSearchDate = targetDate.add({ months: 1 });
+		while (targetDate.compare(endSearchDate) < 0) {
+			targetDate = targetDate.add({ days: 1 });
+			if (alertsByDay.get(targetDate.toString())?.length) {
+				break;
+			}
+		}
+		return alertsToRouteRenderingList(alertsByDay.get(targetDate.toString()) || [], routeMap);
 	});
 	const tab_id = $derived.by(() => {
 		if (data.route_id === '/calendar') {
@@ -21,35 +47,32 @@
         <a class="tab-item {tab_id === 'today' && 'selected'}" href="./">
             <div class="tab-item-heading">notrains.today</div>
             <div>
-				{#await notrains_today}
+				{#await alerts_today_route_list}
 					<!-- loading -->
-				{:then notrains_today}
-					{#if notrains_today}
+				{:then alerts_today_route_list}
+					{#each alerts_today_route_list as route}
 						<div class="badge-group">
-							<MbtaRouteBadge pillLabel="RL" type="long" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
-							<MbtaRouteBadge pillLabel="M" type="secondary" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
+							<MbtaRouteBadge pillLabel={getPillName(route.route_id, route.attributes)} color={route.color} textColor={route.textColor} />
 						</div>
 					{:else}
 						<span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
-					{/if}
+					{/each}
 				{/await}
             </div>
         </a>
         <a class="tab-item {tab_id === 'calendar' && 'selected'}" href="./calendar">
             <div class="tab-item-heading">{m.calendar()}</div>
             <div>
-				{#await notrains_today}
+				{#await alerts_future_route_list}
 					<!-- loading -->
-				{:then notrains_today}
-					{#if !notrains_today}
+				{:then alerts_future_route_list}
+					{#each alerts_future_route_list as route}
 						<div class="badge-group">
-							<MbtaRouteBadge pillLabel="RL" type="long" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
-							<MbtaRouteBadge pillLabel="M" type="secondary" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
+							<MbtaRouteBadge pillLabel={getPillName(route.route_id, route.attributes)} color={route.color} textColor={route.textColor} />
 						</div>
-						(mock)
 					{:else}
-						<span>✅</span> <span class="no-alert-text">{m.no_alert()} (mock)</span>
-					{/if}
+						<span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
+					{/each}
 				{/await}
             </div>
         </a>
@@ -112,5 +135,6 @@
 }
 .badge-group {
     display: inline-flex;
+	margin-right: 0.2em;
 }
 </style>
