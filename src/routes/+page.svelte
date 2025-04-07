@@ -20,6 +20,8 @@ const notrains_today_text_array = $derived((notrains_today ? m.trains_running_so
 
 const endOfWeekDate = $derived(endOfWeek(data.current_service_date, getLocale()));
 const lookingAheadDateValue = $derived(data.current_service_date.compare(endOfWeekDate) < 0 ? data.current_service_date : endOfWeekDate.add({ days: 1 }));
+
+const alertsToday = data.alertsByDay.get(data.current_service_date.toString()) || [];
 </script>
 
 <div class="page-content">
@@ -31,12 +33,17 @@ const lookingAheadDateValue = $derived(data.current_service_date.compare(endOfWe
 
 <Glance></Glance>
 
+{#if alertsToday}
 <DayDetail
     day={data.current_service_date.toString()}
-    alerts={data.alertsByDay.get(data.current_service_date.toString()) || []}
+    alerts={alertsToday}
     routeMap={data.routeMap}
     showNightOwl={data.is_current_service_night_owl}
+    hideAuxiliary={true}
 />
+{:else}
+<p>{m.calendar_day_no_alerts()}</p>
+{/if}
 
 <h2>{m.today_looking_ahead()}</h2>
 

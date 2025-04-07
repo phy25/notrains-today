@@ -7,7 +7,7 @@ import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 import { parseDate, DateFormatter } from "@internationalized/date";
 
-const { day, alerts, showNightOwl, routeMap } = $props();
+const { day, alerts, showNightOwl, routeMap, hideAuxiliary = false } = $props();
 
 const dayObject = $derived(parseDate(day));
 const dateFormatter = new DateFormatter(getLocale());
@@ -18,8 +18,10 @@ if (showNightOwl) {
 }
 </script>
 
+{#if !hideAuxiliary}
 <h2>{dateFormatter.format(dayObject.toDate(MBTA_TIMEZONE))}{#if showNightOwl && day == getDateString(currentServiceDate)}<small>{m.to_service_ending_night_owl({hour: MBTA_SERVICE_START_HOUR})}</small>{/if}</h2>
-{#if alerts && alerts.length > 0}
+{/if}
+
 {#each alerts as alert}
     {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
     {@const route_id = alert.attributes.informed_entity[0].route}
@@ -43,7 +45,7 @@ if (showNightOwl) {
             </p>
             {/if}
         </summary>
-        
+
         {#if descriptionArr.length > 0}
         <p>
             {#each descriptionArr as text, index}
@@ -55,10 +57,11 @@ if (showNightOwl) {
         </p>
         {/if}
     </details>
-{/each}
 {:else}
-<p>{m.calendar_day_no_alerts()}</p>
+{#if !hideAuxiliary}
+    <p>{m.calendar_day_no_alerts()}</p>
 {/if}
+{/each}
 
 <style>
 h2 > small {

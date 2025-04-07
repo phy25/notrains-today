@@ -93,12 +93,6 @@ export const snapshot: Snapshot<string> = {
     max-width: 56em;
     box-sizing: border-box;
 }
-h1 {
-    margin: 0.5em 0 0.7em;
-    line-height: 1em;
-    font-size: 1.1rem;
-    font-weight: normal;
-}
 mark {
     background-color: #ff0;
     color: #000;
@@ -106,53 +100,5 @@ mark {
 pre {
     white-space: pre-wrap;
     word-wrap: break-word;
-}
-
-.tab-wrapper {
-    background: var(--background-color);
-    --background-color: #165c96;
-    color: #FFF;
-    padding: 0.4em;
-    display: flex;
-    justify-content: space-around;
-}
-@media (max-width: 480px) {
-    .tab-wrapper {
-        padding: 0.4em 0.2em;
-    }
-}
-.tab {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: stretch;
-    border: #FFF 1px solid;
-    border-radius: 0.3em;
-    padding: 0.2em;
-    width: 100%;
-    max-width: 56em;
-}
-.tab-item {
-    flex: 1;
-    padding: 0.3em 0.6em;
-    line-height: 1.4;
-    cursor: pointer;
-    border-radius: 0.3em;
-}
-.tab-item:hover {
-    background: var(--background-color);
-    --background-color: #DDD;
-    color: #000;
-}
-.tab-item.selected {
-    background: var(--background-color);
-    --background-color: #FFF;
-    color: #000;
-}
-.tab-item-heading {
-    font-weight: bold;
-}
-.badge-group {
-    display: inline-flex;
 }
 </style>
