@@ -7,6 +7,7 @@ import { getEffectWithLineMessage, getPillName } from '$lib/mbta-display';
 import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
 import Glance from './glance.svelte';
+	import DayDetail from './day-detail.svelte';
 
 const { data }: PageProps = $props();
 
@@ -23,6 +24,13 @@ const notrains_today_text_array = $derived((notrains_today ? m.trains_running_so
 </h1>
 
 <Glance></Glance>
+
+<DayDetail
+    day={data.current_service_date.toString()}
+    alerts={data.alertsByDay.get(data.current_service_date.toString()) || []}
+    routeMap={data.routeMap}
+    showNightOwl={data.is_current_service_night_owl}
+></DayDetail>
 
 {#if data.data.length > 0}    
     <details>

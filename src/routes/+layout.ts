@@ -40,6 +40,7 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
     };
 
     let currentServiceTime = now(MBTA_TIMEZONE);
+    const isNightOwl = currentServiceTime.hour < MBTA_SERVICE_START_HOUR || currentServiceTime.hour >= 23;
     if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
         currentServiceTime = currentServiceTime.subtract({days: 1});
     }
@@ -48,6 +49,7 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
     return {
         route_id: route.id,
         current_service_date: currentServiceDate,
+        is_current_service_night_owl: isNightOwl,
         data_async: data_async,
     };
 };
