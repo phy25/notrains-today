@@ -37,10 +37,10 @@ export const effectRawDisplayFormat = (effect: string) => {
 }
 
 export const getEffectWithLineMessage = (
-    effect: keyof typeof EFFECT_WITH_LINE_MESSAGES,
-    line: keyof typeof LINE_NAMES) => {
+    effect: string,
+    line: string) => {
     if (effect in EFFECT_WITH_LINE_MESSAGES) {
-        return EFFECT_WITH_LINE_MESSAGES[effect]({
+        return EFFECT_WITH_LINE_MESSAGES[effect as keyof typeof EFFECT_WITH_LINE_MESSAGES]({
             line: getLineName(line),
         });
     }
@@ -50,9 +50,9 @@ export const getEffectWithLineMessage = (
     });
 }
 
-export const getLineName = (line: keyof typeof LINE_NAMES) => {
+export const getLineName = (line: string) => {
     if (line in LINE_NAMES) {
-        return LINE_NAMES[line];
+        return LINE_NAMES[line as keyof typeof LINE_NAMES];
     }
     if (/^[0-9]+$/.test(line)) {
         return m['mbta_lines_name.bus_route']({ route: line });

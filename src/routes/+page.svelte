@@ -1,6 +1,5 @@
 <script lang="ts">
 import LanguagePicker from './language-picker.svelte';
-import Calendar from './calendar.svelte';
 
 import { m } from '$lib/paraglide/messages';
 import type { PageProps } from './$types';
@@ -41,7 +40,7 @@ const notrains_today_text_array = $derived((notrains_today ? m.trains_running_so
         <summary>All alerts for troubleshooting</summary>
 
         {#each data.data as alert}
-            {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
+            {@const effect = alert.attributes.effect}
             {@const route_id = alert.attributes.informed_entity[0].route}
             {@const attributes = (routeMap.get(route_id) as any)?.attributes}
             {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
