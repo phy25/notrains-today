@@ -59,61 +59,57 @@ const onStickyWeekValueChange = (value?: DateValue) => {
 <svelte:window on:scroll={onWindowScroll} />
 
 
-<details bind:this={mainCalendarDom}>
-  <summary>Calendar to be moved</summary>
-
-  <div>
-    <Calendar.Root
-      class="border-dark-10 bg-background-alt shadow-card mt-6 rounded-[15px] border p-[22px]"
-      weekdayFormat="short"
-      disableDaysOutsideMonth={false}
-      type="single"
-      bind:value={dayValue}
-      minValue={currentServiceDate}
-      maxValue={maxValue}
-      locale={getLocale()}
-      preventDeselect={true}
-    >
-      {#snippet children({ months, weekdays })}
-        <Calendar.Header class="flex items-center justify-between">
-          <Calendar.Heading class="text-[15px] font-medium" />
-        </Calendar.Header>
-        <div
-          class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-x-4 sm:space-y-0"
-        >
-          {#each months as month, i (i)}
-            <Calendar.Grid class="w-full border-collapse select-none space-y-1">
-              <Calendar.GridHead>
-                <Calendar.GridRow class="mb-1 flex w-full justify-between">
-                  {#each weekdays as day}
-                    <Calendar.HeadCell
-                      class="text-muted-foreground font-normal! w-10 rounded-md text-xs"
-                    >
-                      <div>{day}</div>
-                    </Calendar.HeadCell>
-                  {/each}
-                </Calendar.GridRow>
-              </Calendar.GridHead>
-              <Calendar.GridBody>
-                {#each month.weeks as weekDates}
-                  <Calendar.GridRow>
-                    {#snippet child({ props })}
-                      <tr {...props} class="calendar-row">
-                        {#each weekDates as date}
-                          <CalendarCell {date} {month} {alertsByDay} {currentServiceDate} {routeMap}></CalendarCell>
-                        {/each}
-                      </tr>
-                    {/snippet}
-                  </Calendar.GridRow>
+<div bind:this={mainCalendarDom}>
+  <Calendar.Root
+    class="border-dark-10 bg-background-alt shadow-card mt-6 rounded-[15px] border p-[22px]"
+    weekdayFormat="short"
+    disableDaysOutsideMonth={false}
+    type="single"
+    bind:value={dayValue}
+    minValue={currentServiceDate}
+    maxValue={maxValue}
+    locale={getLocale()}
+    preventDeselect={true}
+  >
+    {#snippet children({ months, weekdays })}
+      <Calendar.Header class="flex items-center justify-between">
+        <Calendar.Heading class="text-[15px] font-medium" />
+      </Calendar.Header>
+      <div
+        class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-x-4 sm:space-y-0"
+      >
+        {#each months as month, i (i)}
+          <Calendar.Grid class="w-full border-collapse select-none space-y-1">
+            <Calendar.GridHead>
+              <Calendar.GridRow class="mb-1 flex w-full justify-between">
+                {#each weekdays as day}
+                  <Calendar.HeadCell
+                    class="text-muted-foreground font-normal! w-10 rounded-md text-xs"
+                  >
+                    <div>{day}</div>
+                  </Calendar.HeadCell>
                 {/each}
-              </Calendar.GridBody>
-            </Calendar.Grid>
-          {/each}
-        </div>
-      {/snippet}
-    </Calendar.Root>
-  </div>
-</details>
+              </Calendar.GridRow>
+            </Calendar.GridHead>
+            <Calendar.GridBody>
+              {#each month.weeks as weekDates}
+                <Calendar.GridRow>
+                  {#snippet child({ props })}
+                    <tr {...props} class="calendar-row">
+                      {#each weekDates as date}
+                        <CalendarCell {date} {month} {alertsByDay} {currentServiceDate} {routeMap}></CalendarCell>
+                      {/each}
+                    </tr>
+                  {/snippet}
+                </Calendar.GridRow>
+              {/each}
+            </Calendar.GridBody>
+          </Calendar.Grid>
+        {/each}
+      </div>
+    {/snippet}
+  </Calendar.Root>
+</div>
 
 <div class="calendar-sticky-week {stickyWeekShowing ? 'show' : ''}" bind:this={stickyWeekDom}>
   <Calendar.Root

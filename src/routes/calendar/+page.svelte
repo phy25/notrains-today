@@ -1,15 +1,14 @@
 <script lang="ts">
-import LanguagePicker from './language-picker.svelte';
-import Calendar from './calendar.svelte';
+import LanguagePicker from '../language-picker.svelte';
+import Calendar from '../calendar.svelte';
 
 import { m } from '$lib/paraglide/messages';
-import type { PageProps } from './$types';
+import type { PageProps } from '../$types';
 import { EFFECT_MESSAGES, getEffectWithLineMessage, getPillName } from '$lib/mbta-display';
 import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
 import { MBTA_TIMEZONE, QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 import { now, toCalendarDate } from "@internationalized/date";
 import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
-import Glance from './glance.svelte';
 
 const { data }: PageProps = $props();
 const routeMap: Map<string, any> = $derived(new Map(data.included
@@ -28,15 +27,9 @@ const notrains_today_text_array = $derived((notrains_today ? m.trains_running_so
 </script>
 
 <div class="page-content">
-<h1>
-    {#each notrains_today_text_array as text, index}
-        {#if index > 0}<a href="https://www.mbta.com/">{m.mbta_abbreviation()}</a>{/if}{text}
-    {/each}
-</h1>
-
-<Glance></Glance>
-
-{#if data.data.length > 0}    
+{#if data.data.length > 0}
+    <Calendar alertsByDay={alertsByDay} routeMap={routeMap} />
+    
     <details>
         <summary>All alerts for troubleshooting</summary>
 
@@ -58,7 +51,7 @@ const notrains_today_text_array = $derived((notrains_today ? m.trains_running_so
 
 <p>
     {#each Object.keys(QUERY_ROUTE_TYPE_MAPPING) as type}
-        <a href="/?route_type={type}">{type}</a>{' '}
+        <a href="?route_type={type}">{type}</a>{' '}
     {/each}
 </p>
 
@@ -86,5 +79,53 @@ mark {
 pre {
     white-space: pre-wrap;
     word-wrap: break-word;
+}
+
+.tab-wrapper {
+    background: var(--background-color);
+    --background-color: #165c96;
+    color: #FFF;
+    padding: 0.4em;
+    display: flex;
+    justify-content: space-around;
+}
+@media (max-width: 480px) {
+    .tab-wrapper {
+        padding: 0.4em 0.2em;
+    }
+}
+.tab {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    border: #FFF 1px solid;
+    border-radius: 0.3em;
+    padding: 0.2em;
+    width: 100%;
+    max-width: 56em;
+}
+.tab-item {
+    flex: 1;
+    padding: 0.3em 0.6em;
+    line-height: 1.4;
+    cursor: pointer;
+    border-radius: 0.3em;
+}
+.tab-item:hover {
+    background: var(--background-color);
+    --background-color: #DDD;
+    color: #000;
+}
+.tab-item.selected {
+    background: var(--background-color);
+    --background-color: #FFF;
+    color: #000;
+}
+.tab-item-heading {
+    font-weight: bold;
+}
+.badge-group {
+    display: inline-flex;
 }
 </style>
