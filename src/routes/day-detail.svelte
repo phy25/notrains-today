@@ -39,12 +39,13 @@ if (showNightOwl) {
             <p>
                 {alert.attributes.header}
             </p>
-            {#if alert.attributes.image}
-            <p>
-                <img src={alert.attributes.image} alt={alert.attributes.image_alternative_text} style="max-width: 100%; max-height: 50vh;" />
-            </p>
-            {/if}
         </summary>
+
+        {#if alert.attributes.image}
+        <div class="alert-image-container">
+            <img src={alert.attributes.image} alt={alert.attributes.image_alternative_text} />
+        </div>
+        {/if}
 
         {#if descriptionArr.length > 0}
         <p>
@@ -66,5 +67,20 @@ if (showNightOwl) {
 <style>
 h2 > small {
     padding-left: 0.5em;
+}
+.alert-image-container {
+    overflow-x: auto;
+    max-width: 100%;
+}
+.alert-image-container img {
+    max-width: 100%;
+    max-height: 80vh;
+}
+@media (max-width: 640px) {
+    .alert-image-container img {
+        max-width: 200%;
+        width: 200%;
+        max-height: none;
+    }
 }
 </style>
