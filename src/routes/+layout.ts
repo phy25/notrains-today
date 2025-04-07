@@ -5,7 +5,7 @@ import { filterHighPriorityAlerts, overrideAlerts } from '$lib/mbta-overides';
 import { MBTA_TIMEZONE, QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
 import type { LayoutLoad } from './$types';
 import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
-import { now, toCalendarDate } from "@internationalized/date";
+import { now, parseDate, toCalendarDate } from "@internationalized/date";
 
 let data_async_data: { data: MbtaAlert[]; alertsByDay: Map<string, MbtaAlert[]>; routeMap: Map<string, any> } | null = null;
 
@@ -44,7 +44,7 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
     if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
         currentServiceTime = currentServiceTime.subtract({days: 1});
     }
-    const currentServiceDate = toCalendarDate(currentServiceTime);
+    const currentServiceDate = toCalendarDate(currentServiceTime); // parseDate('2025-04-10')
 
     return {
         route_id: route.id,

@@ -7,13 +7,19 @@ import { getEffectWithLineMessage, getPillName } from '$lib/mbta-display';
 import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
 import Glance from './glance.svelte';
-	import DayDetail from './day-detail.svelte';
+import DayDetail from './day-detail.svelte';
+import CalendarOneweek from './calendar-oneweek.svelte';
+import { getLocale } from '$lib/paraglide/runtime';
+import { endOfWeek } from '@internationalized/date';
 
 const { data }: PageProps = $props();
 
 const notrains_today = $derived(!!data.alertsByDay.get(data.current_service_date.toString())?.length);
 const MBTA_PLACEHOLDER = '%%MBTA%%';
 const notrains_today_text_array = $derived((notrains_today ? m.trains_running_some({MBTA: MBTA_PLACEHOLDER}) : m.trains_running_all({MBTA: MBTA_PLACEHOLDER})).split(MBTA_PLACEHOLDER) || []);
+
+const endOfWeekDate = $derived(endOfWeek(data.current_service_date, getLocale()));
+const lookingAheadDateValue = $derived(data.current_service_date.compare(endOfWeekDate) < 0 ? data.current_service_date : endOfWeekDate.add({ days: 1 }));
 </script>
 
 <div class="page-content">
@@ -30,11 +36,22 @@ const notrains_today_text_array = $derived((notrains_today ? m.trains_running_so
     alerts={data.alertsByDay.get(data.current_service_date.toString()) || []}
     routeMap={data.routeMap}
     showNightOwl={data.is_current_service_night_owl}
-></DayDetail>
+/>
+
+<h2>{m.today_looking_ahead()}</h2>
+
+<CalendarOneweek
+    dayValue={lookingAheadDateValue}
+    minValue={data.current_service_date}
+    maxValue={data.current_service_date.add({ weeks: 1 })}
+    alertsByDay={data.alertsByDay}
+    routeMap={data.routeMap}
+    currentServiceDate={data.current_service_date}
+    locale={getLocale()} />
 
 {#if data.data.length > 0}    
     <details>
-        <summary>All alerts for troubleshooting</summary>
+        <summary>{m.debug_all_alerts()}</summary>
 
         {#each data.data as alert}
             {@const effect = alert.attributes.effect}

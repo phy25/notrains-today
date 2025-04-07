@@ -28,5 +28,7 @@
     "important_notes_service_day_end": "夜猫子们：上述日期为 MBTA 服务日，于次日凌晨 {hour}:59 结束。",
     "until_next_day_service_ending": "直到次日 {hour}:00",
     "to_service_ending_night_owl": "– 今天 {hour}:00",
-    "calendar_day_no_alerts": "本日无服务异常"
+    "calendar_day_no_alerts": "本日无服务异常",
+    "today_looking_ahead": "未来状况",
+    "debug_all_alerts": "所有异常的调试视图"
 }
