@@ -87,13 +87,6 @@ const alertsToday = data.alertsByDay.get(data.current_service_date.toString()) |
 </div>
 
 <style>
-.page-content {
-    margin: 0 auto;
-    padding: 0 0.4em;
-    width: 100%;
-    max-width: 56em;
-    box-sizing: border-box;
-}
 h1 {
     margin: 0.5em 0 0.7em;
     line-height: 1em;

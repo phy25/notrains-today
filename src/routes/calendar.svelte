@@ -117,6 +117,27 @@ const onStickyWeekValueChange = (value?: DateValue) => {
 <DayDetail alerts={alertsByDay.get(dayString)} day={dayString} showNightOwl={showNightOwl} routeMap={routeMap} />
 
 <style>
-.calendar-sticky-week {visibility: hidden; display: flex; position: fixed; top: 0; left: 0; width: 100%; padding: 0 8px; background: #fff; box-sizing: border-box;}
-.calendar-sticky-week.show {visibility: visible; }
+.calendar-sticky-week {
+  visibility: hidden;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  box-sizing: border-box;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px;
+}
+.calendar-sticky-week.show {
+  visibility: visible;
+}
+:global {
+  .calendar-sticky-week > [data-bits-calendar-root] {
+    width: 100%;
+    max-width: var(--page-content-max-width);
+    margin: 0 auto;
+    padding: 0 0.4em;
+    box-sizing: border-box;
+  }
+}
 </style>

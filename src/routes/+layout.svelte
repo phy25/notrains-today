@@ -83,9 +83,20 @@
 
 <style>
 :global {
-	body {font-size: 16px; font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif; margin: 0;}
+	body {
+		font-size: 16px;
+		font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+		margin: 0;
+		--page-content-max-width: 56em;
+	}
+	.page-content {
+		margin: 0 auto;
+		padding: 0 0.4em;
+		width: 100%;
+		max-width: var(--page-content-max-width);
+		box-sizing: border-box;
+	}
 }
-
 
 .tab-wrapper {
     background: var(--background-color);
