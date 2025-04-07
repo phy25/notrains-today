@@ -53,7 +53,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 0.5em;
     width: 100%;
-    max-width: 56em;
+    max-width: var(--page-content-max-width);
 }
 .glance-rapid-transit-grid > .route-with-branches {
     grid-row: 1 / span 1;

@@ -120,7 +120,8 @@
     border-radius: 0.3em;
     padding: 0.2em;
     width: 100%;
-    max-width: 56em;
+    max-width: var(--page-content-max-width);
+	gap: 0.1em;
 }
 .tab-item {
     flex: 1;
