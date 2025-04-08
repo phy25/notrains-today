@@ -1,5 +1,5 @@
 <script lang="ts">
-import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
+import { getAlertsAsDays } from "$lib/calendar";
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 import DayDetail from "./day-detail.svelte";
@@ -22,16 +22,19 @@ let dayString = $derived(dayValue.toString());
 
 let mainCalendarDom: HTMLElement;
 let stickyWeekDom: HTMLDivElement;
-let mainCalendarEndY: number = -1;
-let stickyCalendarStartY: number = -1;
+let mainCalendarEndY: number = $state(-1);
+let stickyCalendarStartY: number = $state(-1);
 let stickyWeekShowing = $state(false);
+
 $effect(() => {
   dayValue; // re-run when dayValue changes
 	
-  window.requestAnimationFrame(() => {
-    onResize();
-    onWindowScroll();
-  });
+  if (mainCalendarDom && stickyWeekDom) { // re-run when mainCalendarDom or stickyWeekDom populate
+    window.requestAnimationFrame(() => {
+      onResize();
+      onWindowScroll();
+    });
+  }
 });
 
 const onResize = () => {
@@ -52,16 +55,15 @@ const onWindowScroll = () => {
 };
 
 const onStickyWeekValueChange = (value?: DateValue) => {
-  setTimeout(() => {
+  window.requestAnimationFrame(() => {
     window.scrollTo({
       top: mainCalendarEndY + 1,
     });
-  }, 0);
+  });
 };
 </script>
 
 <svelte:window on:scroll={onWindowScroll} on:resize={onResize} />
-
 
 <div bind:this={mainCalendarDom}>
   <Calendar.Root

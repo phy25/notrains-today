@@ -1,6 +1,5 @@
 <script lang="ts">
 import LanguagePicker from './language-picker.svelte';
-import { fade } from '$lib/transition';
 import { m } from '$lib/paraglide/messages';
 import type { PageProps } from './$types';
 import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
@@ -9,8 +8,7 @@ import PageAsync from './page-async.svelte';
 const { data }: PageProps = $props();
 </script>
 
-<div class="page-content" transition:fade>
-
+<div class="page-content">
 {#await data.data_async() then d}
 <PageAsync data={d} current_service_date={data.current_service_date} />
 {/await}

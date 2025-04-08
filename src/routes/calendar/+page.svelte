@@ -10,7 +10,6 @@ import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
 import type { Snapshot } from '@sveltejs/kit';
 import { parseDate, type DateValue } from '@internationalized/date';
 import { page } from '$app/state';
-import { fade } from '$lib/transition';
 
 const { data }: PageProps = $props();
 
@@ -49,7 +48,7 @@ export const snapshot: Snapshot<string> = {
 };
 </script>
 
-<div class="page-content" transition:fade>
+<div class="page-content">
 {#if data.data.length > 0}
     <Calendar
         bind:dayValue={dayValue}
