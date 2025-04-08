@@ -23,19 +23,27 @@ let dayString = $derived(dayValue.toString());
 let mainCalendarDom: HTMLElement;
 let stickyWeekDom: HTMLDivElement;
 let mainCalendarEndY: number = -1;
+let stickyCalendarStartY: number = -1;
 let stickyWeekShowing = $state(false);
 $effect(() => {
   dayValue; // re-run when dayValue changes
 	if (mainCalendarDom && stickyWeekDom) {
     window.requestAnimationFrame(() => {
       mainCalendarEndY = mainCalendarDom.offsetHeight + mainCalendarDom.offsetTop - stickyWeekDom.offsetHeight;
+
+      const selectedCell = (mainCalendarDom.querySelector('[data-selected][data-bits-calendar-cell]') as HTMLElement);
+      if (selectedCell) {
+        stickyCalendarStartY = selectedCell?.getBoundingClientRect()?.y + window.scrollY - 1;
+      } else {
+        stickyCalendarStartY = mainCalendarEndY;
+      }
       onWindowScroll();
     });
   }
 });
 
 const onWindowScroll = () => {
-  stickyWeekShowing = window.scrollY >= mainCalendarEndY;
+  stickyWeekShowing = window.scrollY >= stickyCalendarStartY;
 };
 
 const onStickyWeekValueChange = (value?: DateValue) => {
