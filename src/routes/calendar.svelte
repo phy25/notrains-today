@@ -27,20 +27,25 @@ let stickyCalendarStartY: number = -1;
 let stickyWeekShowing = $state(false);
 $effect(() => {
   dayValue; // re-run when dayValue changes
-	if (mainCalendarDom && stickyWeekDom) {
-    window.requestAnimationFrame(() => {
-      mainCalendarEndY = mainCalendarDom.offsetHeight + mainCalendarDom.offsetTop - stickyWeekDom.offsetHeight;
-
-      const selectedCell = (mainCalendarDom.querySelector('[data-selected][data-bits-calendar-cell]') as HTMLElement);
-      if (selectedCell) {
-        stickyCalendarStartY = selectedCell?.getBoundingClientRect()?.y + window.scrollY - 1;
-      } else {
-        stickyCalendarStartY = mainCalendarEndY;
-      }
-      onWindowScroll();
-    });
-  }
+	
+  window.requestAnimationFrame(() => {
+    onResize();
+    onWindowScroll();
+  });
 });
+
+const onResize = () => {
+  if (mainCalendarDom && stickyWeekDom) {
+    mainCalendarEndY = mainCalendarDom.offsetHeight + mainCalendarDom.offsetTop - stickyWeekDom.offsetHeight;
+
+    const selectedCell = (mainCalendarDom.querySelector('[data-selected][data-bits-calendar-cell]') as HTMLElement);
+    if (selectedCell) {
+      stickyCalendarStartY = selectedCell?.getBoundingClientRect()?.y + window.scrollY - 1;
+    } else {
+      stickyCalendarStartY = mainCalendarEndY;
+    }
+  }
+};
 
 const onWindowScroll = () => {
   stickyWeekShowing = window.scrollY >= stickyCalendarStartY;
@@ -55,7 +60,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
 };
 </script>
 
-<svelte:window on:scroll={onWindowScroll} />
+<svelte:window on:scroll={onWindowScroll} on:resize={onResize} />
 
 
 <div bind:this={mainCalendarDom}>
