@@ -3,79 +3,17 @@ import LanguagePicker from './language-picker.svelte';
 
 import { m } from '$lib/paraglide/messages';
 import type { PageProps } from './$types';
-import { getEffectWithLineMessage, getPillName } from '$lib/mbta-display';
 import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
-import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
-import Glance from './glance.svelte';
-import DayDetail from './day-detail.svelte';
-import CalendarOneweek from './calendar-oneweek.svelte';
-import { getLocale } from '$lib/paraglide/runtime';
-import { endOfWeek } from '@internationalized/date';
+import PageAsync from './page-async.svelte';
 
 const { data }: PageProps = $props();
-
-const notrains_today = $derived(!!data.alertsByDay.get(data.current_service_date.toString())?.length);
-const MBTA_PLACEHOLDER = '%%MBTA%%';
-const notrains_today_text_array = $derived((notrains_today ? m.trains_running_some({MBTA: MBTA_PLACEHOLDER}) : m.trains_running_all({MBTA: MBTA_PLACEHOLDER})).split(MBTA_PLACEHOLDER) || []);
-
-const endOfWeekDate = $derived(endOfWeek(data.current_service_date, getLocale()));
-const lookingAheadDateValue = $derived(data.current_service_date.compare(endOfWeekDate) < 0 ? data.current_service_date : endOfWeekDate.add({ days: 1 }));
-
-const alertsToday = data.alertsByDay.get(data.current_service_date.toString()) || [];
 </script>
 
 <div class="page-content">
-<h1>
-    {#each notrains_today_text_array as text, index}
-        {#if index > 0}<a href="https://www.mbta.com/">{m.mbta_abbreviation()}</a>{/if}{text}
-    {/each}
-</h1>
 
-<Glance></Glance>
-
-{#if alertsToday}
-<DayDetail
-    day={data.current_service_date.toString()}
-    alerts={alertsToday}
-    routeMap={data.routeMap}
-    showNightOwl={data.is_current_service_night_owl}
-    hideAuxiliary={true}
-/>
-{:else}
-<p>{m.calendar_day_no_alerts()}</p>
-{/if}
-
-<h2>{m.today_looking_ahead()}</h2>
-
-<CalendarOneweek
-    dayValue={lookingAheadDateValue}
-    minValue={data.current_service_date}
-    maxValue={data.current_service_date.add({ weeks: 1 })}
-    alertsByDay={data.alertsByDay}
-    routeMap={data.routeMap}
-    currentServiceDate={data.current_service_date}
-    locale={getLocale()}
-    linkToCalendar={true} />
-
-{#if data.data.length > 0}    
-    <details>
-        <summary>{m.debug_all_alerts()}</summary>
-
-        {#each data.data as alert}
-            {@const effect = alert.attributes.effect}
-            {@const route_id = alert.attributes.informed_entity[0].route}
-            {@const attributes = (data.routeMap.get(route_id) as any)?.attributes}
-            {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
-            {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
-            <div>
-                <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
-                <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
-                {alert.id} {alert.attributes.short_header}
-            </div>
-            <pre><code>{JSON.stringify(alert)}</code></pre>
-        {/each}
-    </details>
-{/if}
+{#await data.data_async() then d}
+<PageAsync data={d} current_service_date={data.current_service_date} />
+{/await}
 
 <p>
     {#each Object.keys(QUERY_ROUTE_TYPE_MAPPING) as type}
@@ -85,20 +23,3 @@ const alertsToday = data.alertsByDay.get(data.current_service_date.toString()) |
 
 <p>☺ notrains.today <LanguagePicker /></p>
 </div>
-
-<style>
-h1 {
-    margin: 0.5em 0 0.7em;
-    line-height: 1em;
-    font-size: 1.1rem;
-    font-weight: normal;
-}
-mark {
-    background-color: #ff0;
-    color: #000;
-}
-pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
-</style>

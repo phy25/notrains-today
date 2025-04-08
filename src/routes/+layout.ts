@@ -17,27 +17,37 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
         route_type = query_route_type;
     }
 
-    const data_async = async () => {
-        if (data_async_data !== null) {
-            return data_async_data;
+    const data_async_promise = new Promise<{
+        data: MbtaAlert[];
+        alertsByDay: ReturnType<typeof getAlertsAsDays>;
+        routeMap: Map<string, any>;
+    }>(async (resolve, reject) => {
+        if (data_async_data) {
+            resolve(data_async_data);
         }
-        const response = await fetch('https://api-v3.mbta.com/alerts?include=routes&filter%5Broute_type%5D=' + QUERY_ROUTE_TYPE_MAPPING[route_type], {
-            headers: {
-                'Accept': 'application/vnd.api+json',
-            }
-        });
-        const json = await response.json();
-        const routeMap: Map<string, any> = new Map(json.included
-            .filter((entity: any) => entity.type === 'route')
-            .map((route: any) => [route.id, route]));
-        const alertsByDay = getAlertsAsDays(json.data, routeMap);
-        data_async_data = {
-            data: filterHighPriorityAlerts(overrideAlerts(json.data)),
-            alertsByDay,
-            routeMap,
-        };
-        return data_async_data;
-    };
+        try {
+            const response = await fetch('https://api-v3.mbta.com/alerts?include=routes&filter%5Broute_type%5D=' + QUERY_ROUTE_TYPE_MAPPING[route_type], {
+                headers: {
+                    'Accept': 'application/vnd.api+json',
+                }
+            });
+            const json = await response.json();
+            const routeMap: Map<string, any> = new Map(json.included
+                .filter((entity: any) => entity.type === 'route')
+                .map((route: any) => [route.id, route]));
+            const alertsByDay = getAlertsAsDays(json.data, routeMap);
+            data_async_data = {
+                data: filterHighPriorityAlerts(overrideAlerts(json.data)),
+                alertsByDay,
+                routeMap,
+            };
+            resolve(data_async_data);
+        } catch (err) {
+            reject(err);
+        }
+    });
+
+    const data_async = async () => data_async_promise;
 
     let currentServiceTime = now(MBTA_TIMEZONE);
     const isNightOwl = currentServiceTime.hour < MBTA_SERVICE_START_HOUR || currentServiceTime.hour >= 23;

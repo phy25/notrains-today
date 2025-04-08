@@ -2,7 +2,7 @@
 	import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 	import { m } from "$lib/paraglide/messages";
 
-
+    const { alertsToday } = $props();
 </script>
 
 <div class="glance-rapid-transit-grid">

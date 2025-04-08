@@ -3,7 +3,7 @@ import LanguagePicker from '../language-picker.svelte';
 import Calendar from '../calendar.svelte';
 
 import { m } from '$lib/paraglide/messages';
-import type { PageProps } from '../$types';
+import type { PageProps } from './$types';
 import { EFFECT_MESSAGES, getEffectWithLineMessage, getPillName } from '$lib/mbta-display';
 import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';

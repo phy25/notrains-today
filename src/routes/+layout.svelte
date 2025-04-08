@@ -17,11 +17,11 @@
 				}
 			});
 	};
-	const alerts_today_route_list = $derived.by(async () => {
+	const alerts_today_route_list = async () => {
 		const { alertsByDay, routeMap } = await data.data_async();
 		return alertsToRouteRenderingList(alertsByDay.get(data.current_service_date.toString()) || [], routeMap);
-	});
-	const alerts_future_route_list = $derived.by(async () => {
+	};
+	const alerts_future_route_list = async () => {
 		const { alertsByDay, routeMap } = await data.data_async();
 		let targetDate = data.current_service_date;
 		const endSearchDate = targetDate.add({ months: 1 });
@@ -32,7 +32,7 @@
 			}
 		}
 		return alertsToRouteRenderingList(alertsByDay.get(targetDate.toString()) || [], routeMap);
-	});
+	};
 	const tab_id = $derived.by(() => {
 		if (data.route_id === '/calendar') {
 			return 'calendar';
@@ -47,7 +47,7 @@
         <a class="tab-item {tab_id === 'today' && 'selected'}" href="./">
             <div class="tab-item-heading">notrains.today</div>
             <div>
-				{#await alerts_today_route_list}
+				{#await alerts_today_route_list()}
 					<!-- loading -->
 				{:then alerts_today_route_list}
 					{#each alerts_today_route_list as route}
@@ -63,7 +63,7 @@
         <a class="tab-item {tab_id === 'calendar' && 'selected'}" href="./calendar">
             <div class="tab-item-heading">{m.calendar()}</div>
             <div>
-				{#await alerts_future_route_list}
+				{#await alerts_future_route_list()}
 					<!-- loading -->
 				{:then alerts_future_route_list}
 					{#each alerts_future_route_list as route}
@@ -126,7 +126,8 @@
 .tab-item {
     flex: 1;
     padding: 0.3em 0.6em;
-    line-height: 1.4;
+    line-height: 1.4em;
+	height: 2.8em;
     cursor: pointer;
     border-radius: 0.3em;
     text-decoration: none;
