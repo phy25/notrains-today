@@ -6,6 +6,7 @@ import { MBTA_TIMEZONE } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 import { parseDate, DateFormatter } from "@internationalized/date";
+import { fade } from "$lib/transition";
 
 const { day, alerts, showNightOwl, routeMap, hideAuxiliary = false } = $props();
 
@@ -29,7 +30,7 @@ if (showNightOwl) {
     {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
     {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
     {@const descriptionArr = alert.attributes?.description?.split(/\r?\n/g) || []}
-    <details>
+    <details transition:fade>
         <summary>
             <!-- remove <p> to work with the marker. Temporary anyway. -->
             <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
