@@ -19,9 +19,10 @@ const isValidDate = (date: DateValue) => {
 
 // TODO: move this as part of data maybe
 const dayDefault = (() => {
-  if (page.url.searchParams.get('date')) {
+  const params = new URLSearchParams((page.url.hash || '').substring(1));
+  if (params.get('date')) {
     try {
-      const parsed = parseDate(page.url.searchParams.get('date') || '');
+      const parsed = parseDate(params.get('date') || '');
       if (isValidDate(parsed)) {
         // get rid of the parameter in the URL
         history.replaceState(history.state, '', './calendar');
