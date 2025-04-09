@@ -8,15 +8,14 @@
     "no_alert": "无异常",
     "multiple_alerts": "{count} 个异常",
     "mbta_alert_effect": {
+        "DELAY": "延误",
         "SHUTTLE": "摆渡车",
         "STATION_CLOSURE": "车站关闭",
+        "STATION_ISSUE": "车站调整",
+        "SERVICE_CHANGE": "服务变更",
         "ADDITIONAL_SERVICE": "额外服务"
     },
-    "mbta_alert_effect_with_line": {
-        "SHUTTLE": "{line}摆渡车",
-        "SERVICE_CHANGE": "{line}服务变更",
-        "DELAY": "{line}延误"
-    },
+    "mbta_alert_effect_with_line_default": "{line}{effect}",
     "mbta_lines_name": {
         "Mattapan": "马塔潘线",
         "Blue": "蓝线",

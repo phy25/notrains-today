@@ -6,14 +6,12 @@ export const EFFECT_MESSAGES = {
     'DELAY': m['mbta_alert_effect.DELAY'],
     'SHUTTLE': m['mbta_alert_effect.SHUTTLE'],
     'STATION_CLOSURE': m['mbta_alert_effect.STATION_CLOSURE'],
+    'STATION_ISSUE': m['mbta_alert_effect.STATION_ISSUE'],
     'SERVICE_CHANGE': m['mbta_alert_effect.SERVICE_CHANGE'],
     'ADDITIONAL_SERVICE': m['mbta_alert_effect.ADDITIONAL_SERVICE'],
 };
 
 export const EFFECT_WITH_LINE_MESSAGES = {
-    'SHUTTLE': m['mbta_alert_effect_with_line.SHUTTLE'],
-    'SERVICE_CHANGE': m['mbta_alert_effect_with_line.SERVICE_CHANGE'],
-    'DELAY': m['mbta_alert_effect_with_line.DELAY'],
 };
 
 export const LINE_NAMES = {
@@ -49,7 +47,7 @@ export const getEffectWithLineMessage = (
         });
     }
     return m.mbta_alert_effect_with_line_default({
-        effect: effectRawDisplayFormat(effect),
+        effect: getEffect(effect),
         line: getLineName(line),
     });
 }

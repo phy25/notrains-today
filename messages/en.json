@@ -11,14 +11,12 @@
         "DELAY": "Delay",
         "SHUTTLE": "Shuttle",
         "STATION_CLOSURE": "Station Closure",
+        "STATION_ISSUE": "Station Issue",
         "SERVICE_CHANGE": "Service Change",
         "ADDITIONAL_SERVICE": "Additional Service"
     },
     "mbta_alert_effect_with_line_default": "{line} {effect}",
     "mbta_alert_effect_with_line": {
-        "SHUTTLE": "{line} Shuttle",
-        "SERVICE_CHANGE": "{line} Service Change",
-        "DELAY": "{line} Delay"
     },
     "mbta_lines_name": {
         "Mattapan": "Mattapan Trolley",
