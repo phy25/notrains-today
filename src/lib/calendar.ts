@@ -58,13 +58,17 @@ export const getAlertsAsDays = (alerts: MbtaAlert[], routeMap: Map<string, any>)
             });
         } else {
             insertSingleAlert(alert, days);
-        }
-
-        
+        }        
     });
     // sort alerts
     days.forEach((alerts, _) => {
         alerts.sort((a, b) => {
+            if (hasShortTermImpact(a) && !hasShortTermImpact(b)) {
+                return -1;
+            }
+            if (!hasShortTermImpact(a) && hasShortTermImpact(b)) {
+                return 1;
+            }
             const severityDiff = b.attributes.severity - a.attributes.severity;
             const lineOrderDiff = routeMap.get(a.attributes.informed_entity[0].route)?.attributes.sort_order -
                 routeMap.get(b.attributes.informed_entity[0].route)?.attributes.sort_order;
@@ -77,3 +81,10 @@ export const getAlertsAsDays = (alerts: MbtaAlert[], routeMap: Map<string, any>)
 export const getDateString = (date: Date) => {
     return date.toISOString().split('T')[0];
 };
+
+const hasShortTermImpact = (alert: MbtaAlert) => {
+    if (alert.attributes.active_period.length !== 1) {
+        return false;
+    }
+    return (+new Date(alert.attributes.active_period[0].end) - Date.now()) <= 1000*60*60*3;
+}
