@@ -6,7 +6,8 @@
 	import type { LayoutProps } from './$types';
 	const { data, children }: LayoutProps = $props();
 	const alertsToRouteRenderingList = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
-		return alerts?.map(alert => alert.attributes.informed_entity[0].route)
+		return alerts?.flatMap(alert => alert.attributes.informed_entity)
+			?.map(entity => entity.route)
 			?.filter((value, index, self) => self.indexOf(value) === index)
 			?.map(route_id => {
 				return {

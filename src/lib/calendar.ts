@@ -33,7 +33,6 @@ const insertSingleAlert = (alert: MbtaAlert, days: Map<string, MbtaAlert[]>, fil
                     }
                 });
             }
-            
 
             // check next day MBTA_SERVICE_START_HOUR
             currentDate.setDate(currentDate.getDate() + 1);
@@ -41,24 +40,38 @@ const insertSingleAlert = (alert: MbtaAlert, days: Map<string, MbtaAlert[]>, fil
     });
 }
 
+const hasShortTermImpact = (alert: MbtaAlert) => {
+    if (alert.attributes.active_period.length !== 1) {
+        return false;
+    }
+    return (+new Date(alert.attributes.active_period[0].end) - Date.now()) <= 1000*60*60*3;
+}
+
+export const expandAlertsToSingleRoute = (alerts: MbtaAlert[]) => {
+    return alerts.flatMap(alert => {
+        // generate a list of unique routes
+        const uniqueRoutes = alert.attributes.informed_entity
+            .filter(entity => entity.route)
+            .map(entity => entity.route)
+            .filter((route, index, arr) => arr.indexOf(route) === index);
+        
+        return uniqueRoutes.map(route => {
+            return {
+                ...alert,
+                attributes: {
+                    ...alert.attributes,
+                    informed_entity: alert.attributes.informed_entity.filter(
+                        (entity) => entity.route === route),
+                }
+            };
+        });
+    });
+}
+
 export const getAlertsAsDays = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
     const days: Map<string, MbtaAlert[]> = new Map();
     alerts.forEach((alert) => {
-        // if the alert impacts multiple routes, split them into multiple alerts
-        const uniqueRoutes = alert.attributes?.informed_entity
-            ?.map(entity => entity.route)
-            ?.filter(
-                // get unique route
-                (route, index, arr) => route && arr.indexOf(route) === index
-            );
-        
-        if (uniqueRoutes && uniqueRoutes.length > 0) {
-            uniqueRoutes.forEach((route) => {
-                insertSingleAlert(alert, days, route);
-            });
-        } else {
-            insertSingleAlert(alert, days);
-        }        
+        insertSingleAlert(alert, days);
     });
     // sort alerts
     days.forEach((alerts, _) => {
@@ -81,10 +94,3 @@ export const getAlertsAsDays = (alerts: MbtaAlert[], routeMap: Map<string, any>)
 export const getDateString = (date: Date) => {
     return date.toISOString().split('T')[0];
 };
-
-const hasShortTermImpact = (alert: MbtaAlert) => {
-    if (alert.attributes.active_period.length !== 1) {
-        return false;
-    }
-    return (+new Date(alert.attributes.active_period[0].end) - Date.now()) <= 1000*60*60*3;
-}

@@ -4,6 +4,7 @@
     import { getAlertBadgeSecondarySymbol, getPillName } from "$lib/mbta-display";
 	import type { MbtaAlert } from "$lib/mbta-types";
     import type { DateValue } from "@internationalized/date";
+	import { expandAlertsToSingleRoute } from "$lib/calendar";
 
     interface CalendarCellProps {
         date: DateValue;
@@ -18,7 +19,7 @@
     const dateString = $derived(date.toString());
     const alerts: MbtaAlert[] = $derived.by(() => {
         if (alertsByDay.has(dateString) && currentServiceDate.toString() <= dateString) {
-            return alertsByDay.get(dateString) || [];
+            return expandAlertsToSingleRoute(alertsByDay.get(dateString) || []);
         } else {
             return [];
         }
@@ -75,7 +76,7 @@
                                 <div class="badge-group">
                                     <MbtaRouteBadge type="auto" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
                                     <span class="badge-secondary-symbol" style:color={color} style:opacity={severityAsOpacity}>
-                                        {(routeAlertsCount.get(route_id) || 0) > 1 ? '…' : getAlertBadgeSecondarySymbol(alert, dateString)}
+                                        {(routeAlertsCount.get(route_id) || 0) > 1 ? (routeAlertsCount.get(route_id) + 'x') : getAlertBadgeSecondarySymbol(alert, dateString)}
                                     </span>
                                 </div>
                                 {' '}

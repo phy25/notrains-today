@@ -25,7 +25,7 @@ if (showNightOwl) {
 
 {#each alerts as alert}
     {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
-    {@const route_id = alert.attributes.informed_entity[0].route}
+    {@const route_id = alert.attributes.informed_entity[0].route /* TODO: show multiple routes */ }
     {@const attributes = (routeMap.get(route_id) as any)?.attributes}
     {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
     {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
