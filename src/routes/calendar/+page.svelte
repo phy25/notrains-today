@@ -15,6 +15,8 @@ const isValidDate = (date: DateValue) => {
   return data.current_service_date.compare(date) <= 0;
 };
 
+let calendarComponent: Calendar | undefined = $state();
+
 // TODO: move this as part of data maybe
 const dayDefault = (() => {
   const params = new URLSearchParams((page.url.hash || '').substring(1));
@@ -24,6 +26,7 @@ const dayDefault = (() => {
       if (isValidDate(parsed)) {
         // get rid of the parameter in the URL
         history.replaceState(history.state, '', './calendar');
+        setTimeout(() => {calendarComponent?.scrollToDayDetail();}, 0);
         return parsed;
       }
     } catch (e) {
@@ -49,6 +52,7 @@ export const snapshot: Snapshot<string> = {
 {#if data.data.length > 0}
     <Calendar
         bind:dayValue={dayValue}
+        bind:this={calendarComponent}
         alertsByDay={data.alertsByDay}
         routeMap={data.routeMap}
         currentServiceDate={data.current_service_date}

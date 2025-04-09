@@ -54,11 +54,15 @@ const onWindowScroll = () => {
   stickyWeekShowing = window.scrollY >= stickyCalendarStartY;
 };
 
+export const scrollToDayDetail = () => {
+  window.scrollTo({
+    top: mainCalendarEndY + 1,
+  });
+};
+
 const onStickyWeekValueChange = (value?: DateValue) => {
   window.requestAnimationFrame(() => {
-    window.scrollTo({
-      top: mainCalendarEndY + 1,
-    });
+    scrollToDayDetail();
   });
 };
 </script>
