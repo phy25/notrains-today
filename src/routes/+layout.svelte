@@ -39,7 +39,6 @@
 		}
 		return 'today';
 	});
-	
 </script>
 
 <div class="tab-wrapper">
@@ -127,7 +126,7 @@
     flex: 1;
     padding: 0.3em 0.6em;
     line-height: 1.4em;
-	height: 2.8em;
+	min-height: 2.8em;
     cursor: pointer;
     border-radius: 0.3em;
     text-decoration: none;

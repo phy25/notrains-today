@@ -8,6 +8,7 @@ import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
 import { now, parseDate, toCalendarDate } from "@internationalized/date";
 
 let data_async_data: { data: MbtaAlert[]; alertsByDay: Map<string, MbtaAlert[]>; routeMap: Map<string, any> } | null = null;
+let data_async_hash: string | null = null;
 
 export const load: LayoutLoad = ({ route, fetch, url }) => {
     // parse route_type from query string in browser
@@ -22,11 +23,13 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
         alertsByDay: ReturnType<typeof getAlertsAsDays>;
         routeMap: Map<string, any>;
     }>(async (resolve, reject) => {
-        if (data_async_data) {
+        const url = 'https://api-v3.mbta.com/alerts?include=routes&filter%5Broute_type%5D=' + QUERY_ROUTE_TYPE_MAPPING[route_type];
+
+        if (data_async_data && data_async_hash === url) {
             resolve(data_async_data);
         }
         try {
-            const response = await fetch('https://api-v3.mbta.com/alerts?include=routes&filter%5Broute_type%5D=' + QUERY_ROUTE_TYPE_MAPPING[route_type], {
+            const response = await fetch(url, {
                 headers: {
                     'Accept': 'application/vnd.api+json',
                 }
@@ -41,6 +44,7 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
                 alertsByDay,
                 routeMap,
             };
+            data_async_hash = url;
             resolve(data_async_data);
         } catch (err) {
             reject(err);
