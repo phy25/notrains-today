@@ -44,11 +44,6 @@
 	});
 </script>
 
-<svelte:head>
-	<title>notrains.today</title>
-	<meta name="theme-color" content="#195581" />
-</svelte:head>
-
 <div class="tab-wrapper">
     <div class="tab">
         <a class="tab-item {tab_id === 'today' && 'selected'}" href="./">
