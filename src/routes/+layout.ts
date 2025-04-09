@@ -38,9 +38,10 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
             const routeMap: Map<string, any> = new Map(json.included
                 .filter((entity: any) => entity.type === 'route')
                 .map((route: any) => [route.id, route]));
-            const alertsByDay = getAlertsAsDays(overrideAlerts(json.data), routeMap);
+            const overridenData = overrideAlerts(json.data);
+            const alertsByDay = getAlertsAsDays(overridenData, routeMap);
             data_async_data = {
-                data: filterHighPriorityAlerts(overrideAlerts(json.data)),
+                data: filterHighPriorityAlerts(overridenData),
                 alertsByDay,
                 routeMap,
             };

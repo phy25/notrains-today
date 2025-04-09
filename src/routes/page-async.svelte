@@ -64,5 +64,6 @@ h1 {
     line-height: 1em;
     font-size: 1.1rem;
     font-weight: normal;
+    color: #195581;
 }
 </style>
