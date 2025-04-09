@@ -58,6 +58,7 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
 }
 .no-alert-text {
     display: inline-block;
+    color: #1F6DA5;
 }
 .badge-group {
     display: inline-flex;
