@@ -1,1 +1,1 @@
-export const isDebug = localStorage && !!localStorage.getItem('debugDate');
+export const isDebug = (typeof localStorage !== 'undefined') && !!localStorage.getItem('debugDate');

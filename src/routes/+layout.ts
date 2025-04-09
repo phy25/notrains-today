@@ -1,5 +1,5 @@
 export const prerender = true;
-export const ssr = false;
+export const ssr = true;
 
 import { filterHighPriorityAlerts, overrideAlerts } from '$lib/mbta-overides';
 import { MBTA_TIMEZONE, QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
@@ -59,7 +59,7 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
     if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
         currentServiceTime = currentServiceTime.subtract({days: 1});
     }
-    const currentServiceDate = localStorage.getItem('debugDate')
+    const currentServiceDate = (typeof localStorage !== 'undefined') && localStorage.getItem('debugDate')
         ? parseDate(localStorage.getItem('debugDate') || '')
         : toCalendarDate(currentServiceTime);
     // localStorage.setItem('debugDate', '2025-04-26');
