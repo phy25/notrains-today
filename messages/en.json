@@ -1,5 +1,6 @@
 {
     "$schema": "https://inlang.com/schema/inlang-message-format",
+    "current_locale_name": "English",
     "trains_running_all": "All trains are running normally today on {MBTA}.",
     "trains_running_some": "Some trains are not running today on {MBTA}.",
     "mbta_abbreviation": "MBTA",
@@ -33,5 +34,8 @@
     "to_service_ending_night_owl": "– {hour}am today",
     "calendar_day_no_alerts": "No service alerts on the day",
     "today_looking_ahead": "Looking ahead",
-    "debug_all_alerts": "All alerts for troubleshooting"
+    "debug_all_alerts": "All alerts for troubleshooting",
+    "footer_about": "About",
+    "privacy_policy": "Privacy Policy",
+    "untranslated_legal_disclaimer": ""
 }

@@ -1,9 +1,11 @@
 <script lang="ts">	
+	import { isDebug } from '$lib/common';
 	import { getPillName } from '$lib/mbta-display';
 	import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
-	import type { MbtaAlert } from '$lib/mbta-types';
+	import { QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
 	import type { LayoutProps } from './$types';
+
 	const { data, children }: LayoutProps = $props();
 	const alertsToRouteRenderingList = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
 		return alerts?.flatMap(alert => alert.attributes.informed_entity)
@@ -79,7 +81,20 @@
     </div>
 </div>
 
-{@render children()}
+<div class="page-content">
+	{@render children()}
+	<footer>
+		{#if isDebug}
+		<p>
+			{#each Object.keys(QUERY_ROUTE_TYPE_MAPPING) as type}
+				<a href="/?route_type={type}">{type}</a>{' '}
+			{/each}
+		</p>
+		{/if}
+
+		<p>☺ notrains.today <a href="/about">{m.footer_about()}</a></p>
+	</footer>
+</div>
 
 <style>
 :global {

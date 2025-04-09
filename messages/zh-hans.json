@@ -1,6 +1,6 @@
 {
     "$schema": "https://inlang.com/schema/inlang-message-format",
-    "hello_world": "你好 {name}！",
+    "current_locale_name": "简体中文",
     "trains_running_all": "今天 {MBTA} 的所有列车均正常运行。",
     "trains_running_some": "今天 {MBTA} 的部分列车运行异常。",
     "calendar": "日历",
@@ -31,5 +31,8 @@
     "to_service_ending_night_owl": "– 今天 {hour}:00",
     "calendar_day_no_alerts": "本日无服务异常",
     "today_looking_ahead": "未来状况",
-    "debug_all_alerts": "所有异常的调试视图"
+    "debug_all_alerts": "所有异常的调试视图",
+    "footer_about": "简介",
+    "privacy_policy": "隐私政策",
+    "untranslated_legal_disclaimer": "本段落尚未翻译，请以原文本为准。"
 }

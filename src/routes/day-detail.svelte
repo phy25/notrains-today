@@ -34,8 +34,7 @@ if (showNightOwl) {
         <summary>
             <!-- remove <p> to work with the marker. Temporary anyway. -->
             <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
-            <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
-            {alert.id}
+            {getEffectWithLineMessage(effect, route_id)}
             <p>
                 {alert.attributes.header}
             </p>
@@ -57,6 +56,8 @@ if (showNightOwl) {
             {/each}
         </p>
         {/if}
+
+        <p><em>Alert ID: {alert.id}</em></p>
     </details>
 {:else}
 {#if !hideAuxiliary}

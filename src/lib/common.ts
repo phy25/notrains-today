@@ -1,0 +1,1 @@
+export const isDebug = localStorage && !!localStorage.getItem('debugDate');

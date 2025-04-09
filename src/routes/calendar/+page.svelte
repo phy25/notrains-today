@@ -1,11 +1,9 @@
 <script lang="ts">
-import LanguagePicker from '../language-picker.svelte';
 import Calendar from '../calendar.svelte';
 
 import { m } from '$lib/paraglide/messages';
 import type { PageProps } from './$types';
 import { EFFECT_MESSAGES, getEffectWithLineMessage, getPillName } from '$lib/mbta-display';
-import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
 import type { Snapshot } from '@sveltejs/kit';
 import { parseDate, type DateValue } from '@internationalized/date';
@@ -48,7 +46,6 @@ export const snapshot: Snapshot<string> = {
 };
 </script>
 
-<div class="page-content">
 {#if data.data.length > 0}
     <Calendar
         bind:dayValue={dayValue}
@@ -76,15 +73,6 @@ export const snapshot: Snapshot<string> = {
         {/each}
     </details>
 {/if}
-
-<p>
-    {#each Object.keys(QUERY_ROUTE_TYPE_MAPPING) as type}
-        <a href="?route_type={type}">{type}</a>{' '}
-    {/each}
-</p>
-
-<p>☺ notrains.today <LanguagePicker /></p>
-</div>
 
 <style>
 mark {
