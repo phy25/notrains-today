@@ -18,10 +18,10 @@
     "mbta_alert_effect_with_line_default": "{line} {effect}",
     "mbta_lines_name": {
         "Mattapan": "Mattapan Trolley",
-        "Blue": "Blue line",
-        "Green": "Green line",
-        "Orange": "Orange line",
-        "Red": "Red line",
+        "Blue": "Blue Line",
+        "Green": "Green Line",
+        "Orange": "Orange Line",
+        "Red": "Red Line",
         "bus_route": "{route} Bus"
     },
     "important_notes": "Important notes",
