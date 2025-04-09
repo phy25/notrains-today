@@ -6,17 +6,18 @@ import CalendarOneweek from "./calendar-oneweek.svelte";
 import DayDetail from "./day-detail.svelte";
 import DebugAllAlerts from "./debug-all-alerts.svelte";
 import Glance from "./glance.svelte";
+import { MBTA_SERVICE_START_HOUR } from "$lib/calendar";
 
-const { data, current_service_date } = $props();
+const { data, currentServiceDate, isCurrentServiceNightOwl } = $props();
 
-const notrains_today = $derived(!!data.alertsByDay.get(current_service_date.toString())?.length);
+const notrains_today = $derived(!!data.alertsByDay.get(currentServiceDate.toString())?.length);
 const MBTA_PLACEHOLDER = '%%MBTA%%';
 const notrains_today_text_array = $derived((notrains_today? m.trains_running_some({MBTA: MBTA_PLACEHOLDER}) : m.trains_running_all({MBTA: MBTA_PLACEHOLDER})).split(MBTA_PLACEHOLDER) || []);
 
-const endOfWeekDate = $derived(endOfWeek(current_service_date, getLocale()));
-const lookingAheadDateValue = $derived(current_service_date.compare(endOfWeekDate) < 0 ? current_service_date : endOfWeekDate.add({ days: 1 }));
+const endOfWeekDate = $derived(endOfWeek(currentServiceDate, getLocale()));
+const lookingAheadDateValue = $derived(currentServiceDate.compare(endOfWeekDate) < 0 ? currentServiceDate : endOfWeekDate.add({ days: 1 }));
 
-const alertsToday = data.alertsByDay.get(current_service_date.toString()) || [];
+const alertsToday = data.alertsByDay.get(currentServiceDate.toString()) || [];
 </script>
 
 <h1>
@@ -25,14 +26,14 @@ const alertsToday = data.alertsByDay.get(current_service_date.toString()) || [];
     {/each}
 </h1>
 
-<Glance alertsToday={alertsToday} currentServiceDate={current_service_date}></Glance>
+<Glance alertsToday={alertsToday} currentServiceDate={currentServiceDate}></Glance>
 
 {#if alertsToday}
 <DayDetail
-    day={current_service_date.toString()}
+    day={currentServiceDate.toString()}
     alerts={alertsToday}
     routeMap={data.routeMap}
-    showNightOwl={data.is_current_service_night_owl}
+    showNightOwl={isCurrentServiceNightOwl}
     hideAuxiliary={true}
 />
 {:else}
@@ -43,13 +44,17 @@ const alertsToday = data.alertsByDay.get(current_service_date.toString()) || [];
 
 <CalendarOneweek
     dayValue={lookingAheadDateValue}
-    minValue={current_service_date}
-    maxValue={current_service_date.add({ weeks: 1 })}
+    minValue={currentServiceDate}
+    maxValue={currentServiceDate.add({ weeks: 1 })}
     alertsByDay={data.alertsByDay}
     routeMap={data.routeMap}
-    currentServiceDate={current_service_date}
+    currentServiceDate={currentServiceDate}
     locale={getLocale()}
     linkToCalendar={true} />
+
+{#if isCurrentServiceNightOwl}
+<p><em>{m.important_notes_service_day_end({hour: MBTA_SERVICE_START_HOUR-1})}</em></p>
+{/if}
 
 <DebugAllAlerts data={data.data} routeMap={data.routeMap}></DebugAllAlerts>
 

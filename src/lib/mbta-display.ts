@@ -11,7 +11,7 @@ export const EFFECT_MESSAGES = {
     'ADDITIONAL_SERVICE': m['mbta_alert_effect.ADDITIONAL_SERVICE'],
 };
 
-export const EFFECT_WITH_LINE_MESSAGES = {
+export const EFFECT_WITH_LINE_MESSAGES: Record<string, (args: { line: string }) => string> = {
 };
 
 export const LINE_NAMES = {
