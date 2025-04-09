@@ -4,7 +4,7 @@ import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 import DayDetail from "./day-detail.svelte";
 import { Calendar } from "bits-ui";
-import { parseDate, type DateValue } from "@internationalized/date";
+import { endOfMonth, parseDate, type DateValue } from "@internationalized/date";
 import CalendarCell from "./calendar-cell.svelte";
 import CalendarOneweek from "./calendar-oneweek.svelte";
 
@@ -12,7 +12,7 @@ let { dayValue = $bindable(), alerts = [], alertsByDay: _alertsByDay = null, rou
 const alertsByDay = $derived(_alertsByDay || getAlertsAsDays(alerts, routeMap));
 
 const maxValue = $derived.by(() => {
-    const fixedMaxValue = currentServiceDate.add({months: 2});
+    const fixedMaxValue = endOfMonth(currentServiceDate);
     const sortedDates = [...alertsByDay.keys()].sort();
     const maxAlertDate = sortedDates.length ? parseDate(sortedDates[sortedDates.length - 1]) : fixedMaxValue;
     return fixedMaxValue.compare(maxAlertDate) > 0 ? fixedMaxValue : maxAlertDate;
