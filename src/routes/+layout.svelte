@@ -100,7 +100,7 @@
 
 .tab-wrapper {
     background: var(--background-color);
-    --background-color: #165c96;
+    --background-color: #195581;
     color: #FFF;
     padding: 0.4em;
     display: flex;

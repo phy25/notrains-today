@@ -6,6 +6,7 @@
     "calendar": "Calendar",
     "no_alert": "No alert",
     "mbta_alert_effect": {
+        "DELAY": "Delay",
         "SHUTTLE": "Shuttle",
         "STATION_CLOSURE": "Station Closure",
         "SERVICE_CHANGE": "Service Change",

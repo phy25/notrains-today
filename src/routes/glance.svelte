@@ -1,40 +1,25 @@
 <script lang="ts">
+	import { expandAlertsToSingleRoute } from "$lib/calendar";
 	import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 	import { m } from "$lib/paraglide/messages";
+	import GlanceSubwayRoute from "./glance-subway-route.svelte";
 
     const { alertsToday } = $props();
+    const expandedAlerts = $derived(expandAlertsToSingleRoute(alertsToday));
 </script>
 
 <div class="glance-rapid-transit-grid">
     <div class="route-with-branches">
-        <div>
-            <div class="badge-group">
-                <MbtaRouteBadge pillLabel="GL" type="long" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
-                <MbtaRouteBadge pillLabel="B" type="secondary" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
-            </div>
-            <span>•🌙︎</span> <span class="has-alert-text">{m["mbta_alert_effect.SERVICE_CHANGE"]()}</span>
-        </div>
-        <div>
-            <MbtaRouteBadge pillLabel="C" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
-            <MbtaRouteBadge pillLabel="D" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
-            <MbtaRouteBadge pillLabel="E" color="#00843d" textColor="#FFF"></MbtaRouteBadge>
-            <span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
-        </div>
+        <GlanceSubwayRoute mainRouteId="Green" color="#00843d" textColor="#FFF" branchRouteIds={["Green-B", "Green-C", "Green-D", "Green-E"]} unfilteredAlerts={expandedAlerts} />
     </div>
     <div class="route-with-branches">
-        <div class="badge-group">
-            <MbtaRouteBadge pillLabel="RL" type="long" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
-            <MbtaRouteBadge pillLabel="M" type="secondary" color="#da291c" textColor="#FFF"></MbtaRouteBadge>
-        </div>
-        <span>◤</span> <span class="has-alert-text">{m["mbta_alert_effect.ADDITIONAL_SERVICE"]()}</span>
+        <GlanceSubwayRoute mainRouteId="Red" color="#da291c" textColor="#FFF" branchRouteIds={["Mattapan"]} unfilteredAlerts={expandedAlerts} />
     </div>
-    <div>
-        <MbtaRouteBadge pillLabel="OL" type="long" color="#ed8b00" textColor="#FFF"></MbtaRouteBadge>
-        <span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
+    <div class="route-with-branches">
+        <GlanceSubwayRoute mainRouteId="Orange" color="#ed8b00" textColor="#FFF" unfilteredAlerts={expandedAlerts} />
     </div>
-    <div>
-        <MbtaRouteBadge pillLabel="BL" type="long" color="#003da5" textColor="#FFF"></MbtaRouteBadge>
-        <span>◤</span> <span class="has-alert-text">{m["mbta_alert_effect.STATION_CLOSURE"]()}</span>
+    <div class="route-with-branches">
+        <GlanceSubwayRoute mainRouteId="Blue" color="#003da5" textColor="#FFF" unfilteredAlerts={expandedAlerts} />
     </div>
     <div class="route-expanded">
         <MbtaRouteBadge pillLabel="Bus" type="long" color="#ffc72c" textColor="#000"></MbtaRouteBadge>
@@ -51,44 +36,32 @@
 .glance-rapid-transit-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 0.5em;
+    gap: 0.3em;
     width: 100%;
     max-width: var(--page-content-max-width);
-}
-.glance-rapid-transit-grid > .route-with-branches {
-    grid-row: 1 / span 1;
+    box-sizing: border-box;
 }
 .glance-rapid-transit-grid > .route-expanded {
     grid-column: 1 / -1;
 }
 
-@media (max-width: 320px) {
+@media (max-width: 360px) {
     .glance-rapid-transit-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-    .glance-rapid-transit-grid > .route-with-branches {
-        grid-row: 1 / span 1;
     }
 }
 
 .glance-rapid-transit-grid > div {
+    padding: 0.3em 0.2em;
     --badge-size: 1.2em;
     line-height: 1.2em;
-    display: flex;
-    flex-wrap: wrap;
-    align-content: baseline;
-    align-items: flex-start;
-    gap: 0.2em 0.1em;
+    /* background: #E4F1FA; */ /* not interactive yet */
+    border-radius: 0.2em;
+    box-sizing: border-box;
 }
-.has-alert-text {
-    display: inline-block;
-    font-weight: bold;
-}
-.no-alert-text {
-    display: inline-block;
-}
-.badge-group {
-    display: inline-flex;
-    gap: 0;
+@media (min-width: 768px) {
+    .glance-rapid-transit-grid > div {
+        padding: 0.5em 0.4em;
+    }
 }
 </style>
