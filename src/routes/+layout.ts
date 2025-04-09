@@ -58,7 +58,10 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
     if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
         currentServiceTime = currentServiceTime.subtract({days: 1});
     }
-    const currentServiceDate = toCalendarDate(currentServiceTime); // parseDate('2025-04-10')
+    const currentServiceDate = localStorage.getItem('debugDate')
+        ? parseDate(localStorage.getItem('debugDate') || '')
+        : toCalendarDate(currentServiceTime);
+    // localStorage.setItem('debugDate', '2025-04-26');
 
     return {
         route_id: route.id,

@@ -6,6 +6,7 @@
     "calendar": "日历",
     "mbta_abbreviation": "MBTA",
     "no_alert": "无异常",
+    "multiple_alerts": "{count} 个异常",
     "mbta_alert_effect": {
         "SHUTTLE": "摆渡车",
         "STATION_CLOSURE": "车站关闭",

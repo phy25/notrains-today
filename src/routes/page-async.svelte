@@ -25,7 +25,7 @@ const alertsToday = data.alertsByDay.get(current_service_date.toString()) || [];
     {/each}
 </h1>
 
-<Glance alertsToday={alertsToday}></Glance>
+<Glance alertsToday={alertsToday} currentServiceDate={current_service_date}></Glance>
 
 {#if alertsToday}
 <DayDetail

@@ -4,32 +4,35 @@
 	import { m } from "$lib/paraglide/messages";
 	import GlanceSubwayRoute from "./glance-subway-route.svelte";
 
-    const { alertsToday } = $props();
+    const { alertsToday, currentServiceDate } = $props();
     const expandedAlerts = $derived(expandAlertsToSingleRoute(alertsToday));
+    const isDebug = !!localStorage.getItem('debugDate');
 </script>
 
 <div class="glance-rapid-transit-grid">
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Green" color="#00843d" textColor="#FFF" branchRouteIds={["Green-B", "Green-C", "Green-D", "Green-E"]} unfilteredAlerts={expandedAlerts} />
+        <GlanceSubwayRoute mainRouteId="Green" color="#00843d" textColor="#FFF" branchRouteIds={["Green-B", "Green-C", "Green-D", "Green-E"]} unfilteredAlerts={expandedAlerts} currentServiceDate={currentServiceDate} />
     </div>
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Red" color="#da291c" textColor="#FFF" branchRouteIds={["Mattapan"]} unfilteredAlerts={expandedAlerts} />
+        <GlanceSubwayRoute mainRouteId="Red" color="#da291c" textColor="#FFF" branchRouteIds={["Mattapan"]} unfilteredAlerts={expandedAlerts} currentServiceDate={currentServiceDate} />
     </div>
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Orange" color="#ed8b00" textColor="#FFF" unfilteredAlerts={expandedAlerts} />
+        <GlanceSubwayRoute mainRouteId="Orange" color="#ed8b00" textColor="#FFF" unfilteredAlerts={expandedAlerts} currentServiceDate={currentServiceDate} />
     </div>
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Blue" color="#003da5" textColor="#FFF" unfilteredAlerts={expandedAlerts} />
+        <GlanceSubwayRoute mainRouteId="Blue" color="#003da5" textColor="#FFF" unfilteredAlerts={expandedAlerts} currentServiceDate={currentServiceDate} />
     </div>
-    <div class="route-expanded">
-        <MbtaRouteBadge pillLabel="Bus" type="long" color="#ffc72c" textColor="#000"></MbtaRouteBadge>
-    </div>
-    <div class="route-expanded">
-        <MbtaRouteBadge pillLabel="Commuter Rail" type="long" color="#80276c" textColor="#FFF"></MbtaRouteBadge>
-    </div>
-    <div class="route-expanded">
-        <MbtaRouteBadge pillLabel="Ferry" type="long" color="#008eaa" textColor="#FFF"></MbtaRouteBadge>
-    </div>
+    {#if isDebug}
+        <div class="route-expanded">
+            <MbtaRouteBadge pillLabel="Bus" type="long" color="#ffc72c" textColor="#000"></MbtaRouteBadge>
+        </div>
+        <div class="route-expanded">
+            <MbtaRouteBadge pillLabel="Commuter Rail" type="long" color="#80276c" textColor="#FFF"></MbtaRouteBadge>
+        </div>
+        <div class="route-expanded">
+            <MbtaRouteBadge pillLabel="Ferry" type="long" color="#008eaa" textColor="#FFF"></MbtaRouteBadge>
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -40,6 +43,7 @@
     width: 100%;
     max-width: var(--page-content-max-width);
     box-sizing: border-box;
+    margin: 0 0 1em;
 }
 .glance-rapid-transit-grid > .route-expanded {
     grid-column: 1 / -1;

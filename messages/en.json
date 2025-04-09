@@ -5,6 +5,7 @@
     "mbta_abbreviation": "MBTA",
     "calendar": "Calendar",
     "no_alert": "No alert",
+    "multiple_alerts": "{count} alerts",
     "mbta_alert_effect": {
         "DELAY": "Delay",
         "SHUTTLE": "Shuttle",

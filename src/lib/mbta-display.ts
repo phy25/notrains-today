@@ -3,7 +3,11 @@ import { parseDate, parseZonedDateTime, toCalendarDate } from "@internationalize
 import { MBTA_TIMEZONE, type MbtaAlert } from './mbta-types';
 
 export const EFFECT_MESSAGES = {
-    'SHUTTLE': m['mbta_alert_effect.SHUTTLE'](),
+    'DELAY': m['mbta_alert_effect.DELAY'],
+    'SHUTTLE': m['mbta_alert_effect.SHUTTLE'],
+    'STATION_CLOSURE': m['mbta_alert_effect.STATION_CLOSURE'],
+    'SERVICE_CHANGE': m['mbta_alert_effect.SERVICE_CHANGE'],
+    'ADDITIONAL_SERVICE': m['mbta_alert_effect.ADDITIONAL_SERVICE'],
 };
 
 export const EFFECT_WITH_LINE_MESSAGES = {
@@ -48,6 +52,13 @@ export const getEffectWithLineMessage = (
         effect: effectRawDisplayFormat(effect),
         line: getLineName(line),
     });
+}
+
+export const getEffect = (effect: string) => {
+    if (effect in EFFECT_MESSAGES) {
+        return EFFECT_MESSAGES[effect as keyof typeof EFFECT_MESSAGES]();
+    }
+    return effectRawDisplayFormat(effect);
 }
 
 export const getLineName = (line: string) => {
@@ -98,7 +109,7 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString:
             return '↷' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
         }
         
-        // TOOD: determine direction for general cases
+        // TODO: determine direction for general cases
         return '•' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
     }
 
