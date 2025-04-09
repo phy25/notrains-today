@@ -49,7 +49,7 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
         .filter((alert: any) => {
             const removeEntry = removeEntryMap.get(alert.id);
             if (removeEntry) {
-                if (removeEntry.match_updated_at === alert.attributes.updated_at) {
+                if (!removeEntry.match_updated_at || removeEntry.match_updated_at === alert.attributes.updated_at) {
                     console.log('Removing alert: ' + alert.id);
                     return false;
                 }
@@ -59,7 +59,7 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
         .map((alert: any) => {
             const replaceEntry = replaceEntryMap.get(alert.id);
             if (replaceEntry) {
-                if (replaceEntry.match_updated_at === alert.attributes.updated_at) {
+                if (!replaceEntry.match_updated_at || replaceEntry.match_updated_at === alert.attributes.updated_at) {
                     console.log('Replacing alert: ' + alert.id);
                     return replaceEntry.item;
                 }
