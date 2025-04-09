@@ -16,8 +16,6 @@
         "ADDITIONAL_SERVICE": "Additional Service"
     },
     "mbta_alert_effect_with_line_default": "{line} {effect}",
-    "mbta_alert_effect_with_line": {
-    },
     "mbta_lines_name": {
         "Mattapan": "Mattapan Trolley",
         "Blue": "Blue line",
@@ -35,5 +33,6 @@
     "debug_all_alerts": "All alerts for troubleshooting",
     "footer_about": "About",
     "privacy_policy": "Privacy Policy",
-    "untranslated_legal_disclaimer": ""
+    "untranslated_legal_disclaimer": "",
+    "refresh_reminder": "Information may be outdated. Click to refresh."
 }
