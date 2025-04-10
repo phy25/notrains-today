@@ -8,6 +8,7 @@ import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
 import type { Snapshot } from '@sveltejs/kit';
 import { parseDate, type DateValue } from '@internationalized/date';
 import { page } from '$app/state';
+	import DebugAllAlerts from '../debug-all-alerts.svelte';
 
 const { data }: PageProps = $props();
 
@@ -59,23 +60,7 @@ export const snapshot: Snapshot<string> = {
         showNightOwl={data.is_current_service_night_owl}
         />
     
-    <details>
-        <summary>All alerts for troubleshooting</summary>
-
-        {#each data.data as alert}
-            {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
-            {@const route_id = alert.attributes.informed_entity[0].route}
-            {@const attributes = (data.routeMap.get(route_id) as any)?.attributes}
-            {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
-            {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
-            <div>
-                <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
-                <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
-                {alert.id} {alert.attributes.short_header}
-            </div>
-            <pre><code>{JSON.stringify(alert)}</code></pre>
-        {/each}
-    </details>
+    <DebugAllAlerts data={data.data} routeMap={data.routeMap} />
 {/if}
 
 <style>
