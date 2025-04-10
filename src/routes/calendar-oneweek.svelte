@@ -5,6 +5,7 @@ import CalendarCell from './calendar-cell.svelte';
 let {
     dayValue = $bindable(),
     onValueChange = undefined,
+    weekdayFormat = undefined,
     minValue,
     maxValue,
     locale,
@@ -17,6 +18,7 @@ let {
 
 <Calendar.Root
     disableDaysOutsideMonth={false}
+    weekdayFormat={weekdayFormat}
     type="single"
     bind:value={dayValue}
     onValueChange={onValueChange}
@@ -37,8 +39,8 @@ let {
                 <Calendar.GridRow>
                     {#snippet child({ props })}
                     <tr {...props} class="calendar-row">
-                        {#each weekDates as date}
-                        <CalendarCell {date} {month} {alertsByDay} {currentServiceDate} {routeMap} linkToCalendar={linkToCalendar}></CalendarCell>
+                        {#each weekDates as date, weekday_i}
+                        <CalendarCell {date} {month} {alertsByDay} {currentServiceDate} {routeMap} linkToCalendar={linkToCalendar} weekday={weekdayFormat ? weekdays[weekday_i] : undefined}></CalendarCell>
                         {/each}
                     </tr>
                     {/snippet}

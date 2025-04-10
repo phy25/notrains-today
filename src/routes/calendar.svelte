@@ -56,7 +56,7 @@ const onWindowScroll = () => {
 
 export const scrollToDayDetail = () => {
   window.scrollTo({
-    top: mainCalendarEndY + 1,
+    top: mainCalendarEndY + 2,
   });
 };
 
@@ -82,11 +82,17 @@ const onStickyWeekValueChange = (value?: DateValue) => {
     preventDeselect={true}
   >
     {#snippet children({ months, weekdays })}
-      <Calendar.Header class="flex items-center justify-between">
-        <Calendar.Heading class="text-[15px] font-medium" />
+      <Calendar.Header>
+        <Calendar.Heading>
+          {#snippet child({ props, headingValue })}
+            <div {...props} class="calendar-heading">
+              {headingValue}
+            </div>
+          {/snippet}
+        </Calendar.Heading>
       </Calendar.Header>
       <div
-        class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-x-4 sm:space-y-0"
+        class=""
       >
         {#each months as month, i (i)}
           <Calendar.Grid class="w-full border-collapse select-none space-y-1">
@@ -127,6 +133,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
     minValue={currentServiceDate}
     maxValue={maxValue}
     onValueChange={onStickyWeekValueChange}
+    weekdayFormat="short"
     alertsByDay={alertsByDay}
     routeMap={routeMap}
     currentServiceDate={currentServiceDate}
@@ -136,6 +143,13 @@ const onStickyWeekValueChange = (value?: DateValue) => {
 <DayDetail alerts={alertsByDay.get(dayString)} day={dayString} showNightOwl={showNightOwl} routeMap={routeMap} />
 
 <style>
+.calendar-heading {
+  text-align: center;
+  margin: 0.5em 0;
+  font-size: 1.1em;
+  color: #195581;
+}
+
 .calendar-sticky-week {
   visibility: hidden;
   display: flex;

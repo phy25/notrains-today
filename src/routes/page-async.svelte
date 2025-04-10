@@ -46,6 +46,7 @@ const alertsToday = data.alertsByDay.get(currentServiceDate.toString()) || [];
     dayValue={lookingAheadDateValue}
     minValue={currentServiceDate}
     maxValue={currentServiceDate.add({ weeks: 1 })}
+    weekdayFormat="short"
     alertsByDay={data.alertsByDay}
     routeMap={data.routeMap}
     currentServiceDate={currentServiceDate}

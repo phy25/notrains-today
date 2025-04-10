@@ -9,13 +9,14 @@
     interface CalendarCellProps {
         date: DateValue;
         month: any;
+        weekday?: string;
         alertsByDay: Map<string, MbtaAlert[]>;
         routeMap: Map<string, any>;
         currentServiceDate: DateValue;
         linkToCalendar?: boolean;
     };
 
-    const {date, month, alertsByDay, routeMap, currentServiceDate, linkToCalendar = false}: CalendarCellProps = $props();
+    const {date, month, weekday, alertsByDay, routeMap, currentServiceDate, linkToCalendar = false}: CalendarCellProps = $props();
     const dateString = $derived(date.toString());
     const alerts: MbtaAlert[] = $derived.by(() => {
         if (alertsByDay.has(dateString) && currentServiceDate.toString() <= dateString) {
@@ -64,7 +65,11 @@
             >
                 {#snippet child({ props })}
                     <a {...props} class="calendar-day {routeAlertsCount.size > 5 ? 'calendar-day--many-alerts' : ''}" href={(linkToCalendar && currentServiceDate.compare(date) !== 0 && props['data-disabled'] !== '') ? `./calendar#date=${dateString}` : undefined}>
-                        <div>{date.day}</div>
+                        <div class="day-row">
+                            <div class="day">{date.day}</div>
+                            <div class="weekday">{weekday}</div>
+                            <div class="right"></div>
+                        </div>
                         {#if alertsPrioritizedDedupeRoutes.length}
                         <div>
                             {#each alertsPrioritizedDedupeRoutes as alert}
@@ -104,6 +109,24 @@
     color: inherit;
     text-decoration: none;
     display: block;
+    padding: 0.2em;
+    box-sizing: border-box;
+}
+.calendar-day .day-row {
+    display: flex;
+    flex-direction: row;
+    gap: 0.3em;
+}
+.calendar-day .day, .calendar-day .right {
+    flex: 1;
+}
+.calendar-day .weekday {
+    font-style: italic;
+}
+@media (max-width: 30rem) {
+    .calendar-day .weekday {
+        display: none;
+    }
 }
 .calendar-day:not([data-disabled]):not([data-unavailable]){
     cursor: pointer;
