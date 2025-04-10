@@ -35,10 +35,14 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
                 }
             });
             const json = await response.json();
-            const routeMap: Map<string, any> = new Map(json.included
+            if (response.status !== 200) {
+                reject(json);
+                return;
+            }
+            const routeMap: Map<string, any> = new Map((json.included || [])
                 .filter((entity: any) => entity.type === 'route')
                 .map((route: any) => [route.id, route]));
-            const overridenData = overrideAlerts(json.data);
+            const overridenData = overrideAlerts(json.data || []);
             const alertsByDay = getAlertsAsDays(overridenData, routeMap);
             data_async_data = {
                 data: filterHighPriorityAlerts(overridenData),

@@ -3,6 +3,7 @@
 	import PageAsync from './page-async.svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { m } from '$lib/paraglide/messages';
+	import Error from './+error.svelte';
 
 	const { data }: PageProps = $props();
     let isOutdated = $state(false);
@@ -29,4 +30,6 @@
 		currentServiceDate={data.current_service_date}
 		isCurrentServiceNightOwl={data.is_current_service_night_owl}
 	/>
+{:catch}
+<Error />
 {/await}

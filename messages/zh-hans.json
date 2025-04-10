@@ -34,5 +34,7 @@
     "footer_about": "简介",
     "privacy_policy": "隐私政策",
     "untranslated_legal_disclaimer": "本段落尚未翻译，请以原文本为准。",
-    "refresh_reminder": "信息可能已过时。点击这里刷新。"
+    "refresh_reminder": "信息可能已过时。点击这里刷新。",
+    "error_see_also": "抱歉，页面出现异常。您可以在 {MBTA}查看最新信息。",
+    "error_mbta_website": "MBTA 网站"
 }

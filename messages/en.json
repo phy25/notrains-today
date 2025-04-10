@@ -34,5 +34,7 @@
     "footer_about": "About",
     "privacy_policy": "Privacy Policy",
     "untranslated_legal_disclaimer": "",
-    "refresh_reminder": "Information may be outdated. Click to refresh."
+    "refresh_reminder": "Information may be outdated. Click to refresh.",
+    "error_see_also": "Sorry, something went wrong. You may check the latest alerts on the {MBTA}.",
+    "error_mbta_website": "MBTA website"
 }

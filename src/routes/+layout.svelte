@@ -59,6 +59,7 @@
 					{:else}
 						<span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
 					{/each}
+				{:catch}<!-- svelte-ignore block_empty -->
 				{/await}
             </div>
         </a>
@@ -75,6 +76,7 @@
 					{:else}
 						<span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
 					{/each}
+				{:catch}<!-- svelte-ignore block_empty -->
 				{/await}
             </div>
         </a>
