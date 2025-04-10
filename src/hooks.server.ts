@@ -8,13 +8,21 @@ Sentry.init({
 	tracesSampleRate: 1
 });
 
-// creating a handle to use the paraglide middleware
+const OPEN_GRAPH_TITLE_MAPPING: Record<string, string> = {
+	'': 'notrains.today',
+	'/': 'Train Status on the T',
+	'/calendar': 'Upcoming T Outage Calendar',
+};
+
+// creating a handle to use the paraglide middleware and other stuff
 const paraglideHandle: Handle = ({ event, resolve }) =>
 	paraglideMiddleware(event.request, ({ request: localizedRequest, locale }) => {
 		event.request = localizedRequest;
 		return resolve(event, {
 			transformPageChunk: ({ html }) => {
-				return html.replace('%paraglide.lang%', locale);
+				return html
+					.replace('%paraglide.lang%', locale)
+					.replace('%og.title%', OPEN_GRAPH_TITLE_MAPPING[event.route.id || ''] || OPEN_GRAPH_TITLE_MAPPING['']);
 			}
 		});
 	});
