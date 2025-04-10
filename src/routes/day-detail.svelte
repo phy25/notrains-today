@@ -77,6 +77,7 @@ h2 > small {
     max-width: 100%;
     max-height: 80vh;
 }
+/* this is based on the pixels of the image */
 @media (max-width: 640px) {
     .alert-image-container img {
         max-width: 200%;

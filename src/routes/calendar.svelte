@@ -154,6 +154,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
   .calendar-sticky-week > [data-bits-calendar-root] {
     width: 100%;
     max-width: var(--page-content-max-width);
+    min-width: var(--page-content-min-width);
     margin: 0 auto;
     padding: 0 0.4em;
     box-sizing: border-box;

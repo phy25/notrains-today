@@ -98,17 +98,21 @@
 
 <style>
 :global {
-	body {
+	html {
 		font-size: 16px;
 		font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	}
+	body {
 		margin: 0;
-		--page-content-max-width: 56em;
+		--page-content-max-width: 56rem;
+		--page-content-min-width: 18rem;
 	}
 	.page-content {
 		margin: 0 auto;
 		padding: 0 0.4em;
 		width: 100%;
 		max-width: var(--page-content-max-width);
+		min-width: var(--page-content-min-width);
 		box-sizing: border-box;
 	}
 }
@@ -120,8 +124,9 @@
     padding: 0.4em;
     display: flex;
     justify-content: space-around;
+	min-width: var(--page-content-min-width);
 }
-@media (max-width: 480px) {
+@media (max-width: 19rem) {
     .tab-wrapper {
         padding: 0.4em 0.2em;
     }
@@ -136,6 +141,8 @@
     padding: 0.2em;
     width: 100%;
     max-width: var(--page-content-max-width);
+    min-width: var(--page-content-min-width);
+	box-sizing: border-box;
 	gap: 0.1em;
 }
 .tab-item {

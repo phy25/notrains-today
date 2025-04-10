@@ -42,6 +42,7 @@
     gap: 0.3em;
     width: 100%;
     max-width: var(--page-content-max-width);
+    min-width: var(--page-content-min-width);
     box-sizing: border-box;
     margin: 0 0 1em;
     padding-bottom: 0.5em;
@@ -51,7 +52,7 @@
     grid-column: 1 / -1;
 }
 
-@media (max-width: 360px) {
+@media (max-width: 19rem) {
     .glance-rapid-transit-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -65,7 +66,7 @@
     border-radius: 0.2em;
     box-sizing: border-box;
 }
-@media (min-width: 768px) {
+@media (min-width: 45rem) {
     .glance-rapid-transit-grid > div {
         padding: 0.5em 0.4em;
     }
