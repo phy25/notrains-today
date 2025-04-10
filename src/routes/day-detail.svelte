@@ -43,7 +43,7 @@ if (showNightOwl) {
 
         {#if alert.attributes.image}
         <div class="alert-image-container">
-            <img src={alert.attributes.image} alt={alert.attributes.image_alternative_text} />
+            <img src={alert.attributes.image} alt={alert.attributes.image_alternative_text} loading="lazy" />
         </div>
         {/if}
 
