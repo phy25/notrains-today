@@ -1,8 +1,8 @@
 {
     "$schema": "https://inlang.com/schema/inlang-message-format",
     "current_locale_name": "简体中文",
-    "trains_running_all": "今天 {MBTA} 的所有列车均正常运行。",
-    "trains_running_some": "今天 {MBTA} 的部分列车运行异常。",
+    "trains_running_all": "今天 {MBTA} 的所有地铁均正常运行。",
+    "trains_running_some": "今天 {MBTA} 的部分地铁运行异常。",
     "calendar": "日历",
     "mbta_abbreviation": "MBTA",
     "no_alert": "服务正常",
