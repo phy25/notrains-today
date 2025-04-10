@@ -111,6 +111,11 @@
 .calendar-day[data-selected] {
     background-color: #eee;
 }
+@media (prefers-color-scheme: dark) {
+    .calendar-day[data-selected] {
+        background-color: #333;
+    }
+}
 .badge-secondary-symbol {
     font-family: math, sans-serif;
     vertical-align: middle;

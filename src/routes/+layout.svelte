@@ -109,6 +109,14 @@
 		--page-content-max-width: 56rem;
 		--page-content-min-width: 18rem;
 	}
+	a {
+		color: #195581;
+	}
+	@media (prefers-color-scheme: dark) {
+		a {
+			color: #A0C4FF;
+		}
+	}
 	.page-content {
 		margin: 0 auto;
 		padding: 0 0.4em;
