@@ -8,6 +8,9 @@
     let isOutdated = $state(false);
     $effect(() => {
         data.data_async;
+        // when data_async changes, reset isOutdated
+        // which means if the page hasn't refreshed yet, do not remove isOutdated flag
+        isOutdated = false;
         setTimeout(() => {
             isOutdated = true;
         }, 1000 * 60 * 5);
@@ -16,7 +19,7 @@
 
 {#if isOutdated}
     <div class="alert alert-warning">
-        <p><button onclick={() => {isOutdated = false;invalidateAll();}}>{m.refresh_reminder()}</button></p>
+        <p><button onclick={() => {invalidateAll();}}>{m.refresh_reminder()}</button></p>
     </div>
 {/if}
 
