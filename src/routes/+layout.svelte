@@ -1,4 +1,5 @@
 <script lang="ts">	
+	import { goto, invalidate } from '$app/navigation';
 	import { isDebug } from '$lib/common';
 	import { getPillName } from '$lib/mbta-display';
 	import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
@@ -43,17 +44,11 @@
 		return 'today';
 	});
 	let debugClickTimes = 0;
-	const trackDebugWindow = () => {
+	const trackDebugClicks = () => {
 		debugClickTimes++;
 		if (debugClickTimes == 5) {
-			if (localStorage.getItem('debugDate') !== null) {
-				localStorage.removeItem('debugDate');
-				alert('You have disabled debug mode.');
-			} else {
-				localStorage.setItem('debugDate', '');
-				alert('You have enabled debug mode.');
-			}
-			debugClickTimes = 0;
+			localStorage.setItem('debugDate', '');
+			location.href = '/about?debug';
 		}
 	};
 </script>
@@ -108,7 +103,9 @@
 		</p>
 		{/if}
 
-		<p onclick={trackDebugWindow}>☺ notrains.today <a href="/about">{m.footer_about()}</a></p>
+		<!-- svelte-ignore a11y_click_events_have_key_events -->
+		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+		<p onclick={trackDebugClicks}>☺ notrains.today <a href="/about">{m.footer_about()}</a></p>
 	</footer>
 </div>
 

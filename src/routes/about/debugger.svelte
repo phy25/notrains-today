@@ -1,9 +1,14 @@
 <script lang="ts">
-let isDebugOn = localStorage.getItem('debugDate') !== null;
+let isDebugOn = $state(localStorage.getItem('debugDate') !== null);
 let date = $state(localStorage.getItem('debugDate') || '');
 
 const onDateChange = (e: Event) => {
     localStorage.setItem('debugDate', date);
+};
+
+const exitDebug = () => {
+    localStorage.removeItem('debugDate');
+    isDebugOn = false;
 };
 </script>
 
@@ -12,5 +17,6 @@ const onDateChange = (e: Event) => {
 
 <form>
     <label>Force date <input type="date" bind:value={date} onchange={onDateChange} /></label>
+    <p><button type="button" onclick={exitDebug}>Exit debug mode</button></p>
 </form>
 {/if}
