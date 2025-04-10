@@ -4,6 +4,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import { m } from '$lib/paraglide/messages';
 	import Error from './+error.svelte';
+	import Alert from '$lib/alert.svelte';
 
 	const { data }: PageProps = $props();
     let isOutdated = $state(false);
@@ -19,9 +20,9 @@
 </script>
 
 {#if isOutdated}
-    <div class="alert alert-warning">
-        <p><button onclick={() => {invalidateAll();}}>{m.refresh_reminder()}</button></p>
-    </div>
+    <Alert onclick={() => {invalidateAll();}}>
+        {m.refresh_reminder()}
+    </Alert>
 {/if}
 
 {#await data.data_async() then d}
