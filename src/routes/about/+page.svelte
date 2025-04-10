@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { m } from '$lib/paraglide/messages';
 	import { locales, setLocale, getLocale, type Locale } from '$lib/paraglide/runtime';
+	import Debugger from './debugger.svelte';
 
 	function switchToLanguage(newLanguage: Locale) {
 		setLocale(newLanguage);
@@ -9,6 +10,8 @@
 
 	const untranslated_legal_disclaimer = m.untranslated_legal_disclaimer();
 </script>
+
+<Debugger />
 
 <h2>Languages</h2>
 

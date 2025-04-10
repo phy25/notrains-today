@@ -42,6 +42,20 @@
 		}
 		return 'today';
 	});
+	let debugClickTimes = 0;
+	const trackDebugWindow = () => {
+		debugClickTimes++;
+		if (debugClickTimes == 5) {
+			if (localStorage.getItem('debugDate') !== null) {
+				localStorage.removeItem('debugDate');
+				alert('You have disabled debug mode.');
+			} else {
+				localStorage.setItem('debugDate', '');
+				alert('You have enabled debug mode.');
+			}
+			debugClickTimes = 0;
+		}
+	};
 </script>
 
 <div class="tab-wrapper">
@@ -94,7 +108,7 @@
 		</p>
 		{/if}
 
-		<p>☺ notrains.today <a href="/about">{m.footer_about()}</a></p>
+		<p onclick={trackDebugWindow}>☺ notrains.today <a href="/about">{m.footer_about()}</a></p>
 	</footer>
 </div>
 
