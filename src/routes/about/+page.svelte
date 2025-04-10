@@ -31,19 +31,26 @@
 	>
 </p>
 <p>
-	notrains.today uses hosting and analytics service provided by Cloudflare, a Delaware-based company
-	in the United States. <a href="https://www.cloudflare.com/privacypolicy/"
+	notrains.today uses hosting service from Cloudflare, a Delaware-based company in the United
+	States. <a href="https://www.cloudflare.com/privacypolicy/"
 		>Privacy policy of Cloudflare, Inc. can be found here.</a
 	>
 </p>
 <p>
-	notrains.today uses hosting service provided by Amazon Web Services, a Delaware-based company in
+	notrains.today uses analytics service from Sentry, a Delaware-based company in the United
+	States. <a href="https://sentry.io/privacy/"
+		>Privacy policy of Functional Software, Inc. can be found here.</a
+	>
+	We only retain data from this service for 30 days.
+</p>
+<!--<p>
+	notrains.today uses hosting service from Amazon Web Services, a Delaware-based company in
 	the United States. <a href="https://aws.amazon.com/privacy/"
 		>Privacy policy of Amazon Web Services, Inc. can be found here.</a
 	>
-</p>
+</p>-->
 <p>
-	notrains.today uses font asset hosting service provided by Google, a Delaware-based company in the
+	notrains.today uses font asset hosting service from Google, a Delaware-based company in the
 	United States. <a href="https://developers.google.com/fonts/faq/privacy"
 		>More information on Google Fonts Web API can be found here.</a
 	>
@@ -52,11 +59,11 @@
 	</a>
 </p>
 <p>
-	notrains.today may collect access logs and performance data, both in anonymized aggregate form for
-	marketing purposes, and individually for service improvement purposes. This data is subject to
-	human review conducted by the website owner in the United States, and may also be disclosed to
-	comply with legal requests. We do not sell data to third parties. For further inquiries, please
-	email
+	notrains.today may collect access logs and performance data through services above, both in
+	anonymized aggregate form for marketing purposes, and individually for service improvement
+	purposes. This data is subject to human review conducted by the website owner in the United
+	States, and may also be disclosed to comply with legal requests. We do not sell data to third
+	parties. For further inquiries, please email
 	<a href="mailto:notrains@phy25.com">notrains@phy25.com</a>.
 </p>
 <p>
@@ -64,14 +71,3 @@
 	affiliated with these external websites. By visiting third-party websites through hyperlinks,
 	different privacy policies may apply.
 </p>
-<!--<p>
-	notrains.today uses analytics service by Sentry, a United States Delaware corporation. <a
-		href="https://sentry.io/privacy/">Sentry's privacy policy can be found here.</a
-	>
-	notrains.today has access to IP address, user agent string, error reporting and performance
-	telemetry within the browser sandbox, only during an application error, or on a percentage of
-	requests when performance telemetry is on. These data are retained for 30 days only for service
-	improvement purpose, subject to human review in the United States. We do not transfer these data
-	to third party other than Sentry. For further inquiry, please e-mail
-	<a href="mailto:notrains@phy25.com">notrains@phy25.com</a>.
-</p>-->
