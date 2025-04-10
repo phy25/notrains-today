@@ -22,7 +22,7 @@
     <div class="route-with-branches">
         <GlanceSubwayRoute mainRouteId="Blue" color="#003da5" textColor="#FFF" unfilteredAlerts={expandedAlerts} currentServiceDate={currentServiceDate} />
     </div>
-    {#if isDebug}
+    {#if isDebug()}
         <div class="route-expanded">
             <MbtaRouteBadge pillLabel="Bus" type="long" color="#ffc72c" textColor="#000"></MbtaRouteBadge>
         </div>

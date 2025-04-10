@@ -1,4 +1,5 @@
 <script lang="ts">
+import { isDebug } from "$lib/common";
 import { getPillName, getEffectWithLineMessage } from "$lib/mbta-display";
 import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 import { m } from "$lib/paraglide/messages";
@@ -6,7 +7,7 @@ import { m } from "$lib/paraglide/messages";
 const {data, routeMap} = $props();
 </script>
 
-{#if data.length > 0}    
+{#if data.length > 0 && isDebug() }    
     <details>
         <summary>{m.debug_all_alerts()}</summary>
 

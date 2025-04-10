@@ -1,5 +1,7 @@
 <script lang="ts">
-let isDebugOn = $state(localStorage.getItem('debugDate') !== null);
+import { isDebug } from "$lib/common";
+
+let isDebugOn = $state(isDebug());
 let date = $state(localStorage.getItem('debugDate') || '');
 
 const onDateChange = (e: Event) => {

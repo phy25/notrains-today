@@ -1,5 +1,4 @@
 <script lang="ts">	
-	import { goto, invalidate } from '$app/navigation';
 	import { isDebug } from '$lib/common';
 	import { getPillName } from '$lib/mbta-display';
 	import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
@@ -95,7 +94,7 @@
 <div class="page-content">
 	{@render children()}
 	<footer>
-		{#if isDebug}
+		{#if isDebug()}
 		<p>
 			{#each Object.keys(QUERY_ROUTE_TYPE_MAPPING) as type}
 				<a href="/?route_type={type}">{type}</a>{' '}
