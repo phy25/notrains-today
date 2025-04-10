@@ -30,6 +30,7 @@ if (showNightOwl) {
     {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
     {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
     {@const descriptionArr = alert.attributes?.description?.split(/\r?\n/g) || []}
+    {@const url = alert.attributes?.url || ('https://www.mbta.com/schedules/'+ route_id +'/alerts')}
     <details transition:fade>
         <summary>
             <!-- remove <p> to work with the marker. Temporary anyway. -->
@@ -57,7 +58,13 @@ if (showNightOwl) {
         </p>
         {/if}
 
-        <p><em>Alert ID: {alert.id}</em></p>
+        {#if alert.attributes?.url}
+        <p><em>{m.learn_more_at()}<a href={alert.attributes?.url} target="_blank">{alert.attributes?.url}</a> ({m.alert()} #{alert.id})</em></p>
+        {:else}
+        
+        <p><em><a href="https://www.mbta.com/schedules/{route_id}/alerts" target="_blank">{m.alert()} #{alert.id}</a></em></p>
+        {/if}
+
     </details>
 {:else}
 {#if !hideAuxiliary}

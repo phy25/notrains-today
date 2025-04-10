@@ -24,6 +24,8 @@
         "Red": "Red Line",
         "bus_route": "{route} Bus"
     },
+    "learn_more_at": "Learn more: ",
+    "alert": "Alert",
     "important_notes": "Important notes",
     "important_notes_service_day_end": "For night owls, dates above reflect MBTA service days which end at {hour}:59am.",
     "until_next_day_service_ending": "(until {hour}am next day)",
