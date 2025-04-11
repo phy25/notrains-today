@@ -4,7 +4,7 @@
     import { getAlertBadgeSecondarySymbol, getPillName } from "$lib/mbta-display";
 	import type { MbtaAlert } from "$lib/mbta-types";
     import type { DateValue } from "@internationalized/date";
-	import { expandAlertsToSingleRoute } from "$lib/calendar";
+	import { getProcessedAlertsAsSingleRoute } from "$lib/calendar";
 
     interface CalendarCellProps {
         date: DateValue;
@@ -20,7 +20,7 @@
     const dateString = $derived(date.toString());
     const alerts: MbtaAlert[] = $derived.by(() => {
         if (alertsByDay.has(dateString) && currentServiceDate.toString() <= dateString) {
-            return expandAlertsToSingleRoute(alertsByDay.get(dateString) || []);
+            return getProcessedAlertsAsSingleRoute(alertsByDay.get(dateString) || []);
         } else {
             return [];
         }

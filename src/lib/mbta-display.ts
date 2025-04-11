@@ -221,3 +221,17 @@ const getAlertBadgeSecondarySymbolForBlueLine = (alert: MbtaAlert) => {
     }
     return '•';
 }
+
+/**
+ * This method is currently an no-op. Green line and red line have inconsistent treatment
+ * even though they both have branches. Green line routes have branch variants. Red line does not.
+ * Ideally we should split red line routes but we need to patch routeMap as well.
+ * Right now we leave them as is. Red will be a unified route. Green will be separate routes.
+ */
+export const isSplitBranchRouteAlert = (alert: MbtaAlert) => {
+    return false;
+}
+
+export const mergeSplitBranchRouteAlerts = (alerts: MbtaAlert[]) => {
+    return alerts;
+}

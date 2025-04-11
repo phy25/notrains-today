@@ -1,4 +1,5 @@
 import type { MbtaAlert } from "./mbta-types";
+import { isSplitBranchRouteAlert, mergeSplitBranchRouteAlerts } from "./mbta-display";
 
 export const MBTA_SERVICE_START_HOUR = 3;
 // usually, end time is 2:59 and start time is 3:00
@@ -45,6 +46,12 @@ const hasShortTermImpact = (alert: MbtaAlert) => {
         return false;
     }
     return (+new Date(alert.attributes.active_period[0].end) - Date.now()) <= 1000*60*60*3;
+}
+
+export const getProcessedAlertsAsSingleRoute = (alerts: MbtaAlert[]) => {
+    const processedAlertsWithBranches = mergeSplitBranchRouteAlerts(alerts.filter(isSplitBranchRouteAlert));
+    return expandAlertsToSingleRoute(alerts.filter(alert => !isSplitBranchRouteAlert(alert)))
+        .concat(processedAlertsWithBranches);
 }
 
 export const expandAlertsToSingleRoute = (alerts: MbtaAlert[]) => {

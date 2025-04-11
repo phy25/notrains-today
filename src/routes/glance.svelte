@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { expandAlertsToSingleRoute } from "$lib/calendar";
+	import { getProcessedAlertsAsSingleRoute } from "$lib/calendar";
 	import { isDebug } from "$lib/common";
 	import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 	import { m } from "$lib/paraglide/messages";
 	import GlanceSubwayRoute from "./glance-subway-route.svelte";
 
     const { alertsToday, currentServiceDate } = $props();
-    const expandedAlerts = $derived(expandAlertsToSingleRoute(alertsToday));
+    const expandedAlerts = $derived(getProcessedAlertsAsSingleRoute(alertsToday));
 </script>
 
 <div class="glance-rapid-transit-grid">
