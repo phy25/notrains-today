@@ -23,7 +23,7 @@
         <GlanceSubwayRoute mainRouteId="Blue" color="#003da5" textColor="#FFF" unfilteredAlerts={expandedAlerts} currentServiceDate={currentServiceDate} />
     </div>
     {#if isDebug()}
-        <div class="route-expanded">
+        <div class="route-expanded route-expanded-first">
             <MbtaRouteBadge pillLabel="Bus" type="long" color="#ffc72c" textColor="#000"></MbtaRouteBadge>
         </div>
         <div class="route-expanded">
@@ -50,6 +50,10 @@
 }
 .glance-rapid-transit-grid > .route-expanded {
     grid-column: 1 / -1;
+}
+.glance-rapid-transit-grid > .route-expanded-first {
+    border-top: 1px solid #92C6EA;
+    padding-top: 1em;
 }
 
 @media (max-width: 19rem) {
