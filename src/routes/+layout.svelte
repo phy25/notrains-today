@@ -63,7 +63,7 @@
 </script>
 
 <div class="tab-wrapper">
-    <div class="tab">
+    <div class="tab {isDebug() && 'debug'}">
         <a class="tab-item {tab_id === 'today' && 'selected'}" href="./">
             <div class="tab-item-heading notranslate">notrains.today</div>
             <div>
@@ -185,15 +185,29 @@
     text-decoration: none;
     color: inherit;
 }
-.tab-item:hover {
+.tab-item:hover, .tab-item:focus {
     background: var(--background-color);
     --background-color: #DDD;
     color: #000;
+	outline: none;
 }
 .tab-item.selected {
     background: var(--background-color);
     --background-color: #FFF;
     color: #000;
+}
+.tab.debug .tab-item.selected {
+	background-image: repeating-linear-gradient(
+		-45deg,
+		#C9E3F5,
+		#C9E3F5 10px,
+		transparent 10px,
+		transparent 2rem
+	);
+}
+.tab .tab-item.selected:hover, .tab .tab-item.selected:focus {
+	background: var(--background-color);
+    --background-color: #EEE;
 }
 .tab-item-heading {
     font-weight: bold;
