@@ -6,6 +6,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { getFeedback } from '@sentry/sveltekit';
 	import type { LayoutProps } from './$types';
+	import MbtaRouteBadgeCompound from '$lib/mbta-route-badge-compound.svelte';
 
 	const { data, children }: LayoutProps = $props();
 	const alertsToRouteRenderingList = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
@@ -15,8 +16,6 @@
 			?.map(route_id => {
 				return {
 					route_id,
-					color: (routeMap.get(route_id)?.attributes?.color) ? '#' + routeMap.get(route_id)?.attributes?.color : 'inherit',
-					textColor: (routeMap.get(route_id)?.attributes?.text_color) ? '#' + routeMap.get(route_id)?.attributes?.text_color : 'inherit',
 					attributes: routeMap.get(route_id)?.attributes,
 				}
 			});
@@ -72,7 +71,7 @@
 				{:then alerts_today_route_list}
 					{#each alerts_today_route_list as route}
 						<div class="badge-group">
-							<MbtaRouteBadge pillLabel={getPillName(route.route_id, route.attributes)} color={route.color} textColor={route.textColor} />
+							<MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
 						</div>
 					{:else}
 						<span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
@@ -89,7 +88,7 @@
 				{:then alerts_future_route_list}
 					{#each alerts_future_route_list as route}
 						<div class="badge-group">
-							<MbtaRouteBadge pillLabel={getPillName(route.route_id, route.attributes)} color={route.color} textColor={route.textColor} />
+							<MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
 						</div>
 					{:else}
 						<span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
@@ -114,7 +113,7 @@
 
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-		<p onclick={trackDebugClicks}><span class="notranslate">☺ notrains.today</span> <a href="/about">{m.footer_about()}</a> <a bind:this={feedbackBtnDom} href="">{m.footer_feedback()}</a></p>
+		<p onclick={trackDebugClicks}><span class="notranslate">☺ notrains.today</span> <a href="/about">{m.footer_about()}</a> <a bind:this={feedbackBtnDom} href=".">{m.footer_feedback()}</a></p>
 	</footer>
 </div>
 

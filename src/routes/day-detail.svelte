@@ -7,6 +7,7 @@ import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 import { parseDate, DateFormatter } from "@internationalized/date";
 import { fade } from "$lib/transition";
+import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
 
 const { day, alerts, showNightOwl, routeMap, hideAuxiliary = false } = $props();
 
@@ -27,14 +28,11 @@ if (showNightOwl) {
     {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
     {@const route_id = (alert as MbtaAlert).attributes.informed_entity.sort((a, b) => a.route.localeCompare(b.route))[0].route /* TODO: show multiple routes */ }
     {@const attributes = (routeMap.get(route_id) as any)?.attributes}
-    {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
-    {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
     {@const descriptionArr = alert.attributes?.description?.split(/\r?\n/g) || []}
-    {@const url = alert.attributes?.url || ('https://www.mbta.com/schedules/'+ route_id +'/alerts')}
     <details transition:fade>
         <summary>
             <!-- remove <p> to work with the marker. Temporary anyway. -->
-            <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
+            <MbtaRouteBadgeCompound type="long" routeId={route_id} routeAttributes={attributes} />
             {getEffectWithLineMessage(effect, route_id)}
             <p>
                 {alert.attributes.header}
