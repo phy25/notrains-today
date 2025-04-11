@@ -30,6 +30,13 @@ const ROUTE_PILL_MAPPING: Record<string, string> = {
     'Green': 'GL',
 };
 
+export const SECONDARY_SYMBOLS: Record<string, {
+    symbol: string;
+    description_message_func: () => string;
+}> = {
+
+};
+
 export const effectRawDisplayFormat = (effect: string) => {
     return effect.replace('_', ' ')
         .toLowerCase()
@@ -94,6 +101,9 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString:
         }
         if (uniqueRoutes[0] === 'Blue') {
             return getAlertBadgeSecondarySymbolForBlueLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+        }
+        if (uniqueRoutes[0].startsWith('Green')) {
+            return getAlertBadgeSecondarySymbolForGreenLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
         }
 
         // detour impacting multiple stops, show detour symbol
@@ -219,6 +229,75 @@ const getAlertBadgeSecondarySymbolForBlueLine = (alert: MbtaAlert) => {
             .every(entity => entity.stop === 'place-bomnl')) {
         return '◤';
     }
+    return '•';
+}
+
+const GREEN_LINE_GLX_D_SEGMENT_STOP_IDS = [
+    'place-unsqu',
+];
+const GREEN_LINE_GLX_E_SEGMENT_STOP_IDS = [
+    'place-mdftf',
+    'place-balsq',
+    'place-mgngl',
+    'place-gilmn',
+    'place-esomr'    
+];
+const GREEN_LINE_DE_SHARED_SEGMENT_STOP_IDS = [
+    'place-lech',
+    'place-spmnl',
+    'place-north',
+    'place-haecl'
+];
+const GREEN_LINE_CORE_SEGMENT_STOP_IDS = [
+    'place-gover',
+    'place-pktrm',
+    'place-boyls',
+    'place-armnl',
+    'place-coecl'
+];
+
+const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
+    // for now we do a simple check by checking if the alert impacts all stop on a branch rather than some
+    // TODO: check stop by stop to determine range intersection
+    const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
+
+    // single stop, Boston College TODO this needs to be more generalized
+    if (informedStops.every(stop => stop === 'place-lake')) {
+        return '◣';
+    }
+
+    // TODO: Green line is the most complicated one. We build as new alerts surface.
+    const hasGLXDSegment = (
+        GREEN_LINE_GLX_D_SEGMENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+    const hasGLXESegment = (
+        GREEN_LINE_GLX_E_SEGMENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+    const hasDESharedSegment = (
+        GREEN_LINE_DE_SHARED_SEGMENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+    // Core = Copley to Gov Center
+    const hasCoreSegment = (
+        GREEN_LINE_CORE_SEGMENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+
+    if (hasGLXDSegment && hasDESharedSegment && !hasCoreSegment) {
+        // Green line has split branch routes on the same alert. This will show up alongside D.
+        return '▲'; // north of core, D
+    }
+    if (hasGLXESegment && hasDESharedSegment && !hasCoreSegment) {
+        // Green line has split branch routes on the same alert. This will show up alongside E.
+        return '▲'; // north of core, E
+    }
+    if (hasGLXDSegment && !hasCoreSegment) {
+        // Green line has split branch routes on the same alert. This will show up alongside D.
+        return '◤'; // GLX D or charles river outage
+    }
+    if (hasGLXESegment && !hasCoreSegment) {
+        // Green line has split branch routes on the same alert. This will show up alongside E.
+        return '◤'; // GLX E or charles river outage
+    }
+    // can't determine branch
     return '•';
 }
 
