@@ -59,7 +59,6 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
     --badge-size: 1.2em;
     line-height: 1.2em;
     display: flex;
-    flex-wrap: wrap;
     align-content: baseline;
     align-items: flex-start;
     gap: 0.2em 0.1em;
@@ -84,9 +83,5 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
     .no-alert-text {
         color: #92C6EA;
     }
-}
-.badge-group {
-    display: inline-flex;
-    gap: 0;
 }
 </style>
