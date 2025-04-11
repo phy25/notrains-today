@@ -30,15 +30,27 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
 </script>
 
 <div class="subway-route">
-    <MbtaRouteBadge pillLabel={getPillName(mainRouteId, {})} type="long" color={color} textColor={textColor}></MbtaRouteBadge>
+    <span>
+        <MbtaRouteBadge pillLabel={getPillName(mainRouteId, {})} type="long" color={color} textColor={textColor}></MbtaRouteBadge>
+        {#if filterdAlerts.length == 0}
+            <span>✅</span>
+        {:else if false && branchesAlerts.length}
+            <span>◤</span>
+        {:else if filterdAlerts.length > 1}
+            <span>⚠️</span>
+        {:else}
+            <span>{getAlertBadgeSecondarySymbol(filterdAlerts[0], currentServiceDate.toString())}</span>
+        {/if}
+    </span>
+
     {#if filterdAlerts.length == 0}
-        <span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
+        <span class="no-alert-text">{m.no_alert()}</span>
     {:else if false && branchesAlerts.length}
-        <span>◤</span> <span class="has-alert-text">{m[Math.random() > 0.5 ? "mbta_alert_effect.ADDITIONAL_SERVICE" : "mbta_alert_effect.DELAY"]()}</span>
+        <span class="has-alert-text">{m[Math.random() > 0.5 ? "mbta_alert_effect.ADDITIONAL_SERVICE" : "mbta_alert_effect.DELAY"]()}</span>
     {:else if filterdAlerts.length > 1}
-        <span>⚠️</span> <span class="has-alert-text">{m.multiple_alerts({count: filterdAlerts.length})}</span>
+        <span class="has-alert-text">{m.multiple_alerts({count: filterdAlerts.length})}</span>
     {:else}
-        <span>{getAlertBadgeSecondarySymbol(filterdAlerts[0], currentServiceDate.toString())}</span> <span class="has-alert-text">{getEffect(filterdAlerts[0].attributes.effect)}</span>
+        <span class="has-alert-text">{getEffect(filterdAlerts[0].attributes.effect)}</span>
     {/if}
 </div>
 
@@ -51,6 +63,11 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
     align-content: baseline;
     align-items: flex-start;
     gap: 0.2em 0.1em;
+}
+@media (max-width: 56rem) {
+    .subway-route {
+        flex-direction: column;
+    }
 }
 .has-alert-text {
     display: inline-block;
