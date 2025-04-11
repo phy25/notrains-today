@@ -2,10 +2,12 @@ import { sequence } from '@sveltejs/kit/hooks';
 import * as Sentry from '@sentry/sveltekit';
 import type { Handle } from '@sveltejs/kit';
 import { paraglideMiddleware } from '$lib/paraglide/server';
+import { dev } from '$app/environment';
 
 Sentry.init({
 	dsn: 'https://d46dcb15b65dbe48a53bc0f7e2885cf8@o71025.ingest.us.sentry.io/4509127309459456',
-	tracesSampleRate: 1
+	tracesSampleRate: 1,
+	enabled: !dev,
 });
 
 const OPEN_GRAPH_TITLE_MAPPING: Record<string, string> = {

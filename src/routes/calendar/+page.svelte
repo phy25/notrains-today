@@ -64,12 +64,4 @@ export const snapshot: Snapshot<string> = {
 {/if}
 
 <style>
-mark {
-    background-color: #ff0;
-    color: #000;
-}
-pre {
-    white-space: pre-wrap;
-    word-wrap: break-word;
-}
 </style>

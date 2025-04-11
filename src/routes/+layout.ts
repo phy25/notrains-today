@@ -6,6 +6,7 @@ import { MBTA_TIMEZONE, QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mb
 import type { LayoutLoad } from './$types';
 import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
 import { now, parseDate, toCalendarDate } from "@internationalized/date";
+import { captureException } from '@sentry/sveltekit';
 
 let data_async_data: { data: MbtaAlert[]; alertsByDay: Map<string, MbtaAlert[]>; routeMap: Map<string, any> } | null = null;
 let data_async_hash: string | null = null;
@@ -35,8 +36,8 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
                 }
             });
             const json = await response.json();
-            if (response.status !== 200) {
-                reject(json);
+            if (response.status >= 400) {
+                reject(new Error('Error fetching data: ' + JSON.stringify(json)));
                 return;
             }
             const routeMap: Map<string, any> = new Map((json.included || [])
@@ -54,6 +55,9 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
         } catch (err) {
             reject(err);
         }
+    }).catch((err) => {
+        captureException(err);
+        throw err;
     });
 
     const data_async = async () => data_async_promise;
