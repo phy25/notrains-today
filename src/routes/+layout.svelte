@@ -59,11 +59,12 @@
 			});
 		}
 	});
+	const route_type_url_param = $derived(data.route_type !== 'subway' ? ('?route_type=' + data.route_type) : '');
 </script>
 
 <div class="tab-wrapper">
     <div class="tab {isDebug() && 'debug'}">
-        <a class="tab-item {tab_id === 'today' && 'selected'}" href="./">
+        <a class="tab-item {tab_id === 'today' && 'selected'}" href="./{route_type_url_param}">
             <div class="tab-item-heading notranslate">notrains.today</div>
             <div>
 				{#await alerts_today_route_list()}
@@ -80,7 +81,7 @@
 				{/await}
             </div>
         </a>
-        <a class="tab-item {tab_id === 'calendar' && 'selected'}" href="./calendar">
+        <a class="tab-item {tab_id === 'calendar' && 'selected'}" href="./calendar{route_type_url_param}">
             <div class="tab-item-heading">{m.calendar()}</div>
             <div>
 				{#await alerts_future_route_list()}

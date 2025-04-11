@@ -74,6 +74,7 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
 
     return {
         route_id: route.id,
+        route_type: route_type,
         current_service_date: currentServiceDate,
         is_current_service_night_owl: isNightOwl,
         data_async: data_async,

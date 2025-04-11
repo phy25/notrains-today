@@ -31,8 +31,7 @@ $effect(() => {
 	
   if (mainCalendarDom && stickyWeekDom) { // re-run when mainCalendarDom or stickyWeekDom populate
     window.requestAnimationFrame(() => {
-      onResize();
-      onWindowScroll();
+      onResize();      
     });
   }
 });
@@ -48,10 +47,12 @@ const onResize = () => {
       stickyCalendarStartY = mainCalendarEndY;
     }
   }
+
+  onWindowScroll();
 };
 
 const onWindowScroll = () => {
-  stickyWeekShowing = window.scrollY >= stickyCalendarStartY;
+  stickyWeekShowing = window.scrollY >= stickyCalendarStartY && stickyWeekDom.offsetHeight < window.innerHeight * 0.5;
 };
 
 export const scrollToDayDetail = () => {
