@@ -4,6 +4,7 @@
 	import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
 	import { QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
+	import { getFeedback } from '@sentry/sveltekit';
 	import type { LayoutProps } from './$types';
 
 	const { data, children }: LayoutProps = $props();
@@ -50,6 +51,15 @@
 			location.href = '/about?debug';
 		}
 	};
+	let feedbackBtnDom: HTMLAnchorElement;
+	$effect(() => {
+		if (feedbackBtnDom) {
+			const feedback = getFeedback();
+			feedback?.attachTo(feedbackBtnDom, {
+				formTitle: "Send feedback",
+			});
+		}
+	});
 </script>
 
 <div class="tab-wrapper">
@@ -104,7 +114,7 @@
 
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-		<p onclick={trackDebugClicks}>☺ notrains.today <a href="/about">{m.footer_about()}</a></p>
+		<p onclick={trackDebugClicks}>☺ notrains.today <a href="/about">{m.footer_about()}</a> <a bind:this={feedbackBtnDom} href="">{m.footer_feedback()}</a></p>
 	</footer>
 </div>
 
