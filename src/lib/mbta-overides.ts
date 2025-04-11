@@ -13,6 +13,13 @@ interface OverrideRemoveEntry {
     match_updated_at: string;
 }
 
+interface OverrideRemoveRouteEntry {
+    type: 'remove-route';
+    match_id: string;
+    match_updated_at: string;
+    route_ids: string[];
+}
+
 interface OverrideReplaceEntry {
     type: 'replace';
     match_id: string;
@@ -20,7 +27,7 @@ interface OverrideReplaceEntry {
     item: object;
 }
 
-type OverrideEntry = OverrideInsertEntry | OverrideRemoveEntry | OverrideReplaceEntry;
+type OverrideEntry = OverrideInsertEntry | OverrideRemoveEntry | OverrideReplaceEntry | OverrideRemoveRouteEntry;
 
 const MBTA_URGENT_SEVERITY = 7;
 
@@ -32,6 +39,7 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
     const data: OverrideEntry[] = rawData as OverrideEntry[];
     const removeEntryMap: Map<string, OverrideRemoveEntry> = new Map();
     const replaceEntryMap: Map<string, OverrideReplaceEntry> = new Map();
+    const removeRouteEntryMap: Map<string, OverrideRemoveRouteEntry> = new Map();
     const newEntryList: object[] = [];
 
     data.forEach((override) => {
@@ -43,6 +51,9 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
         }
         if (override.type === 'insert' && override.item) {
             newEntryList.push(override.item);
+        }
+        if (override.type === 'remove-route') {
+            removeRouteEntryMap.set(override.match_id, override);
         }
     });
 
@@ -88,6 +99,29 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
                     };
                 }
                 return alert;
+            }
+
+            const removeRouteEntry = removeRouteEntryMap.get(alert.id);
+            if (removeRouteEntry) {
+                if (removeRouteEntry.match_updated_at && removeRouteEntry.match_updated_at !== alert.attributes.updated_at) {
+                    withScope(function (scope) {
+                        scope.setExtra('alert', alert);
+                        scope.captureMessage(
+                            "Alert routes not removed due to rule mismatch, rule has match_updated_at: " + removeRouteEntry.match_updated_at,
+                            "warning");
+                    });
+                }
+                if (!removeRouteEntry.match_updated_at || removeRouteEntry.match_updated_at === alert.attributes.updated_at) {
+                    console.log('Removing routes from alert: ' + alert.id + ' with rule match_updated_at: ' + removeRouteEntry.match_updated_at);
+                    return {
+                        ...alert,
+                        attributes: {
+                            ...alert.attributes,
+                            informed_entity: alert.attributes.informed_entity.filter(
+                                (entity: any) => !removeRouteEntry.route_ids.includes(entity.route)),
+                        }
+                    };
+                }
             }
             return alert;
         });

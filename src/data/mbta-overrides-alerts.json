@@ -52,9 +52,19 @@
             "item": {
                 "attributes": {
                     "effect": "DELAY",
-                    "header":"Red Line Ashmont Branch: Service between JFK/UMass and Ashmont will operate with two shuttle trains from April 10 - 30 to allow for critical track work. Riders should expect wait times of at least 13 minutes between shuttle trains and plan extra travel time."
+                    "header": "Red Line Ashmont Branch: Service between JFK/UMass and Ashmont will operate with two shuttle trains from April 10 - 30 to allow for critical track work. Riders should expect wait times of at least 13 minutes between shuttle trains and plan extra travel time."
                 }
             }
+        },
+        {
+            "type": "remove-route",
+            "match_id": "635744",
+            "match_updated_at": "2025-04-09T11:55:25-04:00",
+            "note": "not all branches are affected",
+            "route_ids": [
+                "Green-B",
+                "Green-C"
+            ]
         }
     ]
 }
