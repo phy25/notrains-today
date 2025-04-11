@@ -77,7 +77,7 @@ h2 > small {
     padding-left: 0.5em;
 }
 summary {
-    --badge-size: 1.2em;
+    --badge-size: 1.3em;
 }
 .alert-image-container {
     overflow-x: auto;
