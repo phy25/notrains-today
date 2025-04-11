@@ -65,7 +65,7 @@
 <div class="tab-wrapper">
     <div class="tab">
         <a class="tab-item {tab_id === 'today' && 'selected'}" href="./">
-            <div class="tab-item-heading">notrains.today</div>
+            <div class="tab-item-heading notranslate">notrains.today</div>
             <div>
 				{#await alerts_today_route_list()}
 					<!-- loading -->
@@ -114,7 +114,7 @@
 
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-		<p onclick={trackDebugClicks}>☺ notrains.today <a href="/about">{m.footer_about()}</a> <a bind:this={feedbackBtnDom} href="">{m.footer_feedback()}</a></p>
+		<p onclick={trackDebugClicks}><span class="notranslate">☺ notrains.today</span> <a href="/about">{m.footer_about()}</a> <a bind:this={feedbackBtnDom} href="">{m.footer_feedback()}</a></p>
 	</footer>
 </div>
 

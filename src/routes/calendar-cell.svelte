@@ -66,7 +66,7 @@
                 {#snippet child({ props })}
                     <a {...props} class="calendar-day {routeAlertsCount.size > 5 ? 'calendar-day--many-alerts' : ''}" href={(linkToCalendar && currentServiceDate.compare(date) !== 0 && props['data-disabled'] !== '') ? `./calendar#date=${dateString}` : undefined}>
                         <div class="day-row">
-                            <div class="day">{date.day}</div>
+                            <div class="day notranslate">{date.day}</div>
                             <div class="weekday">{weekday}</div>
                             <div class="right"></div>
                         </div>
