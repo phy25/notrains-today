@@ -2,7 +2,7 @@
 import { getDateString, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
 import { EFFECT_MESSAGES, getEffectWithLineMessage, getPillName } from "$lib/mbta-display";
 import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
-import { MBTA_TIMEZONE } from "$lib/mbta-types";
+import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 import { parseDate, DateFormatter } from "@internationalized/date";
@@ -25,7 +25,7 @@ if (showNightOwl) {
 
 {#each alerts as alert}
     {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
-    {@const route_id = alert.attributes.informed_entity[0].route /* TODO: show multiple routes */ }
+    {@const route_id = (alert as MbtaAlert).attributes.informed_entity.sort((a, b) => a.route.localeCompare(b.route))[0].route /* TODO: show multiple routes */ }
     {@const attributes = (routeMap.get(route_id) as any)?.attributes}
     {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
     {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}

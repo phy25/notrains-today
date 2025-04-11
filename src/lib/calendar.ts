@@ -53,7 +53,10 @@ export const expandAlertsToSingleRoute = (alerts: MbtaAlert[]) => {
         const uniqueRoutes = alert.attributes.informed_entity
             .filter(entity => entity.route)
             .map(entity => entity.route)
-            .filter((route, index, arr) => arr.indexOf(route) === index);
+            .filter((route, index, arr) => arr.indexOf(route) === index)
+            .sort((a, b) => {
+                return a.localeCompare(b);
+            });
         
         return uniqueRoutes.map(route => {
             return {
