@@ -30,7 +30,7 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
 </script>
 
 <div class="subway-route">
-    <span>
+    <div>
         <MbtaRouteBadge pillLabel={getPillName(mainRouteId, {})} type="long" color={color} textColor={textColor}></MbtaRouteBadge>
         {#if filterdAlerts.length == 0}
             <span>✅</span>
@@ -41,16 +41,16 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
         {:else}
             <span>{getAlertBadgeSecondarySymbol(filterdAlerts[0], currentServiceDate.toString())}</span>
         {/if}
-    </span>
+    </div>
 
     {#if filterdAlerts.length == 0}
-        <span class="no-alert-text">{m.no_alert()}</span>
+        <div class="no-alert-text">{m.no_alert()}</div>
     {:else if false && branchesAlerts.length}
-        <span class="has-alert-text">{m[Math.random() > 0.5 ? "mbta_alert_effect.ADDITIONAL_SERVICE" : "mbta_alert_effect.DELAY"]()}</span>
+        <div class="has-alert-text">{m[Math.random() > 0.5 ? "mbta_alert_effect.ADDITIONAL_SERVICE" : "mbta_alert_effect.DELAY"]()}</div>
     {:else if filterdAlerts.length > 1}
-        <span class="has-alert-text">{m.multiple_alerts({count: filterdAlerts.length})}</span>
+        <div class="has-alert-text">{m.multiple_alerts({count: filterdAlerts.length})}</div>
     {:else}
-        <span class="has-alert-text">{getEffect(filterdAlerts[0].attributes.effect)}</span>
+        <div class="has-alert-text">{getEffect(filterdAlerts[0].attributes.effect)}</div>
     {/if}
 </div>
 
@@ -63,6 +63,9 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
     align-content: baseline;
     align-items: flex-start;
     gap: 0.2em 0.1em;
+}
+.subway-route > div {
+    flex-grow: 1;
 }
 @media (max-width: 56rem) {
     .subway-route {

@@ -62,7 +62,7 @@ const alertsToday = data.alertsByDay.get(currentServiceDate.toString()) || [];
 <style>
 h1 {
     margin: 0.5em 0 0.7em;
-    line-height: 1em;
+    line-height: 1.2em;
     font-size: 1.1rem;
     font-weight: normal;
 }
