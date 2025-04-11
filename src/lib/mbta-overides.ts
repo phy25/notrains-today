@@ -1,4 +1,5 @@
 import { data as rawData } from '$lib/../data/mbta-overrides-alerts.json';
+import { withScope } from '@sentry/sveltekit';
 import type { MbtaAlert } from './mbta-types';
 
 interface OverrideInsertEntry {
@@ -49,6 +50,14 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
         .filter((alert: any) => {
             const removeEntry = removeEntryMap.get(alert.id);
             if (removeEntry) {
+                if (removeEntry.match_updated_at && removeEntry.match_updated_at !== alert.attributes.updated_at) {
+                    withScope(function (scope) {
+                        scope.setExtra('alert', alert);
+                        scope.captureMessage(
+                            "Alert not removed due to rule mismatch, rule has match_updated_at: " + removeEntry.match_updated_at,
+                            "warning");
+                    });
+                }
                 if (!removeEntry.match_updated_at || removeEntry.match_updated_at === alert.attributes.updated_at) {
                     console.log('Removing alert: ' + alert.id + ' with rule match_updated_at: ' + removeEntry.match_updated_at);
                     return false;
@@ -59,6 +68,14 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
         .map((alert: any) => {
             const replaceEntry = replaceEntryMap.get(alert.id);
             if (replaceEntry) {
+                if (replaceEntry.match_updated_at && replaceEntry.match_updated_at !== alert.attributes.updated_at) {
+                    withScope(function (scope) {
+                        scope.setExtra('alert', alert);
+                        scope.captureMessage(
+                            "Alert not replaced due to rule mismatch, rule has match_updated_at: " + replaceEntry.match_updated_at,
+                            "warning");
+                    });
+                }
                 if (!replaceEntry.match_updated_at || replaceEntry.match_updated_at === alert.attributes.updated_at) {
                     console.log('Replacing alert: ' + alert.id + ' with rule match_updated_at: ' + replaceEntry.match_updated_at);
                     return {
