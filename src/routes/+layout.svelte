@@ -19,12 +19,12 @@
 				}
 			});
 	};
-	const alerts_today_route_list = async () => {
+	const alerts_today_route_list = (async () => {
 		const { alertsByDay, routeMap } = await data.data_async();
 		return alertsToRouteRenderingList(
 			getProcessedAlertsAsSingleRoute(alertsByDay.get(data.current_service_date.toString()) || []),
 			routeMap);
-	};
+	})();
 	const alerts_future_route_list = async () => {
 		const { alertsByDay, routeMap } = await data.data_async();
 		let targetDate = data.current_service_date;
@@ -68,9 +68,11 @@
 <div class="tab-wrapper">
     <div class="tab {isDebug() && 'debug'}">
         <a class="tab-item {tab_id === 'today' && 'selected'}" href="./{route_type_url_param}">
-            <div class="tab-item-heading notranslate">notrains.today</div>
+            <div class="tab-item-heading notranslate">
+				notrains.today{#await alerts_today_route_list}?{:then list}{#if list.length == 0}?{/if}{/await}
+			</div>
             <div>
-				{#await alerts_today_route_list()}
+				{#await alerts_today_route_list}
 					<!-- loading -->
 				{:then alerts_today_route_list}
 					{#each alerts_today_route_list as route}
