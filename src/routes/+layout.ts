@@ -42,6 +42,48 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
             }
             const routeMap: Map<string, any> = new Map((json.included || [])
                 .filter((entity: any) => entity.type === 'route')
+                // add Green wihch does not always be included
+                .concat([
+                    {
+                        "attributes": {
+                            "color": "00843D",
+                            "description": "Rapid Transit",
+                            "direction_destinations": [
+                                "Westbound",
+                                "Eastbound"
+                            ],
+                            "direction_names": [
+                                "West",
+                                "East"
+                            ],
+                            "fare_class": "Rapid Transit",
+                            "long_name": "Green Line",
+                            "short_name": "",
+                            "sort_order": 10032,
+                            "text_color": "FFFFFF",
+                            "type": 0
+                        },
+                        "id": "Green",
+                        "links": {
+                            "self": "/routes/Green"
+                        },
+                        "relationships": {
+                            "agency": {
+                                "data": {
+                                    "id": "1",
+                                    "type": "agency"
+                                }
+                            },
+                            "line": {
+                                "data": {
+                                    "id": "line-Green",
+                                    "type": "line"
+                                }
+                            }
+                        },
+                        "type": "route"
+                    }
+                ])
                 .map((route: any) => [route.id, route]));
             const overridenData = overrideAlerts(json.data || []);
             const alertsByDay = getAlertsAsDays(overridenData, routeMap);

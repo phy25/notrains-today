@@ -92,7 +92,7 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString:
     if (uniqueRoutes.length > 1) {
         return '…';
     }
-    
+
     // if informed entities includes a stop, attempt to determine direction
     if (alert.attributes.informed_entity.find((entity) => entity.stop)) {
         // red line alerts do not have branch information through route_pattern, determine branch
@@ -116,7 +116,7 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString:
         if (alert.attributes.effect === 'STOP_CLOSURE') {
             return '↷' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
         }
-        
+
         // TODO: determine direction for general cases
         return '•' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
     }
@@ -137,8 +137,8 @@ export const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayStr
     const serviceDay = parseDate(serviceDayString);
 
     const periodStartingAtCurrentDay = alert.attributes.active_period.filter((period => {
-        const startTime = parseZonedDateTime(period.start + '['+ MBTA_TIMEZONE + ']');
-        const endTime = parseZonedDateTime(period.end  + '['+ MBTA_TIMEZONE + ']');
+        const startTime = parseZonedDateTime(period.start + '[' + MBTA_TIMEZONE + ']');
+        const endTime = parseZonedDateTime(period.end + '[' + MBTA_TIMEZONE + ']');
         return toCalendarDate(startTime).compare(serviceDay) == 0 && serviceDay.compare(toCalendarDate(endTime)) <= 0;
     }));
     if (periodStartingAtCurrentDay.length === 0) {
@@ -225,8 +225,8 @@ const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
 const getAlertBadgeSecondarySymbolForBlueLine = (alert: MbtaAlert) => {
     // single stop, Bowdoin TODO this needs to be more generalized
     if (alert.attributes.informed_entity
-            .filter(entity => entity.stop && entity.stop.startsWith('place-'))
-            .every(entity => entity.stop === 'place-bomnl')) {
+        .filter(entity => entity.stop && entity.stop.startsWith('place-'))
+        .every(entity => entity.stop === 'place-bomnl')) {
         return '◤';
     }
     return '•';
@@ -240,7 +240,7 @@ const GREEN_LINE_GLX_E_SEGMENT_STOP_IDS = [
     'place-balsq',
     'place-mgngl',
     'place-gilmn',
-    'place-esomr'    
+    'place-esomr'
 ];
 const GREEN_LINE_DE_SHARED_SEGMENT_STOP_IDS = [
     'place-lech',
@@ -301,16 +301,46 @@ const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
     return '•';
 }
 
+const alertHasAllGreenLineBranches = (alert: MbtaAlert) => {
+    return alert.attributes.informed_entity.every(entity =>
+        entity.route && entity.route.startsWith('Green') && !entity.stop)
+        && alert.attributes.informed_entity
+            .filter(entity => entity.route && entity.route.startsWith('Green-') && !entity.stop)
+            .length == 4;
+}
+
 /**
- * This method is currently an no-op. Green line and red line have inconsistent treatment
- * even though they both have branches. Green line routes have branch variants. Red line does not.
+ * Merge alerts that affect all branches of a line without a specific station impact.
+ * Green line and red line have inconsistent treatments even though they both have branches.
+ * Green line routes have branch variants. Red line does not.
  * Ideally we should split red line routes but we need to patch routeMap as well.
  * Right now we leave them as is. Red will be a unified route. Green will be separate routes.
  */
 export const isSplitBranchRouteAlert = (alert: MbtaAlert) => {
-    return false;
+    return alertHasAllGreenLineBranches(alert);
 }
 
 export const mergeSplitBranchRouteAlerts = (alerts: MbtaAlert[]) => {
-    return alerts;
+    return alerts.map(alert => {
+        // Merge Green
+        if (alertHasAllGreenLineBranches(alert)) {
+            let new_informed_entities = alert.attributes.informed_entity
+                .filter(entity => entity.route && !entity.route.startsWith('Green-'));
+            if (new_informed_entities.filter(entity => entity.route === 'Green').length == 0) {
+                new_informed_entities.push({
+                    ...alert.attributes.informed_entity[0],
+                    route: 'Green',
+                });
+            }
+            return {
+                ...alert,
+                attributes: {
+                    ...alert.attributes,
+                    informed_entity: new_informed_entities,
+                }
+            };
+        }
+
+        return alert;
+    });
 }

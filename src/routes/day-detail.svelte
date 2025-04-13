@@ -1,7 +1,6 @@
 <script lang="ts">
 import { getDateString, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
 import { EFFECT_MESSAGES, getEffectWithLineMessage, getPillName } from "$lib/mbta-display";
-import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";

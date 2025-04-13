@@ -50,8 +50,9 @@ const hasShortTermImpact = (alert: MbtaAlert) => {
 
 export const getProcessedAlertsAsSingleRoute = (alerts: MbtaAlert[]) => {
     const processedAlertsWithBranches = mergeSplitBranchRouteAlerts(alerts.filter(isSplitBranchRouteAlert));
-    return expandAlertsToSingleRoute(alerts.filter(alert => !isSplitBranchRouteAlert(alert)))
-        .concat(processedAlertsWithBranches);
+    // TODO: need to handle this more upstream so that it doesn't break sorting
+    return processedAlertsWithBranches.concat(
+        expandAlertsToSingleRoute(alerts.filter(alert => !isSplitBranchRouteAlert(alert))));
 }
 
 export const expandAlertsToSingleRoute = (alerts: MbtaAlert[]) => {

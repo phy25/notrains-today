@@ -1,12 +1,11 @@
 <script lang="ts">	
 	import { isDebug } from '$lib/common';
-	import { getPillName } from '$lib/mbta-display';
-	import MbtaRouteBadge from '$lib/mbta-route-badge.svelte';
 	import { QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
 	import { getFeedback } from '@sentry/sveltekit';
 	import type { LayoutProps } from './$types';
 	import MbtaRouteBadgeCompound from '$lib/mbta-route-badge-compound.svelte';
+	import { getProcessedAlertsAsSingleRoute } from '$lib/calendar';
 
 	const { data, children }: LayoutProps = $props();
 	const alertsToRouteRenderingList = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
@@ -22,7 +21,9 @@
 	};
 	const alerts_today_route_list = async () => {
 		const { alertsByDay, routeMap } = await data.data_async();
-		return alertsToRouteRenderingList(alertsByDay.get(data.current_service_date.toString()) || [], routeMap);
+		return alertsToRouteRenderingList(
+			getProcessedAlertsAsSingleRoute(alertsByDay.get(data.current_service_date.toString()) || []),
+			routeMap);
 	};
 	const alerts_future_route_list = async () => {
 		const { alertsByDay, routeMap } = await data.data_async();
@@ -34,7 +35,9 @@
 				break;
 			}
 		}
-		return alertsToRouteRenderingList(alertsByDay.get(targetDate.toString()) || [], routeMap);
+		return alertsToRouteRenderingList(
+			getProcessedAlertsAsSingleRoute(alertsByDay.get(targetDate.toString()) || []),
+			routeMap);
 	};
 	const tab_id = $derived.by(() => {
 		if (data.route_id === '/calendar') {

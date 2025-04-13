@@ -6,7 +6,7 @@ import CalendarOneweek from "./calendar-oneweek.svelte";
 import DayDetail from "./day-detail.svelte";
 import DebugAllAlerts from "./debug-all-alerts.svelte";
 import Glance from "./glance.svelte";
-import { MBTA_SERVICE_START_HOUR } from "$lib/calendar";
+import { getProcessedAlertsAsSingleRoute, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
 
 const { data, currentServiceDate, isCurrentServiceNightOwl } = $props();
 
@@ -17,7 +17,7 @@ const notrains_today_text_array = $derived((notrains_today? m.trains_running_som
 const endOfWeekDate = $derived(endOfWeek(currentServiceDate, getLocale()));
 const lookingAheadDateValue = $derived(currentServiceDate.compare(endOfWeekDate) < 0 ? currentServiceDate : endOfWeekDate.add({ days: 1 }));
 
-const alertsToday = data.alertsByDay.get(currentServiceDate.toString()) || [];
+const alertsToday = getProcessedAlertsAsSingleRoute(data.alertsByDay.get(currentServiceDate.toString()) || []);
 </script>
 
 <h1>
