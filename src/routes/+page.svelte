@@ -15,7 +15,7 @@
         isOutdated = false;
         setTimeout(() => {
             isOutdated = true;
-        }, 1000 * 60 * 5);
+        }, 1000 * 60 * 30);
     });
 </script>
 
