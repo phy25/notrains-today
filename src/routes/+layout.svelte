@@ -53,7 +53,7 @@
 			location.href = '/about?debug';
 		}
 	};
-	let feedbackBtnDom: HTMLAnchorElement;
+	let feedbackBtnDom: HTMLButtonElement;
 	$effect(() => {
 		if (feedbackBtnDom) {
 			const feedback = getFeedback();
@@ -119,7 +119,10 @@
 
 		<!-- svelte-ignore a11y_click_events_have_key_events -->
 		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-		<p onclick={trackDebugClicks}><span class="notranslate">☺ notrains.today</span> <a href="/about">{m.footer_about()}</a> <a bind:this={feedbackBtnDom} href=".">{m.footer_feedback()}</a></p>
+		<p onclick={trackDebugClicks}>
+			<span class="notranslate">☺ notrains.today</span>
+			<a href="/about">{m.footer_about()}</a>
+			<button bind:this={feedbackBtnDom} type="button" class="link" onclick={(event)=>{(event.target as HTMLButtonElement).blur();/* get autofocus in the sentry dialog working */return false;}}>{m.footer_feedback()}</button></p>
 	</footer>
 </div>
 
@@ -134,13 +137,21 @@
 		--page-content-max-width: 56rem;
 		--page-content-min-width: 18rem;
 	}
-	a {
+	a, button.link {
 		color: #195581;
 	}
 	@media (prefers-color-scheme: dark) {
-		a {
+		a, button.link {
 			color: #A0C4FF;
 		}
+	}
+	button.link {
+		text-decoration: underline;
+		border: none;
+		background: transparent;
+		font-size: 1em;
+    	padding: 0;
+		cursor: pointer;
 	}
 	.page-content {
 		margin: 0 auto;
