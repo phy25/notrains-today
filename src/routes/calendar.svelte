@@ -158,7 +158,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
   top: 0;
   left: 0;
   width: 100%;
-  background: #fff;
+  background: var(--background-color);
   box-sizing: border-box;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px;
 }
