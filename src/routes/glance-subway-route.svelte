@@ -63,9 +63,6 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
     align-items: flex-start;
     gap: 0.2em 0.1em;
 }
-.subway-route > div {
-    flex-grow: 1;
-}
 @media (max-width: 56rem) {
     .subway-route {
         flex-direction: column;
