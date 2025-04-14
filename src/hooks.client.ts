@@ -1,4 +1,5 @@
 import { dev } from '$app/environment';
+import { getLocale, overwriteGetLocale } from '$lib/paraglide/runtime';
 import { handleErrorWithSentry } from '@sentry/sveltekit';
 import * as Sentry from '@sentry/sveltekit';
 
@@ -15,3 +16,27 @@ Sentry.init({
 
 // If you have a custom error handler, pass it to `handleErrorWithSentry`
 export const handleError = handleErrorWithSentry();
+
+// Patch client-side locale
+const _getLocale = getLocale;
+
+const originalLanguages = window.navigator.languages;
+let inGetLocale = false;
+
+Object.defineProperty(navigator, 'languages', {
+	get: function() {
+	  return inGetLocale ? originalLanguages.map(l => {
+		if (l.toLowerCase().startsWith('zh-cn')) {
+			return 'zh-Hans';
+		}
+		return l;
+	  }) : originalLanguages;
+	}
+});
+
+overwriteGetLocale(() => {
+	inGetLocale = true;
+	const locale = _getLocale();
+	inGetLocale = false;
+	return locale;
+})

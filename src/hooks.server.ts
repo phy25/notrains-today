@@ -17,8 +17,23 @@ const OPEN_GRAPH_TITLE_MAPPING: Record<string, string> = {
 };
 
 // creating a handle to use the paraglide middleware and other stuff
-const paraglideHandle: Handle = ({ event, resolve }) =>
-	paraglideMiddleware(event.request, ({ request: localizedRequest, locale }) => {
+const paraglideHandle: Handle = ({ event, resolve }) => {
+	// patch Accept-Language header
+	if (event.request.headers.has('accept-language')) {
+		const acceptLanguage = event.request.headers.get('accept-language');
+		if (acceptLanguage) {
+			const languages = acceptLanguage.split(',').map((lang) => {
+				const langFields = lang.split(';');
+				if (langFields[0].toLowerCase().startsWith('zh-cn')) {
+					return ['zh-Hans'].concat(langFields.slice(1)).join(';');
+				}
+				return lang;
+			});
+			event.request.headers.set('accept-language', languages.join(','));
+		}
+	}
+	// use the paraglide middleware
+	return paraglideMiddleware(event.request, ({ request: localizedRequest, locale }) => {
 		event.request = localizedRequest;
 		return resolve(event, {
 			transformPageChunk: ({ html }) => {
@@ -27,7 +42,8 @@ const paraglideHandle: Handle = ({ event, resolve }) =>
 					.replace('%og.title%', OPEN_GRAPH_TITLE_MAPPING[event.route.id || ''] || OPEN_GRAPH_TITLE_MAPPING['']);
 			}
 		});
-	});
+	})
+};
 
 export const handle: Handle = sequence(Sentry.sentryHandle(), paraglideHandle);
 export const handleError = Sentry.handleErrorWithSentry();
