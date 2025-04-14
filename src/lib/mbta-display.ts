@@ -9,6 +9,7 @@ export const EFFECT_MESSAGES = {
     'STATION_ISSUE': m['mbta_alert_effect.STATION_ISSUE'],
     'SERVICE_CHANGE': m['mbta_alert_effect.SERVICE_CHANGE'],
     'ADDITIONAL_SERVICE': m['mbta_alert_effect.ADDITIONAL_SERVICE'],
+    'TRACK_CHANGE': m['mbta_alert_effect.TRACK_CHANGE'],
 };
 
 export const EFFECT_WITH_LINE_MESSAGES: Record<string, (args: { line: string }) => string> = {

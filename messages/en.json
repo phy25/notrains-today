@@ -13,7 +13,8 @@
         "STATION_CLOSURE": "Station Closure",
         "STATION_ISSUE": "Station Issue",
         "SERVICE_CHANGE": "Service Change",
-        "ADDITIONAL_SERVICE": "Additional Service"
+        "ADDITIONAL_SERVICE": "Additional Service",
+        "TRACK_CHANGE": "Track Change"
     },
     "mbta_alert_effect_with_line_default": "{line} {effect}",
     "mbta_lines_name": {
