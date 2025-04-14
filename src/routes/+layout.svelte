@@ -6,6 +6,7 @@
 	import type { LayoutProps } from './$types';
 	import MbtaRouteBadgeCompound from '$lib/mbta-route-badge-compound.svelte';
 	import { getProcessedAlertsAsSingleRoute } from '$lib/calendar';
+	import { afterNavigate } from '$app/navigation';
 
 	const { data, children }: LayoutProps = $props();
 	const alertsToRouteRenderingList = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
@@ -53,6 +54,9 @@
 			location.href = '/about?debug';
 		}
 	};
+	afterNavigate(() => {
+		debugClickTimes = 0;
+	});
 	let feedbackBtnDom: HTMLButtonElement;
 	$effect(() => {
 		if (feedbackBtnDom) {
