@@ -25,7 +25,9 @@
     </Alert>
 {/if}
 
-{#await data.data_async() then d}
+{#await data.data_async()}
+    <p>{m.loading()}</p>
+{:then d}
 	<PageAsync
 		data={d}
 		currentServiceDate={data.current_service_date}
