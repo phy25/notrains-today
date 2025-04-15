@@ -303,11 +303,16 @@ const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
 }
 
 const alertHasAllGreenLineBranches = (alert: MbtaAlert) => {
-    return alert.attributes.informed_entity.every(entity =>
-        entity.route && entity.route.startsWith('Green') && !entity.stop)
-        && alert.attributes.informed_entity
-            .filter(entity => entity.route && entity.route.startsWith('Green-') && !entity.stop)
-            .length == 4;
+    if (alert.attributes.informed_entity.every(entity => entity.route && entity.route.startsWith('Green'))) {
+        const branches = ['B', 'C', 'D', 'E'];
+        const perBranchCount = branches
+            .map(branch => alert.attributes.informed_entity.filter(
+                entity => entity.route && entity.route === 'Green-' + branch).length)
+            .reduce((prev, curr) => prev === curr ? curr : -1);
+        return (alert.attributes.informed_entity.length === perBranchCount * branches.length)
+            || (alert.attributes.informed_entity.length === perBranchCount * (branches.length + 1));
+    }
+    return false;
 }
 
 /**
@@ -328,10 +333,14 @@ export const mergeSplitBranchRouteAlerts = (alerts: MbtaAlert[]) => {
             let new_informed_entities = alert.attributes.informed_entity
                 .filter(entity => entity.route && !entity.route.startsWith('Green-'));
             if (new_informed_entities.filter(entity => entity.route === 'Green').length == 0) {
-                new_informed_entities.push({
-                    ...alert.attributes.informed_entity[0],
-                    route: 'Green',
-                });
+                alert.attributes.informed_entity
+                    .filter(entity => entity.route === 'Green-B')
+                    .map(entity => new_informed_entities.push(
+                        {
+                            ...entity,
+                            route: 'Green',
+                        }
+                    ));
             }
             return {
                 ...alert,
