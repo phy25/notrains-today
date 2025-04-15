@@ -66,7 +66,7 @@
             class="rounded-9px text-foreground hover:border-foreground data-selected:bg-foreground data-disabled:text-foreground/30 data-selected:text-background data-unavailable:text-muted-foreground data-disabled:pointer-events-none data-outside-month:pointer-events-none data-selected:font-medium data-unavailable:line-through group relative inline-flex size-10 items-center justify-center whitespace-nowrap border border-transparent bg-transparent p-0 text-sm font-normal"
             >
                 {#snippet child({ props })}
-                    <a {...props} class="calendar-day {routeAlertsCount.size > 5 ? 'calendar-day--many-alerts' : ''}" href={(linkToCalendar && currentServiceDate.compare(date) !== 0 && props['data-disabled'] !== '') ? `/calendar${route_type_url_param}#date=${dateString}` : undefined}>
+                    <a {...props} class="calendar-day {routeAlertsCount.size > 5 ? 'calendar-day--many-alerts' : ''} {routeAlertsCount.size > 10 ? 'calendar-day--too-many-alerts' : ''}" href={(linkToCalendar && currentServiceDate.compare(date) !== 0 && props['data-disabled'] !== '') ? `/calendar${route_type_url_param}#date=${dateString}` : undefined}>
                         <div class="day-row">
                             <div class="day notranslate">{date.day}</div>
                             <div class="weekday">{weekday}</div>
@@ -149,7 +149,12 @@
     vertical-align: middle;
     display: inline-block;
 }
-.calendar-day.calendar-day--many-alerts .badge-secondary-symbol {
+@media (max-width: 40rem) {
+    .calendar-day.calendar-day--many-alerts .badge-secondary-symbol {
+        display: none;
+    }
+}
+.calendar-day.calendar-day--too-many-alerts .badge-secondary-symbol {
     display: none;
 }
 </style>
