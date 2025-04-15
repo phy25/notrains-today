@@ -41,6 +41,8 @@ export const QUERY_ROUTE_TYPE_MAPPING: Record<string, string> = {
     'ferry': '4',
 };
 
+export const DEFAULT_QUERY_ROUTE_TYPE = 'subway';
+
 export const MBTA_TIMEZONE = 'America/New_York';
 
 // To make the final train connections of the night, get to core downtown stations by

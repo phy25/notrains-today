@@ -2,7 +2,7 @@ export const prerender = true;
 export const ssr = false;
 
 import { filterHighPriorityAlerts, overrideAlerts } from '$lib/mbta-overides';
-import { MBTA_TIMEZONE, QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
+import { DEFAULT_QUERY_ROUTE_TYPE, MBTA_TIMEZONE, QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
 import type { LayoutLoad } from './$types';
 import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
 import { now, parseDate, toCalendarDate } from "@internationalized/date";
@@ -14,7 +14,7 @@ let data_async_hash: string | null = null;
 export const load: LayoutLoad = ({ route, fetch, url }) => {
     // parse route_type from query string in browser
     const query_route_type = url.searchParams.get('route_type');
-    let route_type = 'subway';
+    let route_type = DEFAULT_QUERY_ROUTE_TYPE;
     if (query_route_type && (query_route_type in QUERY_ROUTE_TYPE_MAPPING)) {
         route_type = query_route_type;
     }

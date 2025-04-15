@@ -2,6 +2,7 @@ import type { MbtaAlert } from "./mbta-types";
 import { isSplitBranchRouteAlert, mergeSplitBranchRouteAlerts } from "./mbta-display";
 
 export const MBTA_SERVICE_START_HOUR = 3;
+// to be deprecated with a Time object
 // usually, end time is 2:59 and start time is 3:00
 // we have also seen buses service hour on 3:30
 

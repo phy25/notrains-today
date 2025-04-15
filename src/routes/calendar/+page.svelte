@@ -24,7 +24,7 @@ const dayDefault = (() => {
       const parsed = parseDate(params.get('date') || '');
       if (isValidDate(parsed)) {
         // get rid of the parameter in the URL
-        history.replaceState(history.state, '', './calendar');
+        history.replaceState(history.state, '', window.location.pathname + window.location.search);
         setTimeout(() => {calendarComponent?.scrollToDayDetail();}, 0);
         return parsed;
       }

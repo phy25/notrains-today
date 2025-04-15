@@ -1,6 +1,6 @@
 <script lang="ts">	
 	import { isDebug } from '$lib/common';
-	import { QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
+	import { DEFAULT_QUERY_ROUTE_TYPE, QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
 	import { getFeedback } from '@sentry/sveltekit';
 	import type { LayoutProps } from './$types';
@@ -66,7 +66,7 @@
 			});
 		}
 	});
-	const route_type_url_param = $derived(data.route_type !== 'subway' ? ('?route_type=' + data.route_type) : '');
+	const route_type_url_param = $derived(data.route_type !== DEFAULT_QUERY_ROUTE_TYPE ? ('?route_type=' + data.route_type) : '');
 </script>
 
 <div class="tab-wrapper">
