@@ -139,6 +139,9 @@
         background-color: #333;
     }
 }
+.calendar-day[data-disabled] {
+    color: #888;
+}
 .badge-secondary-symbol {
     font-family: math, sans-serif;
     vertical-align: middle;
