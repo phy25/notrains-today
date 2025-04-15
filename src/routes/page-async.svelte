@@ -23,7 +23,11 @@ const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString())
     {/each}
 </h1>
 
-<Glance alertsToday={getProcessedAlertsAsSingleRoute(alertsToday || [])} currentServiceDate={currentServiceDate}></Glance>
+<Glance
+    alertsToday={getProcessedAlertsAsSingleRoute(alertsToday || [])}
+    currentServiceDate={currentServiceDate}
+    isCurrentServiceNightOwl={isCurrentServiceNightOwl}
+/>
 
 {#if alertsToday}
 <DayDetail

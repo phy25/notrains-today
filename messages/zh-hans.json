@@ -8,6 +8,8 @@
     "mbta_abbreviation": "MBTA",
     "no_alert": "服务正常",
     "multiple_alerts": "{count} 个异常",
+    "no_downtown_transfer": "无市中心换乘",
+    "no_downtown_transfer_description": "如需在市中心进行地铁换乘，请在 {time} 前到达。",
     "mbta_alert_effect": {
         "DELAY": "延误",
         "SHUTTLE": "摆渡车",
@@ -26,6 +28,7 @@
         "Red": "红线",
         "bus_route": "{route}路"
     },
+    "learn_more": "详情",
     "learn_more_at": "详情：",
     "alert": "通知",
     "important_notes": "重要提示",

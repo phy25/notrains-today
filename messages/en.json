@@ -8,6 +8,8 @@
     "loading": "Loading…",
     "no_alert": "All good",
     "multiple_alerts": "{count} alerts",
+    "no_downtown_transfer": "No downtown transfer",
+    "no_downtown_transfer_description": "Downtown subway transfer is not guaranteed after {time}. ",
     "mbta_alert_effect": {
         "DELAY": "Delay",
         "SHUTTLE": "Shuttle",
@@ -26,6 +28,7 @@
         "Red": "Red Line",
         "bus_route": "{route} Bus"
     },
+    "learn_more": "Learn more",
     "learn_more_at": "Learn more: ",
     "alert": "Alert",
     "important_notes": "Important notes",

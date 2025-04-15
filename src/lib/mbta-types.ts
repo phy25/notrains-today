@@ -1,3 +1,5 @@
+import {Time} from '@internationalized/date';
+
 export interface MbtaAlert {
     attributes: {
         active_period: { end: string; start: string }[];
@@ -40,3 +42,6 @@ export const QUERY_ROUTE_TYPE_MAPPING: Record<string, string> = {
 };
 
 export const MBTA_TIMEZONE = 'America/New_York';
+
+// To make the final train connections of the night, get to core downtown stations by
+export const MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME = new Time(0, 35);

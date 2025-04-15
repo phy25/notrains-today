@@ -1,10 +1,10 @@
 <script lang="ts">
 import { getAlertBadgeSecondarySymbol, getEffect, getLineName, getPillName } from "$lib/mbta-display";
 import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
-import type { MbtaAlert } from "$lib/mbta-types";
+import { type MbtaAlert } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
 
-const { mainRouteId, color, textColor, branchRouteIds = [], unfilteredAlerts, currentServiceDate } = $props();
+const { mainRouteId, color, textColor, branchRouteIds = [], unfilteredAlerts, currentServiceDate, noDowntownTransfer } = $props();
 const filterdAlerts: MbtaAlert[] = $derived(unfilteredAlerts.filter((alert: MbtaAlert) =>
     alert.attributes.informed_entity.some(entity => entity.route === mainRouteId || branchRouteIds.includes(entity.route))
 ));
@@ -33,7 +33,11 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
     <div>
         <MbtaRouteBadge pillLabel={getPillName(mainRouteId, {})} type="long" color={color} textColor={textColor} fullName={getLineName(mainRouteId)}></MbtaRouteBadge>
         {#if filterdAlerts.length == 0}
-            <span>✅</span>
+            {#if noDowntownTransfer}
+                <span>🌙︎</span>
+            {:else}
+                <span>✅</span>
+            {/if}
         {:else if false && branchesAlerts.length}
             <span>◤</span>
         {:else if filterdAlerts.length > 1}
