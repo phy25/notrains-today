@@ -6,6 +6,7 @@ let {
     dayValue = $bindable(),
     onValueChange = undefined,
     weekdayFormat = undefined,
+    weekStartsOn = undefined,
     minValue,
     maxValue,
     locale,
@@ -18,6 +19,7 @@ let {
 
 <Calendar.Root
     disableDaysOutsideMonth={false}
+    weekStartsOn={weekStartsOn}
     weekdayFormat={weekdayFormat}
     type="single"
     bind:value={dayValue}

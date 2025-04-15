@@ -1,7 +1,7 @@
 <script lang="ts">
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
-import { endOfWeek } from '@internationalized/date';
+import { endOfWeek, getDayOfWeek } from '@internationalized/date';
 import CalendarOneweek from "./calendar-oneweek.svelte";
 import DayDetail from "./day-detail.svelte";
 import DebugAllAlerts from "./debug-all-alerts.svelte";
@@ -15,7 +15,6 @@ const MBTA_PLACEHOLDER = '%%MBTA%%';
 const notrains_today_text_array = $derived((notrains_today? m.trains_running_some({MBTA: MBTA_PLACEHOLDER}) : m.trains_running_all({MBTA: MBTA_PLACEHOLDER})).split(MBTA_PLACEHOLDER) || []);
 
 const endOfWeekDate = $derived(endOfWeek(currentServiceDate, getLocale()));
-const lookingAheadDateValue = $derived(currentServiceDate.compare(endOfWeekDate) < 0 ? currentServiceDate : endOfWeekDate.add({ days: 1 }));
 
 const alertsToday = getProcessedAlertsAsSingleRoute(data.alertsByDay.get(currentServiceDate.toString()) || []);
 </script>
@@ -43,9 +42,10 @@ const alertsToday = getProcessedAlertsAsSingleRoute(data.alertsByDay.get(current
 <h2>{m.today_looking_ahead()}</h2>
 
 <CalendarOneweek
-    dayValue={lookingAheadDateValue}
+    dayValue={currentServiceDate}
     minValue={currentServiceDate}
     maxValue={currentServiceDate.add({ weeks: 1 })}
+    weekStartsOn={getDayOfWeek(currentServiceDate, getLocale(), 'sun')}
     weekdayFormat="short"
     alertsByDay={data.alertsByDay}
     routeMap={data.routeMap}
