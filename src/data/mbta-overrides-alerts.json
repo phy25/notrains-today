@@ -65,6 +65,33 @@
                 "Green-B",
                 "Green-C"
             ]
+        },
+        {
+            "type": "replace",
+            "match_id": "636891",
+            "note": "Outbound train does not impact shared routes",
+            "item": {
+                "attributes": {
+                    "informed_entity":[
+                        {"stop":"NEC-1969-03","direction_id":0,"route_type":2,"route":"CR-Providence","activities":["BOARD"],"trip":"SPRING2025V2-715954-893"},
+                        {"stop":"place-NEC-1969","direction_id":0,"route_type":2,"route":"CR-Providence","activities":["BOARD"],"trip":"SPRING2025V2-715954-893"}
+                    ]
+                }
+            }
+        },
+        {
+            "type": "replace",
+            "match_id": "636893",
+            "match_updated_at": "2025-04-14T00:00:20-04:00",
+            "note": "Outbound train does not impact shared routes",
+            "item": {
+                "attributes": {
+                    "informed_entity":[
+                        {"stop":"NEC-1969-03","direction_id":0,"route_type":2,"route":"CR-Providence","activities":["BOARD"],"trip":"SPRING2025V3-716195-5893"},
+                        {"stop":"place-NEC-1969","direction_id":0,"route_type":2,"route":"CR-Providence","activities":["BOARD"],"trip":"SPRING2025V3-716195-5893"}
+                    ]
+                }
+            }
         }
     ]
 }
