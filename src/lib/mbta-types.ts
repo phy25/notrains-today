@@ -32,6 +32,7 @@ export interface MbtaAlert {
 }
 
 export const QUERY_ROUTE_TYPE_MAPPING: Record<string, string> = {
+    'trains': '0,1,2',
     'subway': '0,1',
     'bus': '3',
     'commuter-rail': '2',
