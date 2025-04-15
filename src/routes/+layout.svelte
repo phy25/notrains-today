@@ -116,7 +116,7 @@
 		{#if isDebug()}
 		<p>
 			{#each Object.keys(QUERY_ROUTE_TYPE_MAPPING) as type}
-				<a href="/?route_type={type}">{type}</a>{' '}
+				<a href="?route_type={type}">{type}</a>{' '}
 			{/each}
 		</p>
 		{/if}
