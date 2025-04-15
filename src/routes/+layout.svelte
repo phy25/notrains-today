@@ -20,12 +20,12 @@
 				}
 			});
 	};
-	const alerts_today_route_list = (async () => {
+	const alerts_today_route_list = $derived((async () => {
 		const { alertsByDay, routeMap } = await data.data_async();
 		return alertsToRouteRenderingList(
 			getProcessedAlertsAsSingleRoute(alertsByDay.get(data.current_service_date.toString()) || []),
 			routeMap);
-	})();
+	})());
 	const alerts_future_route_list = async () => {
 		const { alertsByDay, routeMap } = await data.data_async();
 		let targetDate = data.current_service_date;
