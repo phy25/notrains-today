@@ -86,7 +86,7 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
                 ])
                 .map((route: any) => [route.id, route]));
             const overridenData = overrideAlerts(json.data || []);
-            const alertsByDay = getAlertsAsDays(overridenData, routeMap);
+            const alertsByDay = getAlertsAsDays(filterHighPriorityAlerts(overridenData), routeMap);
             data_async_data = {
                 data: filterHighPriorityAlerts(overridenData),
                 alertsByDay,

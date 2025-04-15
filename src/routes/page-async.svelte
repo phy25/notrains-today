@@ -1,7 +1,7 @@
 <script lang="ts">
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
-import { endOfWeek, getDayOfWeek } from '@internationalized/date';
+import { getDayOfWeek } from '@internationalized/date';
 import CalendarOneweek from "./calendar-oneweek.svelte";
 import DayDetail from "./day-detail.svelte";
 import DebugAllAlerts from "./debug-all-alerts.svelte";
