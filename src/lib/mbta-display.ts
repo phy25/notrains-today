@@ -81,7 +81,7 @@ export const getEffect = (effect: string) => {
     return effectRawDisplayFormat(effect);
 }
 
-export const getLineName = (line: string) => {
+export const getLineName = (line: string, route_attributes?: any) => {
     if (line in LINE_NAMES) {
         return LINE_NAMES[line as keyof typeof LINE_NAMES];
     }
@@ -89,6 +89,9 @@ export const getLineName = (line: string) => {
         return m['mbta_lines_name.bus_route']({ route: line });
     }
     // TODO: fall back to use official name; ID should not be displayed in general
+    if (route_attributes?.long_name) {
+        return route_attributes?.long_name;
+    }
     return line;
 }
 

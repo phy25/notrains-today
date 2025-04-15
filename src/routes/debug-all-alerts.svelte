@@ -1,6 +1,6 @@
 <script lang="ts">
 import { isDebug } from "$lib/common";
-import { getPillName, getEffectWithLineMessage } from "$lib/mbta-display";
+import { getPillName, getEffectWithLineMessage, getLineName } from "$lib/mbta-display";
 import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 import { m } from "$lib/paraglide/messages";
 
@@ -18,7 +18,7 @@ const {data, routeMap} = $props();
             {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
             {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
             <div>
-                <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
+                <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} fullName={getLineName(route_id, attributes)} />
                 <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
                 {alert.id} {alert.attributes.short_header}
             </div>

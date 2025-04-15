@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { getPillName } from "./mbta-display";
+	import { getLineName, getPillName } from "./mbta-display";
 	import MbtaRouteBadge from "./mbta-route-badge.svelte";
 
 const { routeId, routeAttributes, type = 'auto' } = $props();
+
+const fullName = getLineName(routeId, routeAttributes);
 
 const [firstPillLabel, compoundSecondPillLabel] = $derived.by(() => {
     if (routeId.startsWith('Green-')) {
@@ -22,12 +24,12 @@ const textColor = $derived((routeAttributes?.text_color) ? '#' + routeAttributes
 </script>
 
 {#if compoundSecondPillLabel}
-<div class="badge-group">
+<div class="badge-group" title={fullName} aria-label={fullName}>
     <MbtaRouteBadge pillLabel={firstPillLabel} {color} {textColor} type="long" />
     <MbtaRouteBadge pillLabel={compoundSecondPillLabel} {color} {textColor} type="secondary" />
 </div>
 {:else}
-<MbtaRouteBadge pillLabel={firstPillLabel} {color} {textColor} {type} />
+<MbtaRouteBadge pillLabel={firstPillLabel} {color} {textColor} {type} fullName={fullName} />
 {/if}
 
 <style>

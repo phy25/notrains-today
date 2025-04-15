@@ -1,5 +1,5 @@
 <script lang="ts">
-import { getAlertBadgeSecondarySymbol, getEffect, getPillName } from "$lib/mbta-display";
+import { getAlertBadgeSecondarySymbol, getEffect, getLineName, getPillName } from "$lib/mbta-display";
 import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 import type { MbtaAlert } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
@@ -31,7 +31,7 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
 
 <div class="subway-route">
     <div>
-        <MbtaRouteBadge pillLabel={getPillName(mainRouteId, {})} type="long" color={color} textColor={textColor}></MbtaRouteBadge>
+        <MbtaRouteBadge pillLabel={getPillName(mainRouteId, {})} type="long" color={color} textColor={textColor} fullName={getLineName(mainRouteId)}></MbtaRouteBadge>
         {#if filterdAlerts.length == 0}
             <span>✅</span>
         {:else if false && branchesAlerts.length}

@@ -1,7 +1,5 @@
 <script lang="ts">
-    const { pillLabel, color, textColor, type = 'auto' } = $props();
-
-    let fullName = 'Red line';
+    const { pillLabel, color, textColor, type = 'auto', fullName = undefined } = $props();
 </script>
 
 {#if pillLabel.length < 3 && type !== 'long'}

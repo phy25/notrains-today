@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Calendar } from "bits-ui";
     import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
-    import { getAlertBadgeSecondarySymbol, getPillName } from "$lib/mbta-display";
+    import { getAlertBadgeSecondarySymbol, getLineName, getPillName } from "$lib/mbta-display";
 	import type { MbtaAlert } from "$lib/mbta-types";
     import type { DateValue } from "@internationalized/date";
 	import { getProcessedAlertsAsSingleRoute } from "$lib/calendar";
@@ -79,7 +79,7 @@
                                 {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
                                 {@const severityAsOpacity = 1}
                                 <div class="badge-group">
-                                    <MbtaRouteBadge type="auto" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} />
+                                    <MbtaRouteBadge type="auto" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} fullName={getLineName(route_id, attributes)} />
                                     <span class="badge-secondary-symbol" style:color={color} style:opacity={severityAsOpacity}>
                                         {(routeAlertsCount.get(route_id) || 0) > 1 ? (routeAlertsCount.get(route_id) + 'x') : getAlertBadgeSecondarySymbol(alert, dateString)}
                                     </span>
