@@ -19,7 +19,7 @@ const {data, routeMap} = $props();
             {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
             <div>
                 <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} fullName={getLineName(route_id, attributes)} />
-                <mark>{getEffectWithLineMessage(effect, route_id)}</mark>
+                <mark>{getEffectWithLineMessage(effect, route_id, attributes)}</mark>
                 {alert.id} {alert.attributes.short_header}
             </div>
             <pre><code>{JSON.stringify(alert)}</code></pre>

@@ -32,7 +32,7 @@ if (showNightOwl) {
         <summary>
             <!-- remove <p> to work with the marker. Temporary anyway. -->
             <MbtaRouteBadgeCompound type="long" routeId={route_id} routeAttributes={attributes} />
-            {getEffectWithLineMessage(effect, route_id)}
+            {getEffectWithLineMessage(effect, route_id, attributes)}
             <p>
                 {alert.attributes.header}
             </p>

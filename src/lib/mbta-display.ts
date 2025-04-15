@@ -62,15 +62,16 @@ export const effectRawDisplayFormat = (effect: string) => {
 
 export const getEffectWithLineMessage = (
     effect: string,
-    line: string) => {
+    line: string,
+    line_attributes?: any) => {
     if (effect in EFFECT_WITH_LINE_MESSAGES) {
         return EFFECT_WITH_LINE_MESSAGES[effect as keyof typeof EFFECT_WITH_LINE_MESSAGES]({
-            line: getLineName(line),
+            line: getLineName(line, line_attributes),
         });
     }
     return m.mbta_alert_effect_with_line_default({
         effect: getEffect(effect),
-        line: getLineName(line),
+        line: getLineName(line, line_attributes),
     });
 }
 
