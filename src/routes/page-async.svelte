@@ -14,9 +14,7 @@ const notrains_today = $derived(!!data.alertsByDay.get(currentServiceDate.toStri
 const MBTA_PLACEHOLDER = '%%MBTA%%';
 const notrains_today_text_array = $derived((notrains_today? m.trains_running_some({MBTA: MBTA_PLACEHOLDER}) : m.trains_running_all({MBTA: MBTA_PLACEHOLDER})).split(MBTA_PLACEHOLDER) || []);
 
-const endOfWeekDate = $derived(endOfWeek(currentServiceDate, getLocale()));
-
-const alertsToday = getProcessedAlertsAsSingleRoute(data.alertsByDay.get(currentServiceDate.toString()) || []);
+const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString()));
 </script>
 
 <h1>
@@ -25,7 +23,7 @@ const alertsToday = getProcessedAlertsAsSingleRoute(data.alertsByDay.get(current
     {/each}
 </h1>
 
-<Glance alertsToday={alertsToday} currentServiceDate={currentServiceDate}></Glance>
+<Glance alertsToday={getProcessedAlertsAsSingleRoute(alertsToday || [])} currentServiceDate={currentServiceDate}></Glance>
 
 {#if alertsToday}
 <DayDetail
