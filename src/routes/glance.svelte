@@ -64,13 +64,14 @@
             </div>
         </div>
     {/if}
+    {#if isCurrentServiceNightOwl}
+    <div class="route-expanded"><p>
+        🌙︎ <em>{m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {
+        timeStyle: "short",
+    }).format(toCalendarDateTime(now(MBTA_TIMEZONE), MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME).toDate(MBTA_TIMEZONE))})}<a href="https://www.mbta.com/lasttrip">{m.learnMore()}</a></em></p>
+    </div>
+    {/if}
 </div>
-
-{#if isCurrentServiceNightOwl}
-<p>🌙︎ <em>{m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {
-    timeStyle: "short",
-  }).format(toCalendarDateTime(now(MBTA_TIMEZONE), MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME).toDate(MBTA_TIMEZONE))})}<a href="https://www.mbta.com/lasttrip">{m.learnMore()}</a></em></p>
-{/if}
 
 <style>
 .glance-rapid-transit-grid {
@@ -100,13 +101,14 @@
     flex-direction: row;
     gap: 0.5em;
 }
+.glance-rapid-transit-grid > .route-expanded .effect-item > .has-alert-text {
+    flex: none;
+}
 .glance-rapid-transit-grid > .route-expanded .effect-item .badge-groups {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-}
-.glance-rapid-transit-grid > .route-expanded .effect-item .badge-group {    
-    margin-right: 0.2em;
+    gap: 0.2em;
 }
 
 @media (max-width: 21rem) {
@@ -136,5 +138,8 @@
 .no-alert-text {
     display: inline-block;
     color: #1F6DA5;
+}
+.route-expanded p {
+    margin: 0;
 }
 </style>
