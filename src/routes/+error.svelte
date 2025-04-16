@@ -3,11 +3,11 @@
 	import { m } from "$lib/paraglide/messages";
 
     const MBTA_PLACEHOLDER = '%%MBTA%%';
-    const error_text_array = m.error_see_also({MBTA: MBTA_PLACEHOLDER}).split(MBTA_PLACEHOLDER) || [];
+    const error_text_array = m.errorSeeAlso({MBTA: MBTA_PLACEHOLDER}).split(MBTA_PLACEHOLDER) || [];
 </script>
 
 <Alert>
     {#each error_text_array as text, index}
-        {#if index > 0}<a href="https://www.mbta.com/alerts/subway">{m.error_mbta_website()}</a>{/if}{text}
+        {#if index > 0}<a href="https://www.mbta.com/alerts/subway">{m.errorMbtaWebsite()}</a>{/if}{text}
     {/each}
 </Alert>

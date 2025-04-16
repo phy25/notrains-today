@@ -12,13 +12,9 @@
   ],
   "modules": [
     "https://cdn.jsdelivr.net/npm/@inlang/plugin-message-format@4/dist/index.js",
-    "https://cdn.jsdelivr.net/npm/@inlang/plugin-i18next@latest/dist/index.js",
     "https://cdn.jsdelivr.net/npm/@inlang/plugin-m-function-matcher@2/dist/index.js"
   ],
   "plugin.inlang.messageFormat": {
-    "pathPattern": "./messages/{locale}.json"
-  },
-  "plugin.inlang.i18next": {
     "pathPattern": "./messages/{locale}.json"
   }
 }

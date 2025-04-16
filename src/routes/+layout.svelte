@@ -74,7 +74,7 @@
 							<MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
 						</div>
 					{:else}
-						<span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
+						<span>✅</span> <span class="no-alert-text">{m.noAlert()}</span>
 					{/each}
 				{:catch}<!-- svelte-ignore block_empty -->
 				{/await}
@@ -91,7 +91,7 @@
 							<MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
 						</div>
 					{:else}
-						<span>✅</span> <span class="no-alert-text">{m.no_alert()}</span>
+						<span>✅</span> <span class="no-alert-text">{m.noAlert()}</span>
 					{/each}
 				{:catch}<!-- svelte-ignore block_empty -->
 				{/await}
@@ -115,8 +115,8 @@
 		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 		<p onclick={trackDebugClicks}>
 			<span class="notranslate">☺ notrains.today</span>
-			<a href="/about">{m.footer_about()}</a>
-			<button bind:this={feedbackBtnDom} type="button" class="link" onclick={(event)=>{(event.target as HTMLButtonElement).blur();/* get autofocus in the sentry dialog working */return false;}}>{m.footer_feedback()}</button></p>
+			<a href="/about">{m.footerAbout()}</a>
+			<button bind:this={feedbackBtnDom} type="button" class="link" onclick={(event)=>{(event.target as HTMLButtonElement).blur();/* get autofocus in the sentry dialog working */return false;}}>{m.footerFeedback()}</button></p>
 	</footer>
 </div>
 

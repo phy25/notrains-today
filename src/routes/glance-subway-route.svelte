@@ -48,11 +48,11 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
     </div>
 
     {#if filterdAlerts.length == 0}
-        <div class="no-alert-text">{m.no_alert()}</div>
+        <div class="no-alert-text">{m.noAlert()}</div>
     {:else if false && branchesAlerts.length}
-        <div class="has-alert-text">{m[Math.random() > 0.5 ? "mbta_alert_effect.ADDITIONAL_SERVICE" : "mbta_alert_effect.DELAY"]()}</div>
+        <div class="has-alert-text">{m[Math.random() > 0.5 ? "mbtaAlertEffectADDITIONAL_SERVICE" : "mbtaAlertEffectDELAY"]()}</div>
     {:else if filterdAlerts.length > 1}
-        <div class="has-alert-text">{m.multiple_alerts({count: filterdAlerts.length})}</div>
+        <div class="has-alert-text">{m.multipleAlerts({count: filterdAlerts.length})}</div>
     {:else}
         <div class="has-alert-text">{getEffect(filterdAlerts[0].attributes.effect)}</div>
     {/if}

@@ -48,7 +48,7 @@
         {:else}
             <div class="badge-group">
                 <MbtaRouteBadge pillLabel="Commuter Rail" type="long" color="#80276c" textColor="#FFF" />
-                <div class="no-alert-text">{m.no_alert()}</div>
+                <div class="no-alert-text">{m.noAlert()}</div>
             </div>
         {/each}
     </div>
@@ -67,9 +67,9 @@
 </div>
 
 {#if isCurrentServiceNightOwl}
-<p>🌙︎ <em>{m.no_downtown_transfer_description({time: new Intl.DateTimeFormat(getLocale(), {
+<p>🌙︎ <em>{m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {
     timeStyle: "short",
-  }).format(toCalendarDateTime(now(MBTA_TIMEZONE), MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME).toDate(MBTA_TIMEZONE))})}<a href="https://www.mbta.com/lasttrip">{m.learn_more()}</a></em></p>
+  }).format(toCalendarDateTime(now(MBTA_TIMEZONE), MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME).toDate(MBTA_TIMEZONE))})}<a href="https://www.mbta.com/lasttrip">{m.learnMore()}</a></em></p>
 {/if}
 
 <style>

@@ -3,24 +3,24 @@ import { parseDate, parseZonedDateTime, toCalendarDate } from "@internationalize
 import { MBTA_TIMEZONE, type MbtaAlert } from './mbta-types';
 
 export const EFFECT_MESSAGES = {
-    'DELAY': m['mbta_alert_effect.DELAY'],
-    'SHUTTLE': m['mbta_alert_effect.SHUTTLE'],
-    'STATION_CLOSURE': m['mbta_alert_effect.STATION_CLOSURE'],
-    'STATION_ISSUE': m['mbta_alert_effect.STATION_ISSUE'],
-    'SERVICE_CHANGE': m['mbta_alert_effect.SERVICE_CHANGE'],
-    'ADDITIONAL_SERVICE': m['mbta_alert_effect.ADDITIONAL_SERVICE'],
-    'TRACK_CHANGE': m['mbta_alert_effect.TRACK_CHANGE'],
+    'DELAY': m['mbtaAlertEffectDELAY'],
+    'SHUTTLE': m['mbtaAlertEffectSHUTTLE'],
+    'STATION_CLOSURE': m['mbtaAlertEffectSTATIONCLOSURE'],
+    'STATION_ISSUE': m['mbtaAlertEffectSTATIONISSUE'],
+    'SERVICE_CHANGE': m['mbtaAlertEffectSERVICECHANGE'],
+    'ADDITIONAL_SERVICE': m['mbtaAlertEffectADDITIONALSERVICE'],
+    'TRACK_CHANGE': m['mbtaAlertEffectTRACKCHANGE'],
 };
 
 export const EFFECT_WITH_LINE_MESSAGES: Record<string, (args: { line: string }) => string> = {
 };
 
 export const LINE_NAMES = {
-    'Mattapan': m['mbta_lines_name.Mattapan'](),
-    'Red': m['mbta_lines_name.Red'](),
-    'Orange': m['mbta_lines_name.Orange'](),
-    'Blue': m['mbta_lines_name.Blue'](),
-    'Green': m['mbta_lines_name.Green'](),
+    'Mattapan': m['mbtaLineNameMattapan'](),
+    'Red': m['mbtaLineNameRed'](),
+    'Orange': m['mbtaLineNameOrange'](),
+    'Blue': m['mbtaLineNameBlue'](),
+    'Green': m['mbtaLineNameGreen'](),
 }
 
 const ROUTE_PILL_MAPPING: Record<string, string> = {
@@ -69,7 +69,7 @@ export const getEffectWithLineMessage = (
             line: getLineName(line, line_attributes),
         });
     }
-    return m.mbta_alert_effect_with_line_default({
+    return m.mbtaAlertEffectWithLineDefault({
         effect: getEffect(effect),
         line: getLineName(line, line_attributes),
     });
@@ -87,7 +87,7 @@ export const getLineName = (line: string, route_attributes?: any) => {
         return LINE_NAMES[line as keyof typeof LINE_NAMES];
     }
     if (/^[0-9]+$/.test(line)) {
-        return m['mbta_lines_name.bus_route']({ route: line });
+        return m['mbtaLineNameBusRoute']({ route: line });
     }
     // TODO: fall back to use official name; ID should not be displayed in general
     if (route_attributes?.long_name) {

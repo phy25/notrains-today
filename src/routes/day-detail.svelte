@@ -20,7 +20,7 @@ if (showNightOwl) {
 </script>
 
 {#if !hideAuxiliary}
-<h2>{dateFormatter.format(dayObject.toDate(MBTA_TIMEZONE))}{#if showNightOwl && day == getDateString(currentServiceDate)}<small>{m.to_service_ending_night_owl({hour: MBTA_SERVICE_START_HOUR})}</small>{/if}</h2>
+<h2>{dateFormatter.format(dayObject.toDate(MBTA_TIMEZONE))}{#if showNightOwl && day == getDateString(currentServiceDate)}<small>{m.toServiceEndingNightOwl({hour: MBTA_SERVICE_START_HOUR})}</small>{/if}</h2>
 {/if}
 
 {#each alerts as alert}
@@ -56,7 +56,7 @@ if (showNightOwl) {
         {/if}
 
         {#if alert.attributes?.url}
-        <p><em>{m.learn_more_at()}<a href={alert.attributes?.url} target="_blank">{alert.attributes?.url}</a> ({m.alert()} #{alert.id})</em></p>
+        <p><em>{m.learnMoreAt()}<a href={alert.attributes?.url} target="_blank">{alert.attributes?.url}</a> ({m.alert()} #{alert.id})</em></p>
         {:else}
         
         <p><em><a href="https://www.mbta.com/schedules/{route_id}/alerts" target="_blank">{m.alert()} #{alert.id}</a></em></p>
@@ -65,7 +65,7 @@ if (showNightOwl) {
     </details>
 {:else}
 {#if !hideAuxiliary}
-    <p>{m.calendar_day_no_alerts()}</p>
+    <p>{m.calendarDayNoAlerts()}</p>
 {/if}
 {/each}
 

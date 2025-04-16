@@ -9,7 +9,7 @@ const {data, routeMap} = $props();
 
 {#if data.length > 0 && isDebug() }    
     <details>
-        <summary>{m.debug_all_alerts()}</summary>
+        <summary>{m.debugAllAlerts()}</summary>
 
         {#each data as alert}
             {@const effect = alert.attributes.effect}

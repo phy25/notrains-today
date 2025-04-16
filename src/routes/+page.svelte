@@ -21,7 +21,7 @@
 
 {#if isOutdated}
     <Alert onclick={() => {invalidateAll();}}>
-        {m.refresh_reminder()}
+        {m.refreshReminder()}
     </Alert>
 {/if}
 

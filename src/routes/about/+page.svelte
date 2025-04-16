@@ -8,7 +8,7 @@
 		return;
 	}
 
-	const untranslated_legal_disclaimer = m.untranslated_legal_disclaimer();
+	const untranslatedLegalDisclaimer = m.untranslatedLegalDisclaimer();
 </script>
 
 <Debugger />
@@ -17,7 +17,7 @@
 
 {#each locales as locale}
 	<button onclick={() => switchToLanguage(locale)} class={getLocale() === locale ? 'selected' : ''}>
-		{m.current_locale_name({}, { locale: locale })}
+		{m.currentLocaleName({}, { locale: locale })}
 	</button>
 {/each}
 
@@ -28,10 +28,10 @@
 	</p>
 </details>
 
-<h2>{m.privacy_policy()}</h2>
+<h2>{m.privacyPolicy()}</h2>
 
-{#if untranslated_legal_disclaimer}
-	<p><em>{m.untranslated_legal_disclaimer()}</em></p>
+{#if untranslatedLegalDisclaimer}
+	<p><em>{m.untranslatedLegalDisclaimer()}</em></p>
 {/if}
 
 <p>
