@@ -44,5 +44,7 @@
     "untranslatedLegalDisclaimer": "",
     "refreshReminder": "Information may be outdated. Click to refresh.",
     "errorSeeAlso": "Sorry, something went wrong. You may check the latest alerts on the {MBTA}.",
-    "errorMbtaWebsite": "MBTA website"
+    "errorMbtaWebsite": "MBTA website",
+    "openSourceSoftware": "Open Source Software",
+    "githubRepo": "GitHub repo"
 }

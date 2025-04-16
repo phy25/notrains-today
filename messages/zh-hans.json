@@ -44,5 +44,7 @@
     "untranslatedLegalDisclaimer": "本段落尚未翻译，请以原文本为准。",
     "refreshReminder": "信息可能已过时。点击这里刷新。",
     "errorSeeAlso": "抱歉，页面出现异常。您可以在 {MBTA}查看最新信息。",
-    "errorMbtaWebsite": "MBTA 网站"
+    "errorMbtaWebsite": "MBTA 网站",
+    "openSourceSoftware": "开源软件",
+    "githubRepo": "GitHub 仓库"
 }
