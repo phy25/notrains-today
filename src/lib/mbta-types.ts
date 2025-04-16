@@ -41,7 +41,7 @@ export const QUERY_ROUTE_TYPE_MAPPING: Record<string, string> = {
     'ferry': '4',
 };
 
-export const DEFAULT_QUERY_ROUTE_TYPE = 'subway';
+export const DEFAULT_QUERY_ROUTE_TYPE = 'trains';
 
 export const MBTA_TIMEZONE = 'America/New_York';
 
