@@ -65,7 +65,7 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
                     withScope(function (scope) {
                         scope.setExtra('alert', alert);
                         scope.captureMessage(
-                            "Alert not removed due to rule mismatch, rule has match_updated_at: " + removeEntry.match_updated_at,
+                            `Alert ${alert.id} not removed due to rule mismatch, rule has match_updated_at: ${removeEntry.match_updated_at}`,
                             "warning");
                     });
                 }
@@ -83,7 +83,7 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
                     withScope(function (scope) {
                         scope.setExtra('alert', alert);
                         scope.captureMessage(
-                            "Alert not replaced due to rule mismatch, rule has match_updated_at: " + replaceEntry.match_updated_at,
+                            `Alert ${alert.id} not replaced due to rule mismatch, rule has match_updated_at: ${replaceEntry.match_updated_at}`,
                             "warning");
                     });
                 }
@@ -107,7 +107,7 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
                     withScope(function (scope) {
                         scope.setExtra('alert', alert);
                         scope.captureMessage(
-                            "Alert routes not removed due to rule mismatch, rule has match_updated_at: " + removeRouteEntry.match_updated_at,
+                            `Alert ${alert.id} not removed due to rule mismatch, rule has match_updated_at: ${removeRouteEntry.match_updated_at}`,
                             "warning");
                     });
                 }
