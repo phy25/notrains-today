@@ -3,13 +3,13 @@ import { parseDate, parseZonedDateTime, toCalendarDate } from "@internationalize
 import { MBTA_TIMEZONE, type MbtaAlert } from './mbta-types';
 
 export const EFFECT_MESSAGES = {
-    'DELAY': m['mbtaAlertEffectDELAY'],
-    'SHUTTLE': m['mbtaAlertEffectSHUTTLE'],
-    'STATION_CLOSURE': m['mbtaAlertEffectSTATIONCLOSURE'],
-    'STATION_ISSUE': m['mbtaAlertEffectSTATIONISSUE'],
-    'SERVICE_CHANGE': m['mbtaAlertEffectSERVICECHANGE'],
-    'ADDITIONAL_SERVICE': m['mbtaAlertEffectADDITIONALSERVICE'],
-    'TRACK_CHANGE': m['mbtaAlertEffectTRACKCHANGE'],
+    'DELAY': m['mbtaAlertEffectDelay'],
+    'SHUTTLE': m['mbtaAlertEffectShuttle'],
+    'STATION_CLOSURE': m['mbtaAlertEffectStationClosure'],
+    'STATION_ISSUE': m['mbtaAlertEffectStationIssue'],
+    'SERVICE_CHANGE': m['mbtaAlertEffectServiceChange'],
+    'ADDITIONAL_SERVICE': m['mbtaAlertEffectAdditionalService'],
+    'TRACK_CHANGE': m['mbtaAlertEffectTrackChange'],
 };
 
 export const EFFECT_WITH_LINE_MESSAGES: Record<string, (args: { line: string }) => string> = {
