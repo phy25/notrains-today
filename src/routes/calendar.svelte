@@ -148,7 +148,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
   text-align: center;
   margin: 0.5em 0;
   font-size: 1.1em;
-  color: #195581;
+  color: #1F6DA5;
 }
 
 .calendar-sticky-week {
