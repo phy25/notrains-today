@@ -103,6 +103,30 @@ export const getAlertsAsDays = (alerts: MbtaAlert[], routeMap: Map<string, any>)
     return days;
 }
 
+export const getAlertsMapByEffect = (alerts: MbtaAlert[]) => {
+    const effects: Map<string, MbtaAlert[]> = new Map();
+    alerts.forEach((alert) => {
+        if (!effects.has(alert.attributes.effect)) {
+            effects.set(alert.attributes.effect, []);
+        }
+        effects.get(alert.attributes.effect)?.push(alert);
+    });
+    // not sorting because getAlertsAsDays is already sorting the alerts
+    return effects;
+}
+
 export const getDateString = (date: Date) => {
     return date.toISOString().split('T')[0];
+};
+
+export const alertsToRouteRenderingList = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
+    return alerts?.flatMap(alert => alert.attributes.informed_entity)
+        ?.map(entity => entity.route)
+        ?.filter((value, index, self) => self.indexOf(value) === index)
+        ?.map(route_id => {
+            return {
+                route_id,
+                attributes: routeMap.get(route_id)?.attributes,
+            }
+        });
 };

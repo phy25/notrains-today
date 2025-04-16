@@ -27,6 +27,7 @@ const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString())
     alertsToday={getProcessedAlertsAsSingleRoute(alertsToday || [])}
     currentServiceDate={currentServiceDate}
     isCurrentServiceNightOwl={isCurrentServiceNightOwl}
+    routeMap={data.routeMap}
 />
 
 {#if alertsToday}

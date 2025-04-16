@@ -5,21 +5,11 @@
 	import { getFeedback } from '@sentry/sveltekit';
 	import type { LayoutProps } from './$types';
 	import MbtaRouteBadgeCompound from '$lib/mbta-route-badge-compound.svelte';
-	import { getProcessedAlertsAsSingleRoute } from '$lib/calendar';
+	import { alertsToRouteRenderingList, getProcessedAlertsAsSingleRoute } from '$lib/calendar';
 	import { afterNavigate } from '$app/navigation';
 
 	const { data, children }: LayoutProps = $props();
-	const alertsToRouteRenderingList = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
-		return alerts?.flatMap(alert => alert.attributes.informed_entity)
-			?.map(entity => entity.route)
-			?.filter((value, index, self) => self.indexOf(value) === index)
-			?.map(route_id => {
-				return {
-					route_id,
-					attributes: routeMap.get(route_id)?.attributes,
-				}
-			});
-	};
+	
 	const alerts_today_route_list = $derived((async () => {
 		const { alertsByDay, routeMap } = await data.data_async();
 		return alertsToRouteRenderingList(
