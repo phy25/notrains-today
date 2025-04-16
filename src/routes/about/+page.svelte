@@ -21,6 +21,13 @@
 	</button>
 {/each}
 
+<details>
+	<summary>Contribute to translations</summary>
+	<p>
+		<a href="https://crowdin.com/project/notrains-today">Contribute to translations on Crowdin</a>. GitHub account required.
+	</p>
+</details>
+
 <h2>{m.privacy_policy()}</h2>
 
 {#if untranslated_legal_disclaimer}
