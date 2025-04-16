@@ -20,7 +20,7 @@
     "mbtaAlertEffectStationIssue": "Station Issue",
     "mbtaAlertEffectServiceChange": "Service Change",
     "mbtaAlertEffectAdditionalService": "Additional Service",
-    "mbtaAlertEffectTrackChange": "Track Change",
+    "mbtaAlertEffectTrackChange": "Platform Change",
     "mbtaAlertEffectWithLineDefault": "{line} {effect}",
     "mbtaLineNameMattapan": "Mattapan Trolley",
     "mbtaLineNameBlue": "Blue Line",
