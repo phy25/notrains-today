@@ -166,7 +166,7 @@
     justify-content: space-around;
 	min-width: var(--page-content-min-width);
 }
-@media (max-width: 19rem) {
+@media (max-width: 21rem) {
     .tab-wrapper {
         padding: 0.4em 0.2em;
     }

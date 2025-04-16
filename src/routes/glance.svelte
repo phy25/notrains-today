@@ -109,7 +109,7 @@
     margin-right: 0.2em;
 }
 
-@media (max-width: 19rem) {
+@media (max-width: 21rem) {
     .glance-rapid-transit-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -117,8 +117,8 @@
 
 .glance-rapid-transit-grid > div {
     padding: 0.3em 0.2em;
-    --badge-size: 1.2em;
-    line-height: 1.2em;
+    --badge-size: 1.3em;
+    line-height: 1.3em;
     /* background: #E4F1FA; */ /* not interactive yet */
     border-radius: 0.2em;
     box-sizing: border-box;

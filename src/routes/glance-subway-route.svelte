@@ -60,8 +60,8 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
 
 <style>
 .subway-route {
-    --badge-size: 1.2em;
-    line-height: 1.2em;
+    --badge-size: 1.3em;
+    line-height: 1.3em;
     display: flex;
     align-content: baseline;
     align-items: flex-start;
