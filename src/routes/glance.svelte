@@ -137,7 +137,7 @@
 }
 .no-alert-text {
     display: inline-block;
-    color: #1F6DA5;
+    color: var(--color-accent);
 }
 .route-expanded p {
     margin: 0;

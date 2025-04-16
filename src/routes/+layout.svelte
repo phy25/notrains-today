@@ -130,11 +130,15 @@
 		margin: 0;
 		--page-content-max-width: 56rem;
 		--page-content-min-width: 18rem;
+		--color-accent: #1F6DA5;
 	}
 	a, button.link {
 		color: #195581;
 	}
 	@media (prefers-color-scheme: dark) {
+		body {
+			--color-accent: #92C6EA;
+		}
 		a, button.link {
 			color: #A0C4FF;
 		}

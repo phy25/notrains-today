@@ -78,11 +78,6 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
 }
 .no-alert-text {
     display: inline-block;
-    color: #1F6DA5;
-}
-@media (prefers-color-scheme: dark) {
-    .no-alert-text {
-        color: #92C6EA;
-    }
+    color: var(--color-accent);
 }
 </style>
