@@ -106,14 +106,20 @@ export const load: LayoutLoad = ({ route, fetch, url }) => {
     const data_async = async () => data_async_promise;
 
     let currentServiceTime = now(MBTA_TIMEZONE);
-    const isNightOwl = currentServiceTime.hour < MBTA_SERVICE_START_HOUR || currentServiceTime.hour >= 23;
     if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
         currentServiceTime = currentServiceTime.subtract({days: 1});
     }
     const currentServiceDate = (typeof localStorage !== 'undefined') && localStorage.getItem('debugDate')
         ? parseDate(localStorage.getItem('debugDate') || '')
         : toCalendarDate(currentServiceTime);
-    // localStorage.setItem('debugDate', '2025-04-26');
+        
+    let isNightOwl = currentServiceTime.hour < MBTA_SERVICE_START_HOUR || currentServiceTime.hour >= 23;
+    if (localStorage.getItem('debugNightOwl') === 'true') {
+        isNightOwl = true;
+    }
+    if (localStorage.getItem('debugNightOwl') === 'false') {
+        isNightOwl = false;
+    }
 
     return {
         route_id: route.id,
