@@ -144,9 +144,10 @@
 		}
 	}
 	button.link {
+		appearance: none;
 		text-decoration: underline;
 		border: none;
-		background: transparent;
+		background: none;
 		font-size: 1em;
     	padding: 0;
 		cursor: pointer;
@@ -198,6 +199,7 @@
     border-radius: 0.3em;
     text-decoration: none;
     color: inherit;
+	transition: background-color 0.2s ease;
 }
 .tab-item:hover, .tab-item:focus {
     background: var(--background-color);

@@ -66,14 +66,19 @@
             class="rounded-9px text-foreground hover:border-foreground data-selected:bg-foreground data-disabled:text-foreground/30 data-selected:text-background data-unavailable:text-muted-foreground data-disabled:pointer-events-none data-outside-month:pointer-events-none data-selected:font-medium data-unavailable:line-through group relative inline-flex size-10 items-center justify-center whitespace-nowrap border border-transparent bg-transparent p-0 text-sm font-normal"
             >
                 {#snippet child({ props })}
-                    <a {...props} class="calendar-day {routeAlertsCount.size > 5 ? 'calendar-day--many-alerts' : ''} {routeAlertsCount.size > 10 ? 'calendar-day--too-many-alerts' : ''}" href={(linkToCalendar && currentServiceDate.compare(date) !== 0 && props['data-disabled'] !== '') ? `/calendar${route_type_url_param}#date=${dateString}` : undefined}>
+                    <a
+                        {...props}
+                        class="calendar-day {routeAlertsCount.size > 5 ? 'calendar-day--many-alerts' : ''} {routeAlertsCount.size > 10 ? 'calendar-day--too-many-alerts' : ''}"
+                        href={(linkToCalendar && currentServiceDate.compare(date) !== 0 && props['data-disabled'] !== '') ? `/calendar${route_type_url_param}#date=${dateString}` : undefined}
+                        role="button"
+                    >
                         <div class="day-row">
                             <div class="day notranslate">{date.day}</div>
                             <div class="weekday">{weekday}</div>
                             <div class="right"></div>
                         </div>
                         {#if alertsPrioritizedDedupeRoutes.length}
-                        <div>
+                        <div class="badge-groups">
                             {#each alertsPrioritizedDedupeRoutes as alert}
                                 {@const route_id = alert.attributes.informed_entity[0].route}
                                 {@const attributes = (routeMap.get(alert.attributes.informed_entity[0].route) as any)?.attributes}
@@ -86,7 +91,6 @@
                                         {(routeAlertsCount.get(route_id) || 0) > 1 ? (routeAlertsCount.get(route_id) + 'x') : getAlertBadgeSecondarySymbol(alert, dateString)}
                                     </span>
                                 </div>
-                                {' '}
                             {/each}
                         </div>
                         {/if}
@@ -98,8 +102,15 @@
 </Calendar.Cell>
 
 <style>
-.badge-group {
-    display: inline-block;
+.badge-groups {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 0.2em;
+}
+@media (max-width: 21rem) {
+    .badge-groups {
+        gap: 0 0.1em;
+    }
 }
 .calendar-cell{
     height: 2.5em;

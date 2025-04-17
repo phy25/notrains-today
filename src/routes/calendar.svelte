@@ -12,10 +12,10 @@ let { dayValue = $bindable(), alerts = [], alertsByDay: _alertsByDay = null, rou
 const alertsByDay = $derived(_alertsByDay || getAlertsAsDays(alerts, routeMap));
 
 const maxValue = $derived.by(() => {
-    const fixedMaxValue = endOfMonth(currentServiceDate);
+    const fixedMaxValue = endOfMonth(currentServiceDate.add({ months: 1 }));
     const sortedDates = [...alertsByDay.keys()].sort();
     const maxAlertDate = sortedDates.length ? parseDate(sortedDates[sortedDates.length - 1]) : fixedMaxValue;
-    return fixedMaxValue.compare(maxAlertDate) > 0 ? fixedMaxValue : maxAlertDate;
+    return fixedMaxValue.compare(maxAlertDate) < 0 ? fixedMaxValue : maxAlertDate;
 });
 
 let dayString = $derived(dayValue.toString());
@@ -84,13 +84,27 @@ const onStickyWeekValueChange = (value?: DateValue) => {
   >
     {#snippet children({ months, weekdays })}
       <Calendar.Header>
-        <Calendar.Heading>
-          {#snippet child({ props, headingValue })}
-            <div {...props} class="calendar-heading">
-              {headingValue}
-            </div>
-          {/snippet}
-        </Calendar.Heading>
+        {#snippet child({ props })}
+        <div {...props} class="calendar-header">
+          <Calendar.PrevButton>
+            {#snippet child({ props })}
+              <button {...props} class="calendar-header-btn">⯇</button>
+            {/snippet}
+          </Calendar.PrevButton>
+          <Calendar.Heading>
+            {#snippet child({ props, headingValue })}
+              <div {...props} class="calendar-heading">
+                {headingValue}
+              </div>
+            {/snippet}
+          </Calendar.Heading>
+          <Calendar.NextButton>
+            {#snippet child({ props })}
+              <button {...props} class="calendar-header-btn">⯈</button>
+            {/snippet}
+          </Calendar.NextButton>
+        </div>
+        {/snippet}
       </Calendar.Header>
       <div
         class=""
@@ -144,11 +158,40 @@ const onStickyWeekValueChange = (value?: DateValue) => {
 <DayDetail alerts={alertsByDay.get(dayString)} day={dayString} showNightOwl={showNightOwl} routeMap={routeMap} />
 
 <style>
+.calendar-header {
+  display: flex;
+  flex-direction: row;
+}
 .calendar-heading {
   text-align: center;
   margin: 0.5em 0;
   font-size: 1.1em;
   color: var(--color-accent);
+  flex: 1;
+}
+.calendar-header-btn {
+  appearance: none;
+  background: none;
+  border: solid 2px transparent;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  padding: 0.2em 0.5em;
+  border-radius: 0.25em;
+  transition: background-color 0.2s ease;
+  margin: 0.3em 0;
+
+}
+.calendar-header-btn:hover, .calendar-header-btn:focus {
+  background: #CCC;
+}
+.calendar-header-btn:focus {
+  border-color: #000;
+}
+.calendar-header-btn:disabled, .calendar-header-btn:disabled:hover {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: none;
 }
 
 .calendar-sticky-week {
