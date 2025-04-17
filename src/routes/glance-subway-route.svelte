@@ -30,7 +30,7 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
 </script>
 
 <div class="subway-route">
-    <div>
+    <div class="badge-group">
         <MbtaRouteBadge pillLabel={getPillName(mainRouteId, {})} type="long" color={color} textColor={textColor} fullName={getLineName(mainRouteId)}></MbtaRouteBadge>
         {#if filterdAlerts.length == 0}
             {#if noDowntownTransfer}
@@ -64,13 +64,16 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
     line-height: 1.3em;
     display: flex;
     align-content: baseline;
-    align-items: flex-start;
-    gap: 0.2em 0.1em;
+    align-items: baseline;
+    gap: 0.2em 0.2em;
 }
 @media (max-width: 56rem) {
     .subway-route {
         flex-direction: column;
     }
+}
+.badge-group > span {
+    vertical-align: top;
 }
 .has-alert-text {
     display: inline-block;

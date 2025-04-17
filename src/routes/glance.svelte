@@ -94,7 +94,7 @@
     gap: 0.5em 1em;
 }
 .glance-rapid-transit-grid > .route-expanded-first {
-    padding-top: 0.5em;
+    
 }
 .glance-rapid-transit-grid > .route-expanded .effect-item {
     display: inline-flex;
