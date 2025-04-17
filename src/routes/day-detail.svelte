@@ -28,7 +28,7 @@ if (showNightOwl) {
     {@const route_id = (alert as MbtaAlert).attributes.informed_entity.sort((a, b) => a.route.localeCompare(b.route))[0].route /* TODO: show multiple routes */ }
     {@const attributes = (routeMap.get(route_id) as any)?.attributes}
     {@const descriptionArr = alert.attributes?.description?.split(/\r?\n/g) || []}
-    <details transition:fade>
+    <details transition:fade id={'alert-'+alert.id}>
         <summary>
             <!-- remove <p> to work with the marker. Temporary anyway. -->
             <MbtaRouteBadgeCompound type="long" routeId={route_id} routeAttributes={attributes} />
