@@ -40,7 +40,7 @@
                 <div class="badge-groups">
                     {#each alertsToRouteRenderingList(alerts, routeMap) as route}
                         <div class="badge-group">
-                            <MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
+                            <MbtaRouteBadgeCompound type="long" routeId={route.route_id} routeAttributes={route.attributes} />
                         </div>
                     {/each}
                 </div>
