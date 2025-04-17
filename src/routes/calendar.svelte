@@ -189,7 +189,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
   border-color: #000;
 }
 .calendar-header-btn:disabled, .calendar-header-btn:disabled:hover {
-  opacity: 0.5;
+  opacity: 0.3;
   cursor: not-allowed;
   background: none;
 }
