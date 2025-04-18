@@ -11,7 +11,7 @@ import { captureException } from '@sentry/sveltekit';
 let data_async_data: { data: MbtaAlert[]; alertsByDay: Map<string, MbtaAlert[]>; routeMap: Map<string, any> } | null = null;
 let data_async_hash: string | null = null;
 
-export const load: LayoutLoad = ({ params, route, fetch }) => {
+export const load: LayoutLoad = ({ params, route, fetch, setHeaders }) => {
     // parse route_type from query string in browser
     let route_type = params.route_type || DEFAULT_QUERY_ROUTE_TYPE;
 
@@ -31,6 +31,11 @@ export const load: LayoutLoad = ({ params, route, fetch }) => {
                 headers: {
                     'Accept': 'application/vnd.api+json',
                 }
+            });
+            // cache from SSR to browser
+            setHeaders({
+                age: '60',
+                'Cache-Control': 'max-age=60',
             });
             const json = await response.json();
             if (response.status >= 400) {
