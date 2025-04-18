@@ -7,6 +7,8 @@
 	import MbtaRouteBadgeCompound from '$lib/mbta-route-badge-compound.svelte';
 	import { alertsToRouteRenderingList, getProcessedAlertsAsSingleRoute } from '$lib/calendar';
 	import { afterNavigate } from '$app/navigation';
+	import { resolveRoute } from '$app/paths';
+	import { page } from '$app/state';
 
 	const { data, children }: LayoutProps = $props();
 	
@@ -56,12 +58,11 @@
 			});
 		}
 	});
-	const route_type_url_param = $derived(data.route_type !== DEFAULT_QUERY_ROUTE_TYPE ? ('?route_type=' + data.route_type) : '');
 </script>
 
 <div class="tab-wrapper">
     <div class="tab {isDebug() && 'debug'}">
-        <a class="tab-item {tab_id === 'today' && 'selected'}" href="./{route_type_url_param}">
+        <a class="tab-item {tab_id === 'today' && 'selected'}" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>
             <div class="tab-item-heading notranslate">
 				notrains.today{#await alerts_today_route_list}?{:then list}{#if list.length == 0}?{/if}{/await}
 			</div>
@@ -80,7 +81,7 @@
 				{/await}
             </div>
         </a>
-        <a class="tab-item {tab_id === 'calendar' && 'selected'}" href="./calendar{route_type_url_param}">
+        <a class="tab-item {tab_id === 'calendar' && 'selected'}" href={resolveRoute('/[[route_type]]/calendar', { route_type: page.params.route_type })}>
             <div class="tab-item-heading">{m.calendar()}</div>
             <div>
 				{#await alerts_future_route_list()}
@@ -106,7 +107,7 @@
 		{#if isDebug()}
 		<p>
 			{#each Object.keys(QUERY_ROUTE_TYPE_MAPPING) as type}
-				<a href="?route_type={type}">{type}</a>{' '}
+				<a href={resolveRoute(page.route.id || "/[[route_type]]", {route_type: type})}>{type}</a>{' '}
 			{/each}
 		</p>
 		{/if}

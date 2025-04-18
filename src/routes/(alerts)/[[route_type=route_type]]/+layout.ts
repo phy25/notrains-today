@@ -11,13 +11,9 @@ import { captureException } from '@sentry/sveltekit';
 let data_async_data: { data: MbtaAlert[]; alertsByDay: Map<string, MbtaAlert[]>; routeMap: Map<string, any> } | null = null;
 let data_async_hash: string | null = null;
 
-export const load: LayoutLoad = ({ route, fetch, url }) => {
+export const load: LayoutLoad = ({ params, route, fetch }) => {
     // parse route_type from query string in browser
-    const query_route_type = url.searchParams.get('route_type');
-    let route_type = DEFAULT_QUERY_ROUTE_TYPE;
-    if (query_route_type && (query_route_type in QUERY_ROUTE_TYPE_MAPPING)) {
-        route_type = query_route_type;
-    }
+    let route_type = params.route_type || DEFAULT_QUERY_ROUTE_TYPE;
 
     const data_async_promise = new Promise<{
         data: MbtaAlert[];

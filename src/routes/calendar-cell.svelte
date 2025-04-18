@@ -6,6 +6,7 @@
     import type { DateValue } from "@internationalized/date";
 	import { getProcessedAlertsAsSingleRoute } from "$lib/calendar";
 	import { page } from "$app/state";
+	import { resolveRoute } from "$app/paths";
 
     interface CalendarCellProps {
         date: DateValue;
@@ -55,7 +56,7 @@
             });
         return accumulated;
     }, new Map()));
-    const route_type_url_param = $derived(page.data.route_type !== DEFAULT_QUERY_ROUTE_TYPE ? ('?route_type=' + page.data.route_type) : '');
+    const calendarPath = resolveRoute('/[[route_type]]/calendar', { route_type: page.params.route_type });
     
 </script>
 
@@ -69,7 +70,7 @@
                     <a
                         {...props}
                         class="calendar-day {routeAlertsCount.size > 5 ? 'calendar-day--many-alerts' : ''} {routeAlertsCount.size > 10 ? 'calendar-day--too-many-alerts' : ''}"
-                        href={(linkToCalendar && currentServiceDate.compare(date) !== 0 && props['data-disabled'] !== '') ? `/calendar${route_type_url_param}#date=${dateString}` : undefined}
+                        href={(linkToCalendar && currentServiceDate.compare(date) !== 0 && props['data-disabled'] !== '') ? `${calendarPath}#date=${dateString}` : undefined}
                         role="button"
                     >
                         <div class="day-row">
