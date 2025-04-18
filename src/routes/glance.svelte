@@ -11,16 +11,17 @@
 	import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
     
 
-    const { alertsToday, currentServiceDate, isCurrentServiceNightOwl, routeMap } = $props();
+    const { alertsToday, currentServiceDate, isCurrentServiceNightOwl, routeMap, routeType } = $props();
     const expandedAlerts: MbtaAlert[] = $derived(alertsToday);
     const commuterRailAlertsByEffects = $derived(getAlertsMapByEffect(
         expandedAlerts.filter(alert => alert.attributes.informed_entity.some(entity => entity.route_type === 2))));
     
     const nowTime = toTime(now(MBTA_TIMEZONE));
-    const noDowntownTransfer = $derived(isCurrentServiceNightOwl && MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME.compare(nowTime) < 0);
+    const noDowntownTransfer = $derived(isCurrentServiceNightOwl && MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME.compare(nowTime) <= 0);
 </script>
 
 <div class="glance-rapid-transit-grid">
+    {#if routeType === 'subway' || routeType === 'trains' }
     <div class="route-with-branches">
         <GlanceSubwayRoute mainRouteId="Green" color="#00843d" textColor="#FFF" branchRouteIds={["Green-B", "Green-C", "Green-D", "Green-E"]} unfilteredAlerts={expandedAlerts} {currentServiceDate} {noDowntownTransfer} />
     </div>
@@ -33,6 +34,8 @@
     <div class="route-with-branches">
         <GlanceSubwayRoute mainRouteId="Blue" color="#003da5" textColor="#FFF" unfilteredAlerts={expandedAlerts} {currentServiceDate} {noDowntownTransfer} />
     </div>
+    {/if}
+    {#if routeType === 'commuter-rail' || routeType === 'trains' }
     <div class="route-expanded route-expanded-first">
         {#each commuterRailAlertsByEffects as [effect, alerts]}
             <div class="effect-item">
@@ -52,6 +55,7 @@
             </div>
         {/each}
     </div>
+    {/if}
     {#if isDebug()}
         <div class="route-expanded">
             <div class="badge-group">

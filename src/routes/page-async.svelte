@@ -8,7 +8,7 @@ import DebugAllAlerts from "./debug-all-alerts.svelte";
 import Glance from "./glance.svelte";
 import { getProcessedAlertsAsSingleRoute, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
 
-const { data, currentServiceDate, isCurrentServiceNightOwl } = $props();
+const { data, currentServiceDate, isCurrentServiceNightOwl, routeType } = $props();
 
 const notrains_today = $derived(!!data.alertsByDay.get(currentServiceDate.toString())?.length);
 const MBTA_PLACEHOLDER = '%%MBTA%%';
@@ -28,6 +28,7 @@ const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString())
     currentServiceDate={currentServiceDate}
     isCurrentServiceNightOwl={isCurrentServiceNightOwl}
     routeMap={data.routeMap}
+    routeType={routeType}
 />
 
 {#if alertsToday}

@@ -30,6 +30,7 @@
 {:then d}
 	<PageAsync
 		data={d}
+        routeType={data.route_type}
 		currentServiceDate={data.current_service_date}
 		isCurrentServiceNightOwl={data.is_current_service_night_owl}
 	/>

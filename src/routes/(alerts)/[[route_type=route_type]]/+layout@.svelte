@@ -1,6 +1,6 @@
 <script lang="ts">	
 	import { isDebug } from '$lib/common';
-	import { DEFAULT_QUERY_ROUTE_TYPE, QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
+	import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
 	import { getFeedback } from '@sentry/sveltekit';
 	import type { LayoutProps } from './$types';
