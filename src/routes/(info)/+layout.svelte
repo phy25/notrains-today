@@ -6,7 +6,7 @@
 	import type { LayoutProps } from './$types';
 	import { afterNavigate } from '$app/navigation';
 
-	const { data, children }: LayoutProps = $props();
+	const { children }: LayoutProps = $props();
 	
 	const tab_id = 'today';
 	let debugClickTimes = 0;
@@ -54,7 +54,7 @@
 		{#if isDebug()}
 		<p>
 			{#each Object.keys(QUERY_ROUTE_TYPE_MAPPING) as type}
-				<a href="?route_type={type}">{type}</a>{' '}
+				<a href="/{type}">{type}</a>{' '}
 			{/each}
 		</p>
 		{/if}
