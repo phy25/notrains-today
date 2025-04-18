@@ -70,7 +70,7 @@
                     <a
                         {...props}
                         class="calendar-day {routeAlertsCount.size > 5 ? 'calendar-day--many-alerts' : ''} {routeAlertsCount.size > 10 ? 'calendar-day--too-many-alerts' : ''}"
-                        href={(linkToCalendar && currentServiceDate.compare(date) !== 0 && props['data-disabled'] !== '') ? `${calendarPath}#date=${dateString}` : undefined}
+                        href={(linkToCalendar && props['data-disabled'] !== '') ? `${calendarPath}#date=${dateString}` : undefined}
                         role="button"
                     >
                         <div class="day-row">
