@@ -2,8 +2,8 @@
 import { isDebug } from "$lib/common";
 
 let isDebugOn = $state(isDebug());
-let date = $state(localStorage.getItem('debugDate') || '');
-let nightOwl = $state(localStorage.getItem('debugNightOwl') || 'auto');
+let date = $state((typeof localStorage !== 'undefined' && localStorage.getItem('debugDate')) || '');
+let nightOwl = $state((typeof localStorage !== 'undefined' && localStorage.getItem('debugNightOwl')) || 'auto');
 
 const onDateChange = (e: Event) => {
     localStorage.setItem('debugDate', date);

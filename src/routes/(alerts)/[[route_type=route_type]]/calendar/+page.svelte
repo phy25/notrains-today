@@ -48,6 +48,10 @@ export const snapshot: Snapshot<string> = {
 };
 </script>
 
+<svelte:head>
+  <title>notrains.today {m.calendar()}</title>
+</svelte:head>
+
 {#if data.data.length > 0}
     <Calendar
         bind:dayValue={dayValue}

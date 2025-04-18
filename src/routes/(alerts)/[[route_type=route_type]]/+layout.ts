@@ -1,5 +1,5 @@
 export const prerender = true;
-export const ssr = false;
+export const ssr = true;
 
 import { filterHighPriorityAlerts, overrideAlerts } from '$lib/mbta-overides';
 import { DEFAULT_QUERY_ROUTE_TYPE, MBTA_TIMEZONE, QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
@@ -110,10 +110,10 @@ export const load: LayoutLoad = ({ params, route, fetch }) => {
         : toCalendarDate(currentServiceTime);
         
     let isNightOwl = currentServiceTime.hour < MBTA_SERVICE_START_HOUR || currentServiceTime.hour >= 23;
-    if (localStorage.getItem('debugNightOwl') === 'true') {
+    if ((typeof localStorage !== 'undefined') && localStorage.getItem('debugNightOwl') === 'true') {
         isNightOwl = true;
     }
-    if (localStorage.getItem('debugNightOwl') === 'false') {
+    if ((typeof localStorage !== 'undefined') && localStorage.getItem('debugNightOwl') === 'false') {
         isNightOwl = false;
     }
 

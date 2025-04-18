@@ -19,6 +19,10 @@
     });
 </script>
 
+<svelte:head>
+  <title>notrains.today</title>
+</svelte:head>
+
 {#if isOutdated}
     <Alert onclick={() => {invalidateAll();}}>
         {m.refreshReminder()}

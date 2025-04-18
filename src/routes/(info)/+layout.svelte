@@ -31,6 +31,10 @@
 	});
 </script>
 
+<svelte:head>
+  <title>notrains.today {m.footerAbout()}</title>
+</svelte:head>
+
 <div class="tab-wrapper">
     <div class="tab {isDebug() && 'debug'}">
         <a class="tab-item {tab_id === 'today' && 'selected'}" href="/">

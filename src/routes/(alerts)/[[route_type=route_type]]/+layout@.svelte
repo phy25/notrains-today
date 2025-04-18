@@ -2,7 +2,6 @@
 	import { isDebug } from '$lib/common';
 	import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
-	import { getFeedback } from '@sentry/sveltekit';
 	import type { LayoutProps } from './$types';
 	import MbtaRouteBadgeCompound from '$lib/mbta-route-badge-compound.svelte';
 	import { alertsToRouteRenderingList, getProcessedAlertsAsSingleRoute } from '$lib/calendar';
@@ -51,14 +50,23 @@
 	});
 	let feedbackBtnDom: HTMLButtonElement;
 	$effect(() => {
-		if (feedbackBtnDom) {
-			const feedback = getFeedback();
-			feedback?.attachTo(feedbackBtnDom, {
-				formTitle: "Send feedback",
-			});
-		}
+		feedbackBtnDom;
+		import('@sentry/sveltekit').then(
+			({ getFeedback }) => {
+				if (feedbackBtnDom) {
+					const feedback = getFeedback();
+					feedback?.attachTo(feedbackBtnDom, {
+						formTitle: "Send feedback",
+					});
+				}
+			}
+		);
 	});
 </script>
+
+<svelte:head>
+  <title>notrains.today</title>
+</svelte:head>
 
 <div class="tab-wrapper">
     <div class="tab {isDebug() && 'debug'}">
