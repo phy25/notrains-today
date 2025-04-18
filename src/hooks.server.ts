@@ -39,6 +39,7 @@ const paraglideHandle: Handle = ({ event, resolve }) => {
 			transformPageChunk: ({ html }) => {
 				return html
 					.replace('%paraglide.lang%', locale)
+					.replace('%notrains-today.title%', 'notrains.today')
 					.replace('%og.title%', OPEN_GRAPH_TITLE_MAPPING[event.route.id || ''] || OPEN_GRAPH_TITLE_MAPPING['']);
 			}
 		});
