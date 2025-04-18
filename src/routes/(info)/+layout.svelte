@@ -1,41 +1,14 @@
 <script lang="ts">	
 	import { isDebug } from '$lib/common';
-	import { DEFAULT_QUERY_ROUTE_TYPE, QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
+	import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
 	import { getFeedback } from '@sentry/sveltekit';
 	import type { LayoutProps } from './$types';
-	import MbtaRouteBadgeCompound from '$lib/mbta-route-badge-compound.svelte';
-	import { alertsToRouteRenderingList, getProcessedAlertsAsSingleRoute } from '$lib/calendar';
 	import { afterNavigate } from '$app/navigation';
 
 	const { data, children }: LayoutProps = $props();
 	
-	const alerts_today_route_list = $derived((async () => {
-		const { alertsByDay, routeMap } = await data.data_async();
-		return alertsToRouteRenderingList(
-			getProcessedAlertsAsSingleRoute(alertsByDay.get(data.current_service_date.toString()) || []),
-			routeMap);
-	})());
-	const alerts_future_route_list = async () => {
-		const { alertsByDay, routeMap } = await data.data_async();
-		let targetDate = data.current_service_date;
-		const endSearchDate = targetDate.add({ months: 1 });
-		while (targetDate.compare(endSearchDate) < 0) {
-			targetDate = targetDate.add({ days: 1 });
-			if (alertsByDay.get(targetDate.toString())?.length) {
-				break;
-			}
-		}
-		return alertsToRouteRenderingList(
-			getProcessedAlertsAsSingleRoute(alertsByDay.get(targetDate.toString()) || []),
-			routeMap);
-	};
-	const tab_id = $derived.by(() => {
-		if (data.route_id === '/calendar') {
-			return 'calendar';
-		}
-		return 'today';
-	});
+	const tab_id = 'today';
 	let debugClickTimes = 0;
 	const trackDebugClicks = () => {
 		debugClickTimes++;
@@ -56,45 +29,20 @@
 			});
 		}
 	});
-	const route_type_url_param = $derived(data.route_type !== DEFAULT_QUERY_ROUTE_TYPE ? ('?route_type=' + data.route_type) : '');
 </script>
 
 <div class="tab-wrapper">
     <div class="tab {isDebug() && 'debug'}">
-        <a class="tab-item {tab_id === 'today' && 'selected'}" href="./{route_type_url_param}">
+        <a class="tab-item {tab_id === 'today' && 'selected'}" href="/">
             <div class="tab-item-heading notranslate">
-				notrains.today{#await alerts_today_route_list}?{:then list}{#if list.length == 0}?{/if}{/await}
+				notrains.today?
 			</div>
             <div>
-				{#await alerts_today_route_list}
-					<!-- loading -->
-				{:then alerts_today_route_list}
-					{#each alerts_today_route_list as route}
-						<div class="badge-group">
-							<MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
-						</div>
-					{:else}
-						<span>✅</span> <span class="no-alert-text">{m.noAlert()}</span>
-					{/each}
-				{:catch}<!-- svelte-ignore block_empty -->
-				{/await}
             </div>
         </a>
-        <a class="tab-item {tab_id === 'calendar' && 'selected'}" href="./calendar{route_type_url_param}">
+        <a class="tab-item" href="/calendar">
             <div class="tab-item-heading">{m.calendar()}</div>
             <div>
-				{#await alerts_future_route_list()}
-					<!-- loading -->
-				{:then alerts_future_route_list}
-					{#each alerts_future_route_list as route}
-						<div class="badge-group">
-							<MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
-						</div>
-					{:else}
-						<span>✅</span> <span class="no-alert-text">{m.noAlert()}</span>
-					{/each}
-				{:catch}<!-- svelte-ignore block_empty -->
-				{/await}
             </div>
         </a>
     </div>
@@ -194,7 +142,6 @@
     flex: 1;
     padding: 0.3em 0.6em;
     line-height: 1.4em;
-	min-height: 2.8em;
     cursor: pointer;
     border-radius: 0.3em;
     text-decoration: none;
@@ -227,9 +174,5 @@
 }
 .tab-item-heading {
     font-weight: bold;
-}
-.badge-group {
-    display: inline-flex;
-	margin-right: 0.2em;
 }
 </style>

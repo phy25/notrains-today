@@ -1,12 +1,12 @@
 <script lang="ts">
-import Calendar from '../calendar.svelte';
+import Calendar from '../../../calendar.svelte';
 
 import { m } from '$lib/paraglide/messages';
 import type { PageProps } from './$types';
 import type { Snapshot } from '@sveltejs/kit';
 import { parseDate, type DateValue } from '@internationalized/date';
 import { page } from '$app/state';
-	import DebugAllAlerts from '../debug-all-alerts.svelte';
+	import DebugAllAlerts from '../../../debug-all-alerts.svelte';
 
 const { data }: PageProps = $props();
 

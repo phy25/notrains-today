@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
-	import PageAsync from './page-async.svelte';
+	import PageAsync from '../../page-async.svelte';
 	import { invalidateAll } from '$app/navigation';
 	import { m } from '$lib/paraglide/messages';
-	import Error from './+error.svelte';
+	import Error from '../../+error.svelte';
 	import Alert from '$lib/alert.svelte';
 
 	const { data }: PageProps = $props();
