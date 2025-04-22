@@ -88,7 +88,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
         <div {...props} class="calendar-header">
           <Calendar.PrevButton>
             {#snippet child({ props })}
-              <button {...props} class="calendar-header-btn">⯇</button>
+              <button {...props} class="calendar-header-btn">◀</button>
             {/snippet}
           </Calendar.PrevButton>
           <Calendar.Heading>
@@ -100,7 +100,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
           </Calendar.Heading>
           <Calendar.NextButton>
             {#snippet child({ props })}
-              <button {...props} class="calendar-header-btn">⯈</button>
+              <button {...props} class="calendar-header-btn">▶</button>
             {/snippet}
           </Calendar.NextButton>
         </div>
