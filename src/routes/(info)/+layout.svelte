@@ -2,7 +2,6 @@
 	import { isDebug } from '$lib/common';
 	import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
-	import { getFeedback } from '@sentry/sveltekit';
 	import type { LayoutProps } from './$types';
 	import { afterNavigate } from '$app/navigation';
 
@@ -22,12 +21,17 @@
 	});
 	let feedbackBtnDom: HTMLButtonElement;
 	$effect(() => {
-		if (feedbackBtnDom) {
-			const feedback = getFeedback();
-			feedback?.attachTo(feedbackBtnDom, {
-				formTitle: "Send feedback",
-			});
-		}
+		feedbackBtnDom;
+		import('@sentry/sveltekit').then(
+			({ getFeedback }) => {
+				if (feedbackBtnDom) {
+					const feedback = getFeedback();
+					feedback?.attachTo(feedbackBtnDom, {
+						formTitle: "Send feedback",
+					});
+				}
+			}
+		);
 	});
 </script>
 
