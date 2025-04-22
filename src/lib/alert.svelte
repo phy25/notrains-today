@@ -4,7 +4,8 @@
 
 
 {#if onclick}
-    <a class="alert" onclick={onclick} href=".">
+    <!-- svelte-ignore a11y_invalid_attribute -->
+    <a class="alert" onclick={onclick} href="">
         <div>⚠️</div> <div>{@render children?.()}</div>
     </a>
 {:else}

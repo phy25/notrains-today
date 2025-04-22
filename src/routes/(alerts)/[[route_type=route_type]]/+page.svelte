@@ -24,7 +24,7 @@
 </svelte:head>
 
 {#if isOutdated}
-    <Alert onclick={() => {invalidateAll();}}>
+    <Alert onclick={() => {invalidateAll();return false;}}>
         {m.refreshReminder()}
     </Alert>
 {/if}
