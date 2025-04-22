@@ -30,19 +30,20 @@ const ROUTE_PILL_MAPPING: Record<string, string> = {
     'Blue': 'BL',
     'Green': 'GL',
     // Commuter Rail unofficial
-    'CR-Fairmount': 'Fa',
-    'CR-NewBedford': 'FR/NB',
-    'CR-Fitchburg': 'Fi',
-    'CR-Worcester': 'Fr/Wo',
-    'CR-Franklin': 'Fr/Fo',
-    'CR-Greenbush': 'Gr',
-    'CR-Haverhill': 'Ha',
-    'CR-Kingston': 'Ki',
-    'CR-Lowell': 'Lo',
-    'CR-Needham': 'Ne',
-    'CR-Newburyport': 'Ne/Ro',
-    'CR-Providence': 'Pr/St',
-    'CR-Foxboro': 'FoEv',
+    // https://github.com/mbta/screens/blob/6331e5c587b0ba31c6965cc1ce7dc6bb374950dc/lib/screens/v2/widget_instance/serializer/route_pill.ex#L41
+    'CR-Fairmount': 'FMT',
+    'CR-NewBedford': 'FRV',
+    'CR-Fitchburg': 'FBG',
+    'CR-Worcester': 'WOR',
+    'CR-Franklin': 'FRK',
+    'CR-Greenbush': 'GRB',
+    'CR-Haverhill': 'HVL',
+    'CR-Kingston': 'KNG',
+    'CR-Lowell': 'LWL',
+    'CR-Needham': 'NDM',
+    'CR-Newburyport': 'NBP',
+    'CR-Providence': 'PVD',
+    'CR-Foxboro': 'FOX',
 };
 
 export const SECONDARY_SYMBOLS: Record<string, {
