@@ -31,8 +31,8 @@ if (showNightOwl) {
     <details transition:fade id={'alert-'+alert.id}>
         <summary>
             <!-- remove <p> to work with the marker. Temporary anyway. -->
-            <MbtaRouteBadgeCompound type="long" routeId={route_id} routeAttributes={attributes} />
-            {getEffectWithLineMessage(effect, route_id, attributes)}
+            <span class="badge-group"><MbtaRouteBadgeCompound type="long" routeId={route_id} routeAttributes={attributes} /></span>
+            <span class="alert-title">{getEffectWithLineMessage(effect, route_id, attributes)}</span>
             <p>
                 {alert.attributes.header}
             </p>
@@ -75,6 +75,12 @@ h2 > small {
 }
 summary {
     --badge-size: 1.3em;
+}
+summary .badge-group {
+    user-select: none;
+}
+summary .alert-title {
+    font-weight: bold;
 }
 .alert-image-container {
     overflow-x: auto;
