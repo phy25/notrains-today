@@ -173,11 +173,13 @@ export const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayStr
 
 // https://api-v3.mbta.com/trips/canonical-Red-C2-0?include=stops matching place-
 // order from north to south
-const RED_LINE_SHARED_STOP_IDS = [
+const RED_LINE_NORTH_STOP_IDS = [
     "place-alfcl",
     "place-davis",
     "place-portr",
     "place-harsq",
+];
+const RED_LINE_SHARED_STOP_IDS = [
     "place-cntsq",
     "place-knncl",
     "place-chmnl",
@@ -213,7 +215,10 @@ const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
     // TODO: check stop by stop to determine range intersection
     const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
 
-    const hasSharedNorthBranch = (
+    const hasSharedHarvardNorthBranch = (
+        RED_LINE_NORTH_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+    const hasSharedBranch = (
         RED_LINE_SHARED_STOP_IDS.every((stop) => informedStops.includes(stop))
     );
     const hasAshmontBranch = (
@@ -223,19 +228,22 @@ const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
         RED_LINE_BRAINTREE_STOP_IDS.every((stop) => informedStops.includes(stop))
     );
 
-    if (!hasAshmontBranch && !hasBraintreeBranch && !hasSharedNorthBranch) {
+    if (!hasAshmontBranch && !hasBraintreeBranch && !hasSharedHarvardNorthBranch && !hasSharedBranch) {
         return '•'; // can't determine branch
     }
-    if (hasSharedNorthBranch && !hasAshmontBranch && !hasBraintreeBranch) {
+    if (hasSharedHarvardNorthBranch && !hasSharedBranch && !hasAshmontBranch && !hasBraintreeBranch) {
+        return '◤'; // northbound branch, north of Harvard
+    }
+    if (hasSharedHarvardNorthBranch && hasSharedBranch && !hasAshmontBranch && !hasBraintreeBranch) {
         return '▲'; // northbound branch
     }
-    if (!hasSharedNorthBranch && hasAshmontBranch && !hasBraintreeBranch) {
+    if (!hasSharedHarvardNorthBranch && !hasSharedBranch && hasAshmontBranch && !hasBraintreeBranch) {
         return '◣'; // Ashmont branch
     }
-    if (!hasSharedNorthBranch && !hasAshmontBranch && hasBraintreeBranch) {
+    if (!hasSharedHarvardNorthBranch && !hasSharedBranch && !hasAshmontBranch && hasBraintreeBranch) {
         return '◢'; // Braintree branch
     }
-    if (!hasSharedNorthBranch && hasAshmontBranch && hasBraintreeBranch) {
+    if (!hasSharedHarvardNorthBranch && !hasSharedBranch && hasAshmontBranch && hasBraintreeBranch) {
         return '▼'; // both southbound branches
     }
     // assume all stops are affected. we could be wrong
