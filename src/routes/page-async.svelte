@@ -1,18 +1,28 @@
 <script lang="ts">
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
-import { getDayOfWeek } from '@internationalized/date';
+import { DateFormatter, getDayOfWeek } from '@internationalized/date';
 import CalendarOneweek from "./calendar-oneweek.svelte";
 import DayDetail from "./day-detail.svelte";
 import DebugAllAlerts from "./debug-all-alerts.svelte";
 import Glance from "./glance.svelte";
 import { getProcessedAlertsAsSingleRoute, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
+import { MBTA_TIMEZONE } from "$lib/mbta-types";
 
 const { data, currentServiceDate, isCurrentServiceNightOwl, routeType } = $props();
 
+const lastUpdatedTimeStr = $derived(
+    new DateFormatter(getLocale(), {timeStyle: 'short', timeZone: MBTA_TIMEZONE})
+        .format(new Date(data.lastUpdated)));
 const notrains_today = $derived(!!data.alertsByDay.get(currentServiceDate.toString())?.length);
 const MBTA_PLACEHOLDER = '%%MBTA%%';
-const notrains_today_text_array = $derived((notrains_today? m.trainsRunningSome({MBTA: MBTA_PLACEHOLDER}) : m.trainsRunningAll({MBTA: MBTA_PLACEHOLDER})).split(MBTA_PLACEHOLDER) || []);
+const notrains_today_text_array = $derived(
+    (
+        notrains_today ?
+        m.trainsRunningSome({MBTA: MBTA_PLACEHOLDER, time: lastUpdatedTimeStr}) :
+        m.trainsRunningAll({MBTA: MBTA_PLACEHOLDER, time: lastUpdatedTimeStr})
+    )
+    .split(MBTA_PLACEHOLDER) || []);
 
 const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString()));
 </script>

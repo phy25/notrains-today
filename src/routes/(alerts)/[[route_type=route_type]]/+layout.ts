@@ -8,7 +8,7 @@ import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
 import { now, parseDate, toCalendarDate } from "@internationalized/date";
 import { captureException } from '@sentry/sveltekit';
 
-let data_async_data: { data: MbtaAlert[]; alertsByDay: Map<string, MbtaAlert[]>; routeMap: Map<string, any> } | null = null;
+let data_async_data: { data: MbtaAlert[]; alertsByDay: Map<string, MbtaAlert[]>; routeMap: Map<string, any>; lastUpdated: string; } | null = null;
 let data_async_hash: string | null = null;
 
 export const load: LayoutLoad = ({ params, route, fetch }) => {
@@ -33,6 +33,7 @@ export const load: LayoutLoad = ({ params, route, fetch }) => {
                 }
             });
             const json = await response.json();
+            const lastUpdated = response.headers.get('Last-Modified') || new Date().toUTCString();
             if (response.status >= 400) {
                 reject(new Error('Error fetching data: ' + JSON.stringify(json)));
                 return;
@@ -88,6 +89,7 @@ export const load: LayoutLoad = ({ params, route, fetch }) => {
                 data: filterHighPriorityAlerts(overridenData),
                 alertsByDay,
                 routeMap,
+                lastUpdated,
             };
             data_async_hash = url;
             resolve(data_async_data);
