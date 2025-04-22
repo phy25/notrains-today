@@ -15,7 +15,6 @@
 <style>
     .route-badge {
         display: inline-flex;
-        font-family: sans-serif;
         border-radius: 0.5em;
         min-width: 1em;
         height: 1em;
