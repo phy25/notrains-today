@@ -47,7 +47,7 @@
         {
             "type": "replace",
             "match_id": "631806",
-            "match_updated_at": "2025-04-18T09:53:10-04:00",
+            "match_updated_at": "2025-04-22T09:30:13-04:00",
             "note": "Add wait time info shown in stations",
             "item": {
                 "attributes": {
@@ -58,7 +58,6 @@
         {
             "type": "remove-route",
             "match_id": "635744",
-            "match_updated_at": "2025-04-22T00:00:21-04:00",
             "note": "not all branches are affected",
             "route_ids": [
                 "Green-B",
