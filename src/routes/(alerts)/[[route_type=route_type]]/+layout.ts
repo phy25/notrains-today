@@ -10,6 +10,7 @@ import { captureException } from '@sentry/sveltekit';
 
 let data_async_data: { data: MbtaAlert[]; alertsByDay: Map<string, MbtaAlert[]>; routeMap: Map<string, any>; lastUpdated: string; } | null = null;
 let data_async_hash: string | null = null;
+let date_async_lastUpdated: number = 0;
 
 export const load: LayoutLoad = ({ params, route, fetch }) => {
     // parse route_type from query string in browser
@@ -23,7 +24,8 @@ export const load: LayoutLoad = ({ params, route, fetch }) => {
         // not including accessibility and parking alerts for now
         const url = 'https://api-v3.mbta.com/alerts?include=routes&filter%5Bactivity%5D=BOARD,EXIT,RIDE,BRINGING_BIKE&filter%5Broute_type%5D=' + QUERY_ROUTE_TYPE_MAPPING[route_type];
 
-        if (data_async_data && data_async_hash === url) {
+        if (data_async_data && data_async_hash === url && (Date.now() - date_async_lastUpdated) < 1000 * 10) {
+            // if data is already fetched and not older than 10 seconds, use cached data
             resolve(data_async_data);
         }
         try {
@@ -92,6 +94,7 @@ export const load: LayoutLoad = ({ params, route, fetch }) => {
                 lastUpdated,
             };
             data_async_hash = url;
+            date_async_lastUpdated = Date.now();
             resolve(data_async_data);
         } catch (err) {
             reject(err);
