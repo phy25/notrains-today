@@ -26,7 +26,7 @@
 	<p>
 		<a href="https://fink.inlang.com/github.com/phy25/notrains-today">Contribute to translations through Fink</a>.
 		A GitHub account is required, and the third-party translation tool Fink terms of use may apply.
-		Alternatively, you may translate the inlang files locally.
+		Alternatively, you may translate the inlang files locally and submit it through GitHub Pull Request.
 	</p>
 </details>
 

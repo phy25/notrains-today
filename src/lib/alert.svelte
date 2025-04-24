@@ -21,7 +21,7 @@ a.alert {
 
 .alert {
     margin: 0.5em 0;
-    padding: 0.5em 0.3em;
+    padding: 0.6em 0.4em;
     background: #C9E3F5;
     color: #000;
     display: flex;

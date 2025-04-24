@@ -70,9 +70,9 @@
     {/if}
     {#if isCurrentServiceNightOwl}
     <div class="route-expanded"><p>
-        🌙︎ <em>{m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {
+        🌙︎ {m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {
         timeStyle: "short",
-    }).format(toCalendarDateTime(now(MBTA_TIMEZONE), MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME).toDate(MBTA_TIMEZONE))})}<a href="https://www.mbta.com/lasttrip">{m.learnMore()}</a></em></p>
+    }).format(toCalendarDateTime(now(MBTA_TIMEZONE), MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME).toDate(MBTA_TIMEZONE))})}<a href="https://www.mbta.com/lasttrip">{m.learnMore()}</a></p>
     </div>
     {/if}
 </div>

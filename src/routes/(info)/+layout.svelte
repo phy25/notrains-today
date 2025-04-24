@@ -1,4 +1,5 @@
-<script lang="ts">	
+<script lang="ts">
+	import '$lib/style.css';
 	import { isDebug } from '$lib/common';
 	import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
@@ -77,47 +78,6 @@
 </div>
 
 <style>
-:global {
-	html {
-		font-size: 16px;
-		font-family: Inter, "Helvetica Neue", Helvetica, Arial, sans-serif;
-	}
-	body {
-		margin: 0;
-		--page-content-max-width: 56rem;
-		--page-content-min-width: 18rem;
-		--color-accent: #1F6DA5;
-	}
-	a, button.link {
-		color: #195581;
-	}
-	@media (prefers-color-scheme: dark) {
-		body {
-			--color-accent: #92C6EA;
-		}
-		a, button.link {
-			color: #A0C4FF;
-		}
-	}
-	button.link {
-		appearance: none;
-		text-decoration: underline;
-		border: none;
-		background: none;
-		font-size: 1em;
-    	padding: 0;
-		cursor: pointer;
-	}
-	.page-content {
-		margin: 0 auto;
-		padding: 0 0.4em;
-		width: 100%;
-		max-width: var(--page-content-max-width);
-		min-width: var(--page-content-min-width);
-		box-sizing: border-box;
-	}
-}
-
 .tab-wrapper {
     background: var(--background-color);
     --background-color: #195581;
