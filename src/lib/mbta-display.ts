@@ -126,6 +126,9 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString:
         if (uniqueRoutes[0].startsWith('Green')) {
             return getAlertBadgeSecondarySymbolForGreenLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
         }
+        if (uniqueRoutes[0].startsWith('CR-')) {
+            return getAlertBadgeSecondarySymbolForCommuterRail(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+        }
 
         // detour impacting multiple stops, show detour symbol
         if (alert.attributes.informed_entity.every(entity => entity.stop) && alert.attributes.informed_entity.length > 1) {
@@ -381,4 +384,54 @@ export const mergeSplitBranchRouteAlerts = (alerts: MbtaAlert[]) => {
 
         return alert;
     });
+}
+
+const HAVENHILL_SOUTH_PARENT_STOP_IDS = [
+    'place-north',
+    'place-mlmnl',
+    'place-ogmnl',
+];
+
+const LOWELL_SOUTH_PARENT_STOP_IDS = [
+    'place-north',
+    'place-NHRML-0055',
+    'place-NHRML-0073',
+    'place-NHRML-0078',
+    'place-NHRML-0127',
+];
+
+const NEWBURYPORT_SOUTH_PARENT_STOP_IDS = [
+    'place-north',
+    'place-chels',
+    'place-ER-0099',
+    'place-ER-0117',
+    'place-ER-0128',
+];
+
+const getAlertBadgeSecondarySymbolForCommuterRail = (alert: MbtaAlert) => {
+    // for now we do a simple check by checking if the alert impacts all stop on a branch rather than some
+    // TODO: check stop by stop to determine range intersection
+    const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
+
+    const hasHavenhillSouthSegment = (
+        HAVENHILL_SOUTH_PARENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+
+    const hasLowellSouthSegment = (
+        LOWELL_SOUTH_PARENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+
+    const hasNewburyportSouthSegment = (
+        NEWBURYPORT_SOUTH_PARENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+
+    if (hasHavenhillSouthSegment || hasLowellSouthSegment) {
+        return '▼';
+    }
+
+    if (hasNewburyportSouthSegment) {
+        return '◣';
+    }
+    // can't determine branch
+    return '•';
 }

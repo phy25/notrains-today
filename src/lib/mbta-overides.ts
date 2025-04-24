@@ -145,11 +145,20 @@ export const filterHighPriorityAlerts = (alerts: MbtaAlert[]) => {
         }
         if (alert.attributes.effect == 'CANCELLATION') {
             return true;
+        }        
+        if (alert.attributes.informed_entity.every(entity => entity.route_type == 2)
+            && (alert.attributes.effect == 'TRACK_CHANGE' || alert.attributes.effect == 'STATION_ISSUE')) {
+            // unfortunately we need to ignore MBTA_URGENT_SEVERITY if it is for commuter rail
+            return false;
         }
         if (alert.attributes.severity >= MBTA_URGENT_SEVERITY) {
             return true;
         }
         if (alert.attributes.effect == 'ACCESS_ISSUE') {
+            return false;
+        }
+        if (alert.attributes.effect == 'TRACK_CHANGE' || alert.attributes.effect == 'STATION_ISSUE') {
+            // TODO: handle this downstream so that we can show it in the archive
             return false;
         }
         if (alert.attributes.effect === 'SCHEDULE_CHANGE' && alert.attributes.severity <= MBTA_SERVICE_CHANGE_LOW_SEVERITY) {

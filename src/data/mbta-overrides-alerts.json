@@ -14,7 +14,7 @@
         },
         {
             "type": "replace",
-            "match_id": "637296",
+            "match_id": "638237",
             "note": "Issue only impacts one station rather than the entire route",
             "item": {
                 "attributes": {
@@ -87,6 +87,172 @@
                     "informed_entity":[
                         {"stop":"NEC-1969-03","direction_id":0,"route_type":2,"route":"CR-Providence","activities":["BOARD"],"trip":"SPRING2025V3-716195-5893"},
                         {"stop":"place-NEC-1969","direction_id":0,"route_type":2,"route":"CR-Providence","activities":["BOARD"],"trip":"SPRING2025V3-716195-5893"}
+                    ]
+                }
+            }
+        },
+        {
+            "type": "replace",
+            "match_id": "634497",
+            "note": "this is a shuttle; I also need to add stops affected",
+            "item": {
+                "attributes": {
+                    "effect": "SHUTTLE",
+                    "informed_entity": [
+                        {
+                            "route_type": 2,
+                            "route": "CR-Haverhill",
+                            "stop": "place-north",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route_type": 2,
+                            "route": "CR-Haverhill",
+                            "stop": "place-mlmnl",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route_type": 2,
+                            "route": "CR-Haverhill",
+                            "stop": "place-ogmnl",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "replace",
+            "match_id": "634495",
+            "note": "this is a shuttle; I also need to add stops affected",
+            "item": {
+                "attributes": {
+                    "effect": "SHUTTLE",
+                    "informed_entity": [
+                        {
+                            "route_type": 2,
+                            "route": "CR-Lowell",
+                            "stop": "place-north",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route_type": 2,
+                            "route": "CR-Lowell",
+                            "stop": "place-NHRML-0055",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route_type": 2,
+                            "route": "CR-Lowell",
+                            "stop": "place-NHRML-0073",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route_type": 2,
+                            "route": "CR-Lowell",
+                            "stop": "place-NHRML-0078",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route_type": 2,
+                            "route": "CR-Lowell",
+                            "stop": "place-NHRML-0127",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "replace",
+            "match_id": "634508",
+            "note": "this is a shuttle; I also need to add stops affected",
+            "item": {
+                "attributes": {
+                    "effect": "SHUTTLE",
+                    "informed_entity": [
+                        {
+                            "route_type": 2,
+                            "route": "CR-Newburyport",
+                            "stop": "place-north",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route_type": 2,
+                            "route": "CR-Newburyport",
+                            "stop": "place-chels",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route_type": 2,
+                            "route": "CR-Newburyport",
+                            "stop": "place-ER-0099",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route_type": 2,
+                            "route": "CR-Newburyport",
+                            "stop": "place-ER-0117",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route_type": 2,
+                            "route": "CR-Newburyport",
+                            "stop": "place-ER-0128",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        }
                     ]
                 }
             }
