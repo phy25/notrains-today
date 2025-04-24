@@ -35,6 +35,23 @@ const MBTA_SERVICE_CHANGE_LOW_SEVERITY = 3;
 
 const MBTA_DIVERSION_EFFECTS = ['DETOUR', 'SHUTTLE', 'STOP_CLOSURE', 'STATION_CLOSURE', 'SUSPENSION'];
 
+// hand curated to skip effects that have no delay impact
+const MBTA_NOTRAINS_EQUIVALENT_EFFECTS = [
+    'CANCELLATION',
+    'DELAY',
+    'DETOUR',
+    'DOCK_CLOSURE',
+    'MODIFIED_SERVICE',
+    'NO_SERVICE',
+    'SCHEDULE_CHANGE',
+    'SERVICE_CHANGE',
+    'SHUTTLE',
+    'SNOW_ROUTE',
+    'STATION_CLOSURE',
+    'STOP_CLOSURE',
+    'SUSPENSION',
+];
+
 export const overrideAlerts = (alerts: MbtaAlert[]) => {
     const data: OverrideEntry[] = rawData as OverrideEntry[];
     const removeEntryMap: Map<string, OverrideRemoveEntry> = new Map();
