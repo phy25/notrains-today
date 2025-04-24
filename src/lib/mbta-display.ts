@@ -120,6 +120,9 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString:
         if (uniqueRoutes[0] === 'Red') {
             return getAlertBadgeSecondarySymbolForRedLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
         }
+        if (uniqueRoutes[0] === 'Orange') {
+            return getAlertBadgeSecondarySymbolForOrangeLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+        }
         if (uniqueRoutes[0] === 'Blue') {
             return getAlertBadgeSecondarySymbolForBlueLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
         }
@@ -252,6 +255,56 @@ const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
     }
     // assume all stops are affected. we could be wrong
     return '▣';
+}
+
+// north of north station, north to south
+const ORANGE_LINE_NORTH_STOP_IDS = [
+    'place-ogmnl',
+    'place-mlmnl',
+    'place-welln',
+    'place-astao',
+    'place-sull',
+    'place-ccmnl',
+    'place-north',
+];
+
+const ORANGE_LINE_CORE_STOP_IDS = [
+    'place-haecl',
+    'place-state',
+    'place-dwnxg',
+    'place-chncl',
+    'place-tumnl',
+    'place-bbsta',
+];
+
+const ORANGE_LINE_SOUTH_STOP_IDS = [
+    'place-masta',
+    'place-rugg',
+    'place-rcmnl',
+    'place-jaksn',
+    'place-sbmnl',
+    'place-grnst',
+    'place-forhl',
+];
+
+const getAlertBadgeSecondarySymbolForOrangeLine = (alert: MbtaAlert) => {
+    // I am too lazy to build out everything for now
+    // TODO: check stop by stop to determine range intersection
+    const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
+
+    const hasNorthSegment = (
+        ORANGE_LINE_NORTH_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+    const hasCoreSegment = (
+        ORANGE_LINE_CORE_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+    const hasSouthSegment = (
+        ORANGE_LINE_SOUTH_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+    if (hasNorthSegment && !hasCoreSegment && !hasSouthSegment) {
+        return '◤'; // north of north station
+    }
+    return '•';
 }
 
 const getAlertBadgeSecondarySymbolForBlueLine = (alert: MbtaAlert) => {
