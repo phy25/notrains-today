@@ -8,6 +8,7 @@ export const EFFECT_MESSAGES = {
     'STATION_CLOSURE': m['mbtaAlertEffectStationClosure'],
     'STATION_ISSUE': m['mbtaAlertEffectStationIssue'],
     'SERVICE_CHANGE': m['mbtaAlertEffectServiceChange'],
+    'SCHEDULE_CHANGE': m['mbtaAlertEffectScheduleChange'],
     'ADDITIONAL_SERVICE': m['mbtaAlertEffectAdditionalService'],
     'TRACK_CHANGE': m['mbtaAlertEffectTrackChange'],
 };

@@ -19,6 +19,7 @@
     "mbtaAlertEffectStationClosure": "车站关闭",
     "mbtaAlertEffectStationIssue": "车站调整",
     "mbtaAlertEffectServiceChange": "服务变更",
+    "mbtaAlertEffectScheduleChange": "班次调整",
     "mbtaAlertEffectAdditionalService": "额外服务",
     "mbtaAlertEffectTrackChange": "站台变更",
     "mbtaAlertEffectWithLineDefault": "{line}{effect}",

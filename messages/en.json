@@ -19,6 +19,7 @@
     "mbtaAlertEffectStationClosure": "Station Closure",
     "mbtaAlertEffectStationIssue": "Station Issue",
     "mbtaAlertEffectServiceChange": "Service Change",
+    "mbtaAlertEffectScheduleChange": "Schedule Change",
     "mbtaAlertEffectAdditionalService": "Additional Service",
     "mbtaAlertEffectTrackChange": "Platform Change",
     "mbtaAlertEffectWithLineDefault": "{line} {effect}",
