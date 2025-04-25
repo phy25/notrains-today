@@ -13,7 +13,7 @@
     "noAlert": "服务正常",
     "multipleAlerts": "{count} 个异常",
     "noDowntownTransfer": "无市中心换乘",
-    "noDowntownTransferDescription": "如需在市中心进行地铁换乘，请在 {time} 前到达。",
+    "noDowntownTransferDescription": "市中心地铁换乘截止于 {time}，之后部分线路的末班车会离开换乘站。",
     "mbtaAlertEffectDelay": "延误",
     "mbtaAlertEffectShuttle": "摆渡车",
     "mbtaAlertEffectStationClosure": "车站关闭",
