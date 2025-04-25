@@ -63,18 +63,6 @@
         {/each}
     </div>
     {/if}
-    {#if isDebug()}
-        <div class="route-expanded">
-            <div class="badge-group">
-                <MbtaRouteBadge pillLabel="Bus" type="long" color="#ffc72c" textColor="#000"></MbtaRouteBadge>
-            </div>
-        </div>
-        <div class="route-expanded">
-            <div class="badge-group">
-                <MbtaRouteBadge pillLabel="Ferry" type="long" color="#008eaa" textColor="#FFF"></MbtaRouteBadge>
-            </div>
-        </div>
-    {/if}
     {#if isCurrentServiceNightOwl && !noTransferPossible}
     <div class="route-expanded"><p>
         🌙︎ {m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {

@@ -70,44 +70,49 @@
 </svelte:head>
 
 <div class="tab-wrapper">
-    <div class="tab {isDebug() && 'debug'}">
-        <a class="tab-item {tab_id === 'today' && 'selected'}" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>
-            <div class="tab-item-heading notranslate">
-				notrains.today{#await alerts_today_route_list}?{:then list}{#if list.length == 0}?{/if}{/await}
-			</div>
-            <div>
-				{#await alerts_today_route_list}
-					<!-- loading -->
-				{:then alerts_today_route_list}
-					{#each alerts_today_route_list as route}
-						<div class="badge-group">
-							<MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
-						</div>
-					{:else}
-						<span>✅</span> <span class="no-alert-text">{m.noAlert()}</span>
-					{/each}
-				{:catch}<!-- svelte-ignore block_empty -->
-				{/await}
-            </div>
-        </a>
-        <a class="tab-item {tab_id === 'calendar' && 'selected'}" href={resolveRoute('/[[route_type]]/calendar', { route_type: page.params.route_type })}>
-            <div class="tab-item-heading">{m.calendar()}</div>
-            <div>
-				{#await alerts_future_route_list()}
-					<!-- loading -->
-				{:then alerts_future_route_list}
-					{#each alerts_future_route_list as route}
-						<div class="badge-group">
-							<MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
-						</div>
-					{:else}
-						<span>✅</span> <span class="no-alert-text">{m.noAlert()}</span>
-					{/each}
-				{:catch}<!-- svelte-ignore block_empty -->
-				{/await}
-            </div>
-        </a>
-    </div>
+	<div class="tab-content">
+		<div class="tab {isDebug() && 'debug'}">
+			<a class="tab-item {tab_id === 'today' && 'selected'}" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>
+				<div class="tab-item-heading notranslate">
+					notrains.today{#await alerts_today_route_list}?{:then list}{#if list.length == 0}?{/if}{/await}
+				</div>
+				<div>
+					{#await alerts_today_route_list}
+						<!-- loading -->
+					{:then alerts_today_route_list}
+						{#each alerts_today_route_list as route}
+							<div class="badge-group">
+								<MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
+							</div>
+						{:else}
+							<span>✅</span> <span class="no-alert-text">{m.noAlert()}</span>
+						{/each}
+					{:catch}<!-- svelte-ignore block_empty -->
+					{/await}
+				</div>
+			</a>
+			<a class="tab-item {tab_id === 'calendar' && 'selected'}" href={resolveRoute('/[[route_type]]/calendar', { route_type: page.params.route_type })}>
+				<div class="tab-item-heading">{m.calendar()}</div>
+				<div>
+					{#await alerts_future_route_list()}
+						<!-- loading -->
+					{:then alerts_future_route_list}
+						{#each alerts_future_route_list as route}
+							<div class="badge-group">
+								<MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
+							</div>
+						{:else}
+							<span>✅</span> <span class="no-alert-text">{m.noAlert()}</span>
+						{/each}
+					{:catch}<!-- svelte-ignore block_empty -->
+					{/await}
+				</div>
+			</a>
+		</div>
+		{#if isDebug()}
+			<div class="tab-side-btn"><a href={resolveRoute(page.route.id || '/bus', { route_type: 'bus' })}>🚌</a></div>
+		{/if}
+	</div>
 </div>
 
 <div class="page-content">
@@ -137,13 +142,29 @@
     color: #FFF;
     padding: 0.4em;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
 	min-width: var(--page-content-min-width);
+}
+.tab-side-btn {
+	display: flex;
+	align-items: stretch;
+}
+.tab-side-btn a {
+	display: flex;
+	align-items: center;
+	padding: 0.6em;
+	text-decoration: none;
 }
 @media (max-width: 21rem) {
     .tab-wrapper {
         padding: 0.4em 0.2em;
     }
+}
+.tab-content {
+	display: flex;
+    width: 100%;
+    max-width: var(--page-content-max-width);
+	box-sizing: border-box;
 }
 .tab {
     display: flex;
@@ -153,11 +174,8 @@
     border: #FFF 1px solid;
     border-radius: 0.3em;
     padding: 0.2em;
-    width: 100%;
-    max-width: var(--page-content-max-width);
-    min-width: var(--page-content-min-width);
-	box-sizing: border-box;
 	gap: 0.1em;
+	flex: 1;
 }
 .tab-item {
     flex: 1;
