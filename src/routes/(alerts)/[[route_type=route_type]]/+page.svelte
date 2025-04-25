@@ -32,12 +32,25 @@
 {#await data.data_async()}
     <p>{m.loading()}</p>
 {:then d}
+    {#await data.last_train_data_async}
+        <p>{m.loading()}</p>
+    {:then lastTrainData}
 	<PageAsync
 		data={d}
+        lastTrainData={lastTrainData}
         routeType={data.route_type}
 		currentServiceDate={data.current_service_date}
 		isCurrentServiceNightOwl={data.is_current_service_night_owl}
 	/>
+    {:catch}
+    <PageAsync
+		data={d}
+        lastTrainData={new Map()}
+        routeType={data.route_type}
+		currentServiceDate={data.current_service_date}
+		isCurrentServiceNightOwl={data.is_current_service_night_owl}
+	/>
+    {/await}
 {:catch}
 <Error />
 {/await}

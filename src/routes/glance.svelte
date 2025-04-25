@@ -11,28 +11,35 @@
 	import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
     
 
-    const { alertsToday, currentServiceDate, isCurrentServiceNightOwl, routeMap, routeType } = $props();
+    const { alertsToday, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeMap, routeType } = $props();
     const expandedAlerts: MbtaAlert[] = $derived(alertsToday);
     const commuterRailAlertsByEffects = $derived(getAlertsMapByEffect(
         expandedAlerts.filter(alert => alert.attributes.informed_entity.some(entity => entity.route_type === 2))));
     
     const nowTime = toTime(now(MBTA_TIMEZONE));
     const noDowntownTransfer = $derived(isCurrentServiceNightOwl && MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME.compare(nowTime) <= 0);
+    const serviceEndedData = $derived.by(() => {
+        const currentDate = Date.now();
+        return new Map((lastTrainData as Map<string, string>).entries().map(([route, dateString]) => {
+            return [route, currentDate <= +new Date(dateString)];
+        }));
+    });
+    const noTransferPossible = $derived(serviceEndedData.values().filter((value) => value).toArray().length <= 1);
 </script>
 
 <div class="glance-rapid-transit-grid">
     {#if routeType === 'subway' || routeType === 'trains' }
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Green" color="#00843d" textColor="#FFF" branchRouteIds={["Green-B", "Green-C", "Green-D", "Green-E"]} unfilteredAlerts={expandedAlerts} {currentServiceDate} {noDowntownTransfer} />
+        <GlanceSubwayRoute mainRouteId="Green" color="#00843d" textColor="#FFF" branchRouteIds={["Green-B", "Green-C", "Green-D", "Green-E"]} unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Green')} isServiceEnded={serviceEndedData.get('Green')} {currentServiceDate} {noDowntownTransfer} />
     </div>
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Red" color="#da291c" textColor="#FFF" branchRouteIds={["Mattapan"]} unfilteredAlerts={expandedAlerts} {currentServiceDate} {noDowntownTransfer} />
+        <GlanceSubwayRoute mainRouteId="Red" color="#da291c" textColor="#FFF" branchRouteIds={["Mattapan"]} unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Red')} isServiceEnded={serviceEndedData.get('Red')} {currentServiceDate} {noDowntownTransfer} />
     </div>
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Orange" color="#ed8b00" textColor="#FFF" unfilteredAlerts={expandedAlerts} {currentServiceDate} {noDowntownTransfer} />
+        <GlanceSubwayRoute mainRouteId="Orange" color="#ed8b00" textColor="#FFF" unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Orange')} isServiceEnded={serviceEndedData.get('Orange')} {currentServiceDate} {noDowntownTransfer} />
     </div>
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Blue" color="#003da5" textColor="#FFF" unfilteredAlerts={expandedAlerts} {currentServiceDate} {noDowntownTransfer} />
+        <GlanceSubwayRoute mainRouteId="Blue" color="#003da5" textColor="#FFF" unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Blue')} isServiceEnded={serviceEndedData.get('Blue')} {currentServiceDate} {noDowntownTransfer} />
     </div>
     {/if}
     {#if routeType === 'commuter-rail' || routeType === 'trains' }
@@ -68,7 +75,7 @@
             </div>
         </div>
     {/if}
-    {#if isCurrentServiceNightOwl}
+    {#if isCurrentServiceNightOwl && !noTransferPossible}
     <div class="route-expanded"><p>
         🌙︎ {m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {
         timeStyle: "short",

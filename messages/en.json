@@ -14,6 +14,8 @@
     "multipleAlerts": "{count} alerts",
     "noDowntownTransfer": "No downtown transfer",
     "noDowntownTransferDescription": "Downtown subway transfer is not guaranteed after {time}. Last trains on some lines will leave transfer stations by then. ",
+    "glanceLastTrainTime": "Last {time}",
+    "glanceLastTrainEnded": "Last train ended",
     "mbtaAlertEffectDelay": "Delay",
     "mbtaAlertEffectShuttle": "Shuttle",
     "mbtaAlertEffectStationClosure": "Station Closure",

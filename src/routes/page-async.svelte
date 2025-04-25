@@ -9,7 +9,7 @@ import Glance from "./glance.svelte";
 import { getProcessedAlertsAsSingleRoute, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
 import { MBTA_TIMEZONE } from "$lib/mbta-types";
 
-const { data, currentServiceDate, isCurrentServiceNightOwl, routeType } = $props();
+const { data, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeType } = $props();
 
 const lastUpdatedTimeStr = $derived(
     new DateFormatter(getLocale(), {timeStyle: 'short', timeZone: MBTA_TIMEZONE})
@@ -37,6 +37,7 @@ const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString())
     alertsToday={getProcessedAlertsAsSingleRoute(alertsToday || [])}
     currentServiceDate={currentServiceDate}
     isCurrentServiceNightOwl={isCurrentServiceNightOwl}
+    lastTrainData={lastTrainData}
     routeMap={data.routeMap}
     routeType={routeType}
 />
