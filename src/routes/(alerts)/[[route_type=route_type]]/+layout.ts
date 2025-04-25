@@ -12,7 +12,7 @@ let data_async_data: { data: MbtaAlert[]; alertsByDay: Map<string, MbtaAlert[]>;
 let data_async_hash: string | null = null;
 let date_async_lastUpdated: number = 0;
 
-export const load: LayoutLoad = ({ params, route, fetch }) => {
+export const load: LayoutLoad = async ({ params, route, fetch }) => {
     // parse route_type from query string in browser
     let route_type = params.route_type || DEFAULT_QUERY_ROUTE_TYPE;
 
@@ -27,6 +27,7 @@ export const load: LayoutLoad = ({ params, route, fetch }) => {
         if (data_async_data && data_async_hash === url && (Date.now() - date_async_lastUpdated) < 1000 * 10) {
             // if data is already fetched and not older than 10 seconds, use cached data
             resolve(data_async_data);
+            return;
         }
         try {
             const response = await fetch(url, {
@@ -105,6 +106,10 @@ export const load: LayoutLoad = ({ params, route, fetch }) => {
     });
 
     const data_async = async () => data_async_promise;
+    if (data_async_data) {
+        // SPA reload. Do not resolve page data until the new data is fetched
+        await data_async_promise;
+    }
 
     let currentServiceTime = now(MBTA_TIMEZONE);
     if (currentServiceTime.hour < MBTA_SERVICE_START_HOUR) {
