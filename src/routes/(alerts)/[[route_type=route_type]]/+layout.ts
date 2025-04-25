@@ -105,7 +105,7 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
         throw err;
     });
 
-    const data_async = async () => data_async_promise;
+    const data_async = () => data_async_promise;
     if (data_async_data) {
         // SPA reload. Do not resolve page data until the new data is fetched
         await data_async_promise;

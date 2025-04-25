@@ -24,7 +24,7 @@
 </svelte:head>
 
 {#if isOutdated}
-    <Alert onclick={() => {invalidateAll();return false;}}>
+    <Alert onclick={(event: MouseEvent) => {event.preventDefault();invalidateAll();return false;}}>
         {m.refreshReminder()}
     </Alert>
 {/if}
