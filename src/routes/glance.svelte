@@ -7,7 +7,7 @@
 	import { MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME, MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
 	import { getLocale } from "$lib/paraglide/runtime";
 	import { alertsToRouteRenderingList, getAlertsMapByEffect } from "$lib/calendar";
-	import { getEffect } from "$lib/mbta-display";
+	import { getAlertBadgeSecondarySymbol, getEffect } from "$lib/mbta-display";
 	import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
     
 
@@ -49,8 +49,22 @@
                 <div class="has-alert-text">{getEffect(effect)}</div>
                 <div class="badge-groups">
                     {#each alertsToRouteRenderingList(alerts, routeMap) as route}
+                        {@const thisAlerts = alerts.filter(alert => alert.attributes.informed_entity.every(entity => entity.route == route.route_id))}
                         <div class="badge-group">
                             <MbtaRouteBadgeCompound type="long" routeId={route.route_id} routeAttributes={route.attributes} />
+                            {#if isDebug()}
+                                {#if thisAlerts.length > 2}
+                                <span class="badge-secondary-symbol" style:color={route.attributes?.color ? ('#' + route.attributes?.color) : 'inherit'}>
+                                    {thisAlerts.length}
+                                </span>
+                                {:else}
+                                    {#each thisAlerts as alert}
+                                    <span class="badge-secondary-symbol" style:color={route.attributes?.color ? ('#' + route.attributes?.color) : 'inherit'}>
+                                        {getAlertBadgeSecondarySymbol(alert, currentServiceDate.toString())}
+                                    </span>
+                                    {/each}
+                                {/if}
+                            {/if}
                         </div>
                     {/each}
                 </div>
