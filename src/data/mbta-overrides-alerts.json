@@ -256,6 +256,32 @@
                     ]
                 }
             }
+        },
+        {
+            "type": "replace",
+            "match_id": "639597",
+            "note": "skipping stops",
+            "item": {
+                "attributes": {
+                    "effect": "DETOUR"
+                }
+            }
+        },
+        {
+            "type": "replace",
+            "match_id": "639599",
+            "note": "some trips are cancelled",
+            "item": {
+                "attributes": {
+                    "effect": "CANCELLATION"
+                }
+            }
+        },
+        {
+            "type": "remove",
+            "match_id": "639986",
+            "note": "duplicate alert; I don't know what is going on with commuter rail",
+            "match_updated_at": "2025-04-25T17:01:24-04:00"
         }
     ]
 }

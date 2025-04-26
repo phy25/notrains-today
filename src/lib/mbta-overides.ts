@@ -36,6 +36,7 @@ const MBTA_SERVICE_CHANGE_LOW_SEVERITY = 3;
 const MBTA_DIVERSION_EFFECTS = ['DETOUR', 'SHUTTLE', 'STOP_CLOSURE', 'STATION_CLOSURE', 'SUSPENSION'];
 
 // hand curated to skip effects that have no delay impact
+// mbta/screens priority list: shuttle stop_closure suspension station_closure detour stop_moved snow_route
 const MBTA_NOTRAINS_EQUIVALENT_EFFECTS = [
     'CANCELLATION',
     'DELAY',
