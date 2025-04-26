@@ -15,7 +15,8 @@ const branchesAlerts = $derived(filterdAlerts.filter((alert: MbtaAlert) =>
     alert.attributes.informed_entity.some(entity => branchRouteIds.includes(entity.route))
 ));
 const lastTrainFormatted = $derived(lastTrainTime
-    ? new DateFormatter(getLocale(), {timeStyle: 'short', timeZone: MBTA_TIMEZONE}).format(new Date(lastTrainTime))
+    ? new DateFormatter(getLocale(), {timeStyle: 'short', timeZone: MBTA_TIMEZONE})
+        .format(new Date(lastTrainTime)).replace(" ", "\xa0") // non-breaking space for English
     : null);
 const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current) => {
     current.attributes?.informed_entity
