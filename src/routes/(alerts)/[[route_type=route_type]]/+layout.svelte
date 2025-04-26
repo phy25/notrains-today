@@ -56,7 +56,7 @@
 			({ getFeedback }) => {
 				if (feedbackBtnDom) {
 					const feedback = getFeedback();
-					feedback?.attachTo(feedbackBtnDom, {
+					return feedback?.attachTo(feedbackBtnDom, {
 						formTitle: "Send feedback",
 					});
 				}
@@ -129,16 +129,17 @@
 				import('@sentry/sveltekit').then(
 					async ({ getCurrentScope }) => {
 						const name = 'alerts-'+page.params.route_type+'.json';
+						getCurrentScope().clearAttachments();
 						getCurrentScope().addAttachment({
 							data: JSON.stringify((await data.data_async()).data),
 							filename: name,
 							contentType: 'application/json',
 						});
-						alert('Attached to Sentry payload: ' + name);
+						feedbackBtnDom?.click();
 					}
 				);
 				return false;
-			}}>Attach current alerts</a>
+			}}>Provide feedback with current alarms</a>
 		</p>
 		{/if}
 
@@ -169,7 +170,7 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+	justify-content: space-evenly;
 	padding: 0.5em;
 	min-width: 48px;
 	box-sizing: border-box;
