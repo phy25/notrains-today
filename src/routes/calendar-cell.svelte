@@ -114,17 +114,26 @@
     }
 }
 .calendar-cell{
-    height: 2.5em;
+    height: 100%;
+    /* https://stackoverflow.com/a/49797662 */
     /* https://stackoverflow.com/a/11275916 height essentially is min-height, as tables always stretch */
     vertical-align: top;
+    position: relative;
 }
 .calendar-day {
     height: 100%;
+    min-height: 2.5em;
     color: inherit;
     text-decoration: none;
     display: block;
     padding: 0.2em;
     box-sizing: border-box;
+}
+.calendar-day::after {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: '';
 }
 .calendar-day .day-row {
     display: flex;

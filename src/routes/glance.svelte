@@ -56,7 +56,7 @@
                             {#if isDebug()}
                                 {#if thisAlerts.length > 2}
                                 <span class="badge-secondary-symbol" style:color={route.attributes?.color ? ('#' + route.attributes?.color) : 'inherit'}>
-                                    {thisAlerts.length}
+                                    {thisAlerts.length}x
                                 </span>
                                 {:else}
                                     {#each thisAlerts as alert}

@@ -193,6 +193,9 @@ const onStickyWeekValueChange = (value?: DateValue) => {
   cursor: not-allowed;
   background: none;
 }
+.calendar-row {
+  height: 100%;
+}
 
 .calendar-sticky-week {
   visibility: hidden;

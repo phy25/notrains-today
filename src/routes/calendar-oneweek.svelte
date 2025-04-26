@@ -60,6 +60,11 @@ let {
 :global([data-bits-calendar-grid]) {
     table-layout: fixed;
     width: 100%;
+    height: 100%;
+}
+
+.calendar-row {
+    height: 100%;
 }
 
 </style>
