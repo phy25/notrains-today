@@ -170,8 +170,9 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-evenly;
+	justify-content: center;
 	padding: 0.5em;
+	gap: 0.2em;
 	min-width: 48px;
 	box-sizing: border-box;
 	text-decoration: none;
