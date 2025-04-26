@@ -1,15 +1,26 @@
 <script lang="ts">
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
-import { DateFormatter, getDayOfWeek } from '@internationalized/date';
+import { DateFormatter, getDayOfWeek, type CalendarDate } from '@internationalized/date';
 import CalendarOneweek from "./calendar-oneweek.svelte";
 import DayDetail from "./day-detail.svelte";
 import DebugAllAlerts from "./debug-all-alerts.svelte";
 import Glance from "./glance.svelte";
 import { getProcessedAlertsAsSingleRoute, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
-import { MBTA_TIMEZONE } from "$lib/mbta-types";
+import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
 
-const { data, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeType } = $props();
+const { data, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeType }: {
+    data: {
+        data: MbtaAlert[],
+        lastUpdated: string,
+        alertsByDay: Map<string, MbtaAlert[]>,
+        routeMap: Map<string, any>
+    },
+    lastTrainData: Map<string, string>,
+    currentServiceDate: CalendarDate,
+    isCurrentServiceNightOwl: boolean,
+    routeType: string
+} = $props();
 
 const lastUpdatedTimeStr = $derived(
     new DateFormatter(getLocale(), {timeStyle: 'short', timeZone: MBTA_TIMEZONE})

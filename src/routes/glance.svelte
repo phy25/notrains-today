@@ -2,7 +2,7 @@
 	import { isDebug } from "$lib/common";
 	import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 	import { m } from "$lib/paraglide/messages";
-    import { now, toCalendarDateTime, toTime } from "@internationalized/date";
+    import { now, toCalendarDateTime, toTime, type AnyCalendarDate } from "@internationalized/date";
 	import GlanceSubwayRoute from "./glance-subway-route.svelte";
 	import { MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME, MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
 	import { getLocale } from "$lib/paraglide/runtime";
@@ -11,7 +11,14 @@
 	import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
     
 
-    const { alertsToday, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeMap, routeType } = $props();
+    const { alertsToday, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeMap, routeType }: {
+        alertsToday: MbtaAlert[],
+        lastTrainData: Map<string, string>,
+        currentServiceDate: AnyCalendarDate,
+        isCurrentServiceNightOwl: boolean,
+        routeMap: Map<string, any>,
+        routeType: string
+    } = $props();
     const expandedAlerts: MbtaAlert[] = $derived(alertsToday);
     const commuterRailAlertsByEffects = $derived(getAlertsMapByEffect(
         expandedAlerts.filter(alert => alert.attributes.informed_entity.some(entity => entity.route_type === 2))));
@@ -20,8 +27,7 @@
     const noDowntownTransfer = $derived(isCurrentServiceNightOwl && MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME.compare(nowTime) <= 0);
     const serviceEndedData = $derived.by(() => {
         const currentDate = Date.now();
-        return new Map((lastTrainData as Map<string, string>).entries().map(([route, dateString]) => {
-            console.log(route, currentDate, dateString);
+        return new Map(lastTrainData.entries().map(([route, dateString]) => {
             return [route, +new Date(dateString) <= currentDate];
         }));
     });
