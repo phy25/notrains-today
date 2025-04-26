@@ -21,10 +21,11 @@
     const serviceEndedData = $derived.by(() => {
         const currentDate = Date.now();
         return new Map((lastTrainData as Map<string, string>).entries().map(([route, dateString]) => {
-            return [route, currentDate <= +new Date(dateString)];
+            console.log(route, currentDate, dateString);
+            return [route, +new Date(dateString) <= currentDate];
         }));
     });
-    const noTransferPossible = $derived(serviceEndedData.values().filter((value) => value).toArray().length <= 1);
+    const noTransferPossible = $derived(serviceEndedData.values().filter((value) => !value).toArray().length <= 1);
 </script>
 
 <div class="glance-rapid-transit-grid">
