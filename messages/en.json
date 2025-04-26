@@ -24,6 +24,7 @@
     "mbtaAlertEffectSuspension": "Suspension",
     "mbtaAlertEffectStationClosure": "Station Closure",
     "mbtaAlertEffectStopClosure": "Stop Closure",
+    "mbtaAlertEffectStopMove": "Stop Move",
     "mbtaAlertEffectStationIssue": "Station Issue",
     "mbtaAlertEffectServiceChange": "Service Change",
     "mbtaAlertEffectScheduleChange": "Schedule Change",

@@ -110,7 +110,8 @@
 			</a>
 		</div>
 		{#if isDebug()}
-			<div class="tab-side-btn"><a href={resolveRoute(page.route.id || '/bus', { route_type: 'bus' })}>🚌</a></div>
+			<div class="tab-side-btn"><a href={resolveRoute(page.route.id || '/bus', { route_type: 'bus' })}>
+				<span>🚇</span><span>🚂</span></a></div>
 		{/if}
 	</div>
 </div>
@@ -151,8 +152,12 @@
 }
 .tab-side-btn a {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
-	padding: 0.6em;
+	justify-content: center;
+	padding: 0.5em;
+	min-width: 48px;
+	box-sizing: border-box;
 	text-decoration: none;
 }
 @media (max-width: 21rem) {

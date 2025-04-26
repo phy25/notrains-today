@@ -11,6 +11,7 @@ export const EFFECT_MESSAGES = {
     'SUSPENSION': m['mbtaAlertEffectSuspension'],
     'STATION_CLOSURE': m['mbtaAlertEffectStationClosure'],
     'STOP_CLOSURE': m['mbtaAlertEffectStopClosure'],
+    'STOP_MOVE': m['mbtaAlertEffectStopMove'],
     'STATION_ISSUE': m['mbtaAlertEffectStationIssue'],
     'SERVICE_CHANGE': m['mbtaAlertEffectServiceChange'],
     'SCHEDULE_CHANGE': m['mbtaAlertEffectScheduleChange'],
