@@ -138,6 +138,7 @@
 .calendar-day .day-row {
     display: flex;
     flex-direction: row;
+    align-items: baseline;
     gap: 0.3em;
 }
 .calendar-day .day, .calendar-day .right {
