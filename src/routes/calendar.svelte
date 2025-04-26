@@ -180,7 +180,8 @@ const onStickyWeekValueChange = (value?: DateValue) => {
   border-radius: 0.25em;
   transition: background-color 0.2s ease;
   margin: 0.3em 0;
-
+  min-height: 32px;
+  min-width: 32px;
 }
 .calendar-header-btn:hover, .calendar-header-btn:focus {
   background: #CCC;
