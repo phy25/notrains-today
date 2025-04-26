@@ -9,6 +9,14 @@
 	}
 
 	const untranslatedLegalDisclaimer = m.untranslatedLegalDisclaimer();
+
+	interface OurWindow {
+		SENTRY_RELEASE?: {
+			id?: string;
+		};
+	}
+
+const version = typeof window !== 'undefined' ? (window as OurWindow)?.SENTRY_RELEASE?.id : undefined;
 </script>
 
 <Debugger />
@@ -29,6 +37,20 @@
 		Alternatively, you may translate the inlang files locally and submit it through GitHub Pull Request.
 	</p>
 </details>
+
+<h2>{m.openSourceSoftware()}</h2>
+
+
+<p>
+	{m.currentVersion()} <code>
+	{#if version}
+		<a href="https://github.com/phy25/notrains-today/commit/{version}">{version.substring(0, 8)}</a>
+	{:else}
+		edge
+	{/if}
+	</code>
+</p>
+<p><a href="https://github.com/phy25/notrains-today">{m.githubRepo()}</a></p>
 
 <h2>{m.privacyPolicy()}</h2>
 
@@ -83,7 +105,3 @@
 	affiliated with these external websites. By visiting third-party websites through hyperlinks,
 	different privacy policies may apply.
 </p>
-
-<h2>{m.openSourceSoftware()}</h2>
-
-<p><a href="https://github.com/phy25/notrains-today">{m.githubRepo()}</a></p>

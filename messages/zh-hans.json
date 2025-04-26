@@ -57,5 +57,6 @@
     "errorSeeAlso": "抱歉，页面出现异常。您可以在 {MBTA}查看最新信息。",
     "errorMbtaWebsite": "MBTA 网站",
     "openSourceSoftware": "开源软件",
-    "githubRepo": "GitHub 仓库"
+    "githubRepo": "GitHub 仓库",
+    "currentVersion": "当前版本"
 }
