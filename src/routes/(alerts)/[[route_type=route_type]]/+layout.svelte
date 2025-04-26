@@ -124,6 +124,21 @@
 			{#each Object.keys(QUERY_ROUTE_TYPE_MAPPING) as type}
 				<a href={resolveRoute(page.route.id || "/[[route_type]]", {route_type: type})}>{type}</a>{' '}
 			{/each}
+			<!-- svelte-ignore a11y_invalid_attribute -->
+			<a href="javascript:void(0)" onclick={() => {
+				import('@sentry/sveltekit').then(
+					async ({ getCurrentScope }) => {
+						const name = 'alerts-'+page.params.route_type+'.json';
+						getCurrentScope().addAttachment({
+							data: JSON.stringify((await data.data_async()).data),
+							filename: name,
+							contentType: 'application/json',
+						});
+						alert('Attached to Sentry payload: ' + name);
+					}
+				);
+				return false;
+			}}>Attach current alerts</a>
 		</p>
 		{/if}
 

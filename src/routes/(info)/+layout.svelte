@@ -1,25 +1,12 @@
 <script lang="ts">
 	import '$lib/style.css';
 	import { isDebug } from '$lib/common';
-	import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
 	import type { LayoutProps } from './$types';
-	import { afterNavigate } from '$app/navigation';
 
 	const { children }: LayoutProps = $props();
 	
 	const tab_id = 'today';
-	let debugClickTimes = 0;
-	const trackDebugClicks = () => {
-		debugClickTimes++;
-		if (debugClickTimes == 5) {
-			localStorage.setItem('debugDate', '');
-			location.href = '/about?debug';
-		}
-	};
-	afterNavigate(() => {
-		debugClickTimes = 0;
-	});
 	let feedbackBtnDom: HTMLButtonElement;
 	$effect(() => {
 		feedbackBtnDom;
@@ -60,20 +47,11 @@
 <div class="page-content">
 	{@render children()}
 	<footer>
-		{#if isDebug()}
 		<p>
-			{#each Object.keys(QUERY_ROUTE_TYPE_MAPPING) as type}
-				<a href="/{type}">{type}</a>{' '}
-			{/each}
-		</p>
-		{/if}
-
-		<!-- svelte-ignore a11y_click_events_have_key_events -->
-		<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-		<p onclick={trackDebugClicks}>
 			<span class="notranslate">☺ notrains.today</span>
 			<a href="/about">{m.footerAbout()}</a>
-			<button bind:this={feedbackBtnDom} type="button" class="link" onclick={(event)=>{(event.target as HTMLButtonElement).blur();/* get autofocus in the sentry dialog working */return false;}}>{m.footerFeedback()}</button></p>
+			<button bind:this={feedbackBtnDom} type="button" class="link" onclick={(event)=>{(event.target as HTMLButtonElement).blur();/* get autofocus in the sentry dialog working */return false;}}>{m.footerFeedback()}</button>
+		</p>
 	</footer>
 </div>
 
