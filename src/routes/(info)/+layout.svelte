@@ -27,8 +27,8 @@
   <title>notrains.today {m.footerAbout()}</title>
 </svelte:head>
 
-<div class="tab-wrapper">
-    <div class="tab {isDebug() && 'debug'}">
+<div class="tab-wrapper {isDebug() ? 'debug' : ''}">
+    <div class="tab">
         <a class="tab-item {tab_id === 'today' && 'selected'}" href="/">
             <div class="tab-item-heading notranslate">
 				notrains.today?
@@ -64,6 +64,15 @@
     display: flex;
     justify-content: space-around;
 	min-width: var(--page-content-min-width);
+}
+.tab-wrapper.debug {
+	background-image: repeating-linear-gradient(
+		-45deg,
+		#2580C1,
+		#2580C1 10px,
+		transparent 10px,
+		transparent 2.5rem
+	);
 }
 @media (max-width: 21rem) {
     .tab-wrapper {
@@ -104,15 +113,6 @@
     background: var(--background-color);
     --background-color: #FFF;
     color: #000;
-}
-.tab.debug .tab-item.selected {
-	background-image: repeating-linear-gradient(
-		-45deg,
-		#C9E3F5,
-		#C9E3F5 10px,
-		transparent 10px,
-		transparent 2rem
-	);
 }
 .tab .tab-item.selected:hover, .tab .tab-item.selected:focus {
 	background: var(--background-color);

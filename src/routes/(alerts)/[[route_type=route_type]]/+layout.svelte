@@ -69,9 +69,9 @@
   <title>notrains.today</title>
 </svelte:head>
 
-<div class="tab-wrapper">
+<div class="tab-wrapper {isDebug() ? 'debug' : ''}">
 	<div class="tab-content">
-		<div class="tab {isDebug() && 'debug'}">
+		<div class="tab">
 			<a class="tab-item {tab_id === 'today' && 'selected'}" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>
 				<div class="tab-item-heading notranslate">
 					notrains.today{#await alerts_today_route_list}?{:then list}{#if list.length == 0}?{/if}{/await}
@@ -162,6 +162,15 @@
     justify-content: center;
 	min-width: var(--page-content-min-width);
 }
+.tab-wrapper.debug {
+	background-image: repeating-linear-gradient(
+		-45deg,
+		#2580C1,
+		#2580C1 10px,
+		transparent 10px,
+		transparent 2.5rem
+	);
+}
 .tab-side-btn {
 	display: flex;
 	align-items: stretch;
@@ -220,15 +229,6 @@
     background: var(--background-color);
     --background-color: #FFF;
     color: #000;
-}
-.tab.debug .tab-item.selected {
-	background-image: repeating-linear-gradient(
-		-45deg,
-		#C9E3F5,
-		#C9E3F5 10px,
-		transparent 10px,
-		transparent 2rem
-	);
 }
 .tab .tab-item.selected:hover, .tab .tab-item.selected:focus {
 	background: var(--background-color);
