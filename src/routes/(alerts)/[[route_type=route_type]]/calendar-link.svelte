@@ -37,9 +37,6 @@ const linkHref = $derived(resolveRoute(type === 'today' ? '/[[route_type]]' : '/
 </script>
 
 <a href={linkHref} title={type === 'today' ? m.alertsToday() : m.alertsCalendar()}>
-    {#if type !== 'today'}
-        <div class="link-icon">›</div>
-    {/if}
     {#if type === 'today'}
         <div class="link-icon">‹</div>
     {/if}    
