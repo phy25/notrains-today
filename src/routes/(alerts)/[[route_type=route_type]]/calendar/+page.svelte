@@ -54,10 +54,6 @@ export const snapshot: Snapshot<string> = {
   <title>notrains.today {m.calendar()}</title>
 </svelte:head>
 
-{#if isDebug()}
-<CalendarLink type="today" alertsByDay={data.alertsByDay} routeMap={data.routeMap} currentServiceDate={data.current_service_date} />
-{/if}
-
 {#if data.data.length > 0}
     <Calendar
         bind:dayValue={dayValue}

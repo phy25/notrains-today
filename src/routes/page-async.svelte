@@ -65,6 +65,7 @@ const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString())
         day={currentServiceDate.toString()}
         alerts={alertsToday}
         routeMap={data.routeMap}
+        hideAuxiliary={true}
         showNightOwl={isCurrentServiceNightOwl}
     />
     {:else}
