@@ -90,7 +90,7 @@
                                 <div class="badge-group">
                                     <MbtaRouteBadge type="auto" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} fullName={getLineName(route_id, attributes)} />
                                     <span class="badge-secondary-symbol" style:color={color} style:opacity={severityAsOpacity}>
-                                        {(routeAlertsCount.get(route_id) || 0) > 1 ? (routeAlertsCount.get(route_id) + 'x') : getAlertBadgeSecondarySymbol(alert, dateString)}
+                                        {(routeAlertsCount.get(route_id) || 0) > 1 ? (routeAlertsCount.get(route_id) + 'x') : getAlertBadgeSecondarySymbol(alert, dateString, currentServiceDate.toString())}
                                     </span>
                                 </div>
                             {/each}
@@ -179,5 +179,8 @@
 }
 .calendar-day.calendar-day--too-many-alerts .badge-secondary-symbol {
     display: none;
+}
+.calendar-day.calendar-day--too-many-alerts .badge-groups {
+    --badge-size: 0.9em;
 }
 </style>
