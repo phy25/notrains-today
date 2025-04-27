@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { mergeAlertInformedEntity } from "$lib/calendar";
-import { getAlertBadgeSecondarySymbol, getEffect, getLineName, getPillName } from "$lib/mbta-display";
+import { getAlertBadgeSecondarySymbol, getAlertBadgeSecondarySymbolForGreenLineGlance, getAlertBadgeSecondarySymbolTime, getEffect, getLineName, getPillName } from "$lib/mbta-display";
 import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
@@ -53,7 +53,12 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
         {:else if filterdAlerts.length > 1}
             <span>⚠️</span>
         {:else}
+            {#if mainRouteId === 'Green'}
+            <span>{getAlertBadgeSecondarySymbolForGreenLineGlance(filterdAlerts[0]) + 
+                getAlertBadgeSecondarySymbolTime(filterdAlerts[0], currentServiceDate.toString(), currentServiceDate.toString())}</span>
+            {:else}
             <span>{getAlertBadgeSecondarySymbol(filterdAlerts[0], currentServiceDate.toString(), currentServiceDate.toString())}</span>
+            {/if}
         {/if}
     </div>
 

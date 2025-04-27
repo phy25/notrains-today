@@ -161,6 +161,15 @@ const getAlertBadgeSecondarySymbolWithoutTime = (alert: MbtaAlert, uniqueRoutes:
         return '•';
     }
 
+    const effectSymbol = getAlertBadgeSecondarySymbolForEffect(alert);
+    if (effectSymbol) {
+        return effectSymbol;
+    }
+
+    return '▣';
+}
+
+const getAlertBadgeSecondarySymbolForEffect = (alert: MbtaAlert) => {
     if (alert.attributes.effect === 'DELAY') {
         return '⧗';
     }
@@ -169,10 +178,10 @@ const getAlertBadgeSecondarySymbolWithoutTime = (alert: MbtaAlert, uniqueRoutes:
         return '🚌︎';
     }
 
-    return '▣';
+    return null;
 }
 
-const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayString: string, currentServiceDayString?: string) => {
+export const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayString: string, currentServiceDayString?: string) => {
     // find the time range we are currently in
     const serviceDay = parseDate(serviceDayString);
 
@@ -363,7 +372,13 @@ const GREEN_LINE_CORE_SEGMENT_STOP_IDS = [
     'place-coecl'
 ];
 
-const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
+/**
+ * We assume this symbol always show up alongside a branch, rather than a single Green.
+ * 
+ * @param alert Green line alert
+ * @returns symbol
+ */
+export const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
     // for now we do a simple check by checking if the alert impacts all stop on a branch rather than some
     // TODO: check stop by stop to determine range intersection
     const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
@@ -407,6 +422,56 @@ const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
     // can't determine branch
     return '•';
 }
+
+/**
+ * Used for Glance where we show all branches of Green line as a single route.
+ * @param alert 
+ */
+export const getAlertBadgeSecondarySymbolForGreenLineGlance = (alert: MbtaAlert) => {
+    const effectSymbol = getAlertBadgeSecondarySymbolForEffect(alert);
+    // if informed entities includes a stop, attempt to determine direction
+    if (alert.attributes.informed_entity.find((entity) => entity.stop)) {
+        const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
+
+        // TODO: Green line is the most complicated one. We build as new alerts surface.
+        const hasGLXDSegment = (
+            GREEN_LINE_GLX_D_SEGMENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+        );
+        const hasGLXESegment = (
+            GREEN_LINE_GLX_E_SEGMENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+        );
+        const hasDESharedSegment = (
+            GREEN_LINE_DE_SHARED_SEGMENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+        );
+        // Core = Copley to Gov Center
+        const hasCoreSegment = (
+            GREEN_LINE_CORE_SEGMENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+        );
+
+        if (hasGLXDSegment && hasGLXESegment && hasDESharedSegment && !hasCoreSegment) {
+            return '▲'; // north of core, D+E
+        }
+        if (hasGLXDSegment && !hasGLXESegment && !hasDESharedSegment && !hasCoreSegment) {
+            return '◤'; // D only
+        }
+        if (hasGLXESegment && !hasGLXDSegment && !hasDESharedSegment && !hasCoreSegment) {
+            // Green line has split branch routes on the same alert. This will show up alongside E.
+            return '◥'; // E only
+        }
+        // TOOD: charles river outage 🦆
+
+        if (effectSymbol) {
+            return effectSymbol;
+        }
+        return '⚠️';
+    }
+    
+    if (effectSymbol) {
+        return effectSymbol;
+    }
+    return '▣';
+}
+
 
 const alertHasAllGreenLineBranches = (alert: MbtaAlert) => {
     if (alert.attributes.informed_entity.every(entity => entity.route && entity.route.startsWith('Green'))) {
