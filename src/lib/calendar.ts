@@ -80,6 +80,32 @@ const expandAlertsToSingleRoute = (alerts: MbtaAlert[]) => {
     });
 }
 
+/**
+ * Used for Glance to merge branch routes to show the correct alert count.
+ * 
+ * @param alerts alerts already split by route
+ * @returns alerts with branch routes merged
+ */
+export const mergeAlertInformedEntity = (alerts: MbtaAlert[]) => {
+    const uniqueAlertIds = alerts
+        .map(alert => alert.id)
+        .filter((value, index, self) => self.indexOf(value) === index);
+    return uniqueAlertIds.map(alertId => {
+        const firstAlert = alerts.find(alert => alert.id === alertId);
+        if (!firstAlert) {
+            return null;
+        }
+        return {
+            ...firstAlert,
+            attributes: {
+                ...firstAlert.attributes,
+                informed_entity: alerts.filter(alert => alert.id === alertId)
+                    .flatMap(alert => alert.attributes.informed_entity)
+            }
+        };
+    }).filter(alert => alert !== null);
+};
+
 export const getAlertsAsDays = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
     const days: Map<string, MbtaAlert[]> = new Map();
     alerts.forEach((alert) => {

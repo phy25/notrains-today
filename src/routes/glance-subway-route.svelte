@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { mergeAlertInformedEntity } from "$lib/calendar";
 import { getAlertBadgeSecondarySymbol, getEffect, getLineName, getPillName } from "$lib/mbta-display";
 import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
@@ -8,9 +9,9 @@ import { DateFormatter } from "@internationalized/date";
 
 
 const { mainRouteId, color, textColor, branchRouteIds = [], unfilteredAlerts, currentServiceDate, noDowntownTransfer, lastTrainTime = undefined, isServiceEnded = false } = $props();
-const filterdAlerts: MbtaAlert[] = $derived(unfilteredAlerts.filter((alert: MbtaAlert) =>
+const filterdAlerts: MbtaAlert[] = $derived(mergeAlertInformedEntity(unfilteredAlerts.filter((alert: MbtaAlert) =>
     alert.attributes.informed_entity.some(entity => entity.route === mainRouteId || branchRouteIds.includes(entity.route))
-));
+)));
 const branchesAlerts = $derived(filterdAlerts.filter((alert: MbtaAlert) =>
     alert.attributes.informed_entity.some(entity => branchRouteIds.includes(entity.route))
 ));
