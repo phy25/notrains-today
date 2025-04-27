@@ -58,7 +58,7 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
     const removeEntryMap: Map<string, OverrideRemoveEntry> = new Map();
     const replaceEntryMap: Map<string, OverrideReplaceEntry> = new Map();
     const removeRouteEntryMap: Map<string, OverrideRemoveRouteEntry> = new Map();
-    const newEntryList: object[] = [];
+    const newEntryList: MbtaAlert[] = [];
 
     data.forEach((override) => {
         if (override.type === 'remove') {
@@ -68,14 +68,14 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
             replaceEntryMap.set(override.match_id, override);
         }
         if (override.type === 'insert' && override.item) {
-            newEntryList.push(override.item);
+            newEntryList.push(override.item as MbtaAlert);
         }
         if (override.type === 'remove-route') {
             removeRouteEntryMap.set(override.match_id, override);
         }
     });
 
-    const newAlerts = alerts
+    const newAlerts: MbtaAlert[] = alerts
         .filter((alert: any) => {
             const removeEntry = removeEntryMap.get(alert.id);
             if (removeEntry) {

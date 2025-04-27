@@ -2,9 +2,9 @@ export const prerender = true;
 export const ssr = false;
 
 import { filterHighPriorityAlerts, overrideAlerts } from '$lib/mbta-overides';
-import { DEFAULT_QUERY_ROUTE_TYPE, MBTA_TIMEZONE, QUERY_ROUTE_TYPE_MAPPING, type MbtaAlert } from '$lib/mbta-types';
+import { DEFAULT_QUERY_ROUTE_TYPE, MBTA_TIMEZONE, QUERY_ROUTE_TYPE_MAPPING, RAPID_TRANSIT_BUS_ROUTES, RAPID_TRANSIT_QUERY_ROUTE_TYPE, type MbtaAlert } from '$lib/mbta-types';
 import type { LayoutLoad } from './$types';
-import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
+import { alertsToRouteRenderingList, getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
 import { now, parseDate, toCalendarDate } from "@internationalized/date";
 import { captureException } from '@sentry/sveltekit';
 
@@ -25,7 +25,7 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
         // not including accessibility and parking alerts for now
         const url = 'https://api-v3.mbta.com/alerts?include=routes&filter%5Bactivity%5D=BOARD,EXIT,RIDE,BRINGING_BIKE&filter%5Broute_type%5D=' + QUERY_ROUTE_TYPE_MAPPING[route_type];
 
-        if (data_async_data && data_async_hash === url && (Date.now() - date_async_lastUpdated) < 1000 * 10) {
+        if (data_async_data && data_async_hash === route_type && (Date.now() - date_async_lastUpdated) < 1000 * 10) {
             // if data is already fetched and not older than 10 seconds, use cached data
             resolve(data_async_data);
             return;
@@ -87,7 +87,21 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
                     }
                 ])
                 .map((route: any) => [route.id, route]));
-            const overridenData = overrideAlerts(json.data || []);
+            const overridenData = (() => {
+                const alerts = overrideAlerts(json.data || []);
+                if (route_type !== RAPID_TRANSIT_QUERY_ROUTE_TYPE) {
+                    return alerts;
+                }
+                return alerts.filter(alert => {
+                    if (alert.attributes.informed_entity.length === 0) {
+                        return true;
+                    }
+                    if (alert.attributes.informed_entity[0].route_type !== 3) {
+                        return true;
+                    }
+                    return alert.attributes.informed_entity.some((entity: any) => RAPID_TRANSIT_BUS_ROUTES.includes(entity.route));
+                });
+            })();
             const alertsByDay = getAlertsAsDays(filterHighPriorityAlerts(overridenData), routeMap);
             data_async_data = {
                 data: filterHighPriorityAlerts(overridenData),
@@ -95,7 +109,7 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
                 routeMap,
                 lastUpdated,
             };
-            data_async_hash = url;
+            data_async_hash = route_type;
             date_async_lastUpdated = Date.now();
             resolve(data_async_data);
         } catch (err) {

@@ -33,9 +33,14 @@ export interface MbtaAlert {
     type: string;
 }
 
+export const RAPID_TRANSIT_QUERY_ROUTE_TYPE = 'rapid-transit';
+// https://github.com/mbta/dotcom/blob/78599a3b9c590675bfb35beb8324fb5bea125abc/lib/routes/route.ex#L92
+export const RAPID_TRANSIT_BUS_ROUTES = ['741', '742', '743', '746', '749', '751'];
+
 export const QUERY_ROUTE_TYPE_MAPPING: Record<string, string> = {
     'trains': '0,1,2',
     'subway': '0,1',
+    [RAPID_TRANSIT_QUERY_ROUTE_TYPE]: '0,1,3',
     'bus': '3',
     'commuter-rail': '2',
     'ferry': '4',
