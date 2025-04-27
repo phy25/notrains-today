@@ -73,7 +73,7 @@
 	<div class="tab-content">
 		{#if isDebug()}
 			<a class="header-text notranslate" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>
-				<h1>notrains.today{tab_id !== 'today' ? '?' : ''}</h1>
+				<h1>notrains.today{#if tab_id !== 'today'}?{:else}{#await alerts_today_route_list}?{:then list}{#if list.length == 0}?{/if}{/await}{/if}</h1>
 			</a>
 		{:else}
 		<div class="tab">
