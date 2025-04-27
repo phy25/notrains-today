@@ -40,10 +40,10 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
 <div class="subway-route">
     <div class="badge-group">
         <MbtaRouteBadge pillLabel={getPillName(mainRouteId, {})} type="long" color={color} textColor={textColor} fullName={getLineName(mainRouteId)}></MbtaRouteBadge>
-        {#if filterdAlerts.length == 0}
-            {#if isServiceEnded}
-                <span>💤︎</span>
-            {:else if noDowntownTransfer}
+        {#if isServiceEnded}
+            <span>💤︎</span>
+        {:else if filterdAlerts.length == 0}
+            {#if noDowntownTransfer}
                 <span>🌙︎</span>
             {:else}
                 <span>✅</span>
@@ -62,9 +62,11 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
         {/if}
     </div>
 
-    {#if filterdAlerts.length == 0}
+    {#if isServiceEnded && lastTrainFormatted}
+        <div class="has-alert-text">{m.glanceLastTrainTime({time: lastTrainFormatted})}</div>
+    {:else if filterdAlerts.length == 0}
         {#if lastTrainFormatted}
-            <div class={isServiceEnded ? 'has-alert-text' : 'no-alert-text'}>{m.glanceLastTrainTime({time: lastTrainFormatted})}</div>
+            <div class="no-alert-text">{m.glanceLastTrainTime({time: lastTrainFormatted})}</div>
         {:else}
             <div class="no-alert-text">{m.noAlert()}</div>
         {/if}
