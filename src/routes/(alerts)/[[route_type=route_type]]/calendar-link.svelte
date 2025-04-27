@@ -45,7 +45,7 @@ const linkHref = $derived(resolveRoute(type === 'today' ? '/[[route_type]]' : '/
             {#if type === 'today'}
                 {m.alertsToday()}    
             {:else}
-                {m.alertsCalendar()}
+                📅 {m.alertsCalendar()}
             {/if}
         </div>
         <div class="link-summary">

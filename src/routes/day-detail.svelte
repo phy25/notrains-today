@@ -17,7 +17,11 @@ const { day, alerts, showNightOwl, routeMap, hideAuxiliary = false }: {
 } = $props();
 
 const dayObject = $derived(parseDate(day));
-const dateFormatter = new DateFormatter(getLocale());
+const dateFormatter = new DateFormatter(getLocale(), {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+});
 const currentTime = new Date();
 const currentServiceDate = new Date(currentTime);
 if (showNightOwl) {
