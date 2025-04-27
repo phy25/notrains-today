@@ -88,6 +88,16 @@ export const getAlertsAsDays = (alerts: MbtaAlert[], routeMap: Map<string, any>)
     // sort alerts
     days.forEach((alerts, _) => {
         alerts.sort((a, b) => {
+            // sort by route type (0 first), unless it is a banner alert
+            // (commuter rails usually abuses severity so it was outranking other alerts)
+            const routeTypeDiff = a.attributes.informed_entity[0].route_type - b.attributes.informed_entity[0].route_type;
+            const bannerDiff = (b.attributes.banner ? 1 : 0) - (a.attributes.banner ? 1 : 0);
+            if (bannerDiff !== 0) {
+                return bannerDiff;
+            }
+            if (routeTypeDiff !== 0) {
+                return routeTypeDiff;
+            }
             if (hasShortTermImpact(a) && !hasShortTermImpact(b)) {
                 return -1;
             }
