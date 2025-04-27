@@ -1,6 +1,7 @@
 import { m } from '$lib/paraglide/messages';
-import { parseDate, parseZonedDateTime, toCalendarDate } from "@internationalized/date";
+import { now, parseDate, parseZonedDateTime, toCalendarDate } from "@internationalized/date";
 import { MBTA_TIMEZONE, type MbtaAlert } from './mbta-types';
+import { MBTA_SERVICE_START_HOUR } from './calendar';
 
 export const EFFECT_MESSAGES = {
     'CANCELLATION': m['mbtaAlertEffectCancellation'],
@@ -113,7 +114,7 @@ export const getPillName = (route_id: string, route_attributes: any) => {
     return route_attributes?.short_name || route_attributes?.long_name || route_id;
 }
 
-export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString: string) => {
+export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString: string, currentServiceDayString?: string) => {
     const uniqueRoutes = alert.attributes.informed_entity
         .map((entity) => entity.route)
         .filter((route, index, arr) => route && arr.indexOf(route) === index);
@@ -121,66 +122,79 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString:
     if (uniqueRoutes.length > 1 && !isSplitBranchRouteAlert(alert)) {
         return '…';
     }
+    return getAlertBadgeSecondarySymbolWithoutTime(alert, uniqueRoutes)
+         + getAlertBadgeSecondarySymbolTime(alert, serviceDayString, currentServiceDayString);
+}
 
+const getAlertBadgeSecondarySymbolWithoutTime = (alert: MbtaAlert, uniqueRoutes: string[]) => {
     // if informed entities includes a stop, attempt to determine direction
     if (alert.attributes.informed_entity.find((entity) => entity.stop)) {
         // red line alerts do not have branch information through route_pattern, determine branch
         if (uniqueRoutes[0] === 'Red') {
-            return getAlertBadgeSecondarySymbolForRedLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+            return getAlertBadgeSecondarySymbolForRedLine(alert);
         }
         if (uniqueRoutes[0] === 'Orange') {
-            return getAlertBadgeSecondarySymbolForOrangeLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+            return getAlertBadgeSecondarySymbolForOrangeLine(alert);
         }
         if (uniqueRoutes[0] === 'Blue') {
-            return getAlertBadgeSecondarySymbolForBlueLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+            return getAlertBadgeSecondarySymbolForBlueLine(alert);
         }
         if (uniqueRoutes[0].startsWith('Green')) {
-            return getAlertBadgeSecondarySymbolForGreenLine(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+            return getAlertBadgeSecondarySymbolForGreenLine(alert);
         }
         if (uniqueRoutes[0].startsWith('CR-')) {
-            return getAlertBadgeSecondarySymbolForCommuterRail(alert) + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+            return getAlertBadgeSecondarySymbolForCommuterRail(alert);
         }
 
         // detour impacting multiple stops, show detour symbol
         if (alert.attributes.informed_entity.every(entity => entity.stop) && alert.attributes.informed_entity.length > 1) {
             if (alert.attributes.effect === 'DETOUR') {
-                return '🚧︎' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+                return '🚧︎';
             }
         }
 
         if (alert.attributes.effect === 'STOP_CLOSURE') {
-            return '↷' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+            return '↷';
         }
 
         // TODO: determine direction for general cases
-        return '•' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+        return '•';
     }
 
     if (alert.attributes.effect === 'DELAY') {
-        return '⧗' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+        return '⧗';
     }
 
     if (alert.attributes.effect === 'SHUTTLE') {
-        return '🚌︎' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+        return '🚌︎';
     }
 
-    return '▣' + getAlertBadgeSecondarySymbolTime(alert, serviceDayString);
+    return '▣';
 }
 
-export const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayString: string) => {
+const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayString: string, currentServiceDayString?: string) => {
     // find the time range we are currently in
     const serviceDay = parseDate(serviceDayString);
 
-    const periodStartingAtCurrentDay = alert.attributes.active_period.filter((period => {
+    const periodStartingAtCurrentDay = alert.attributes.active_period.map((period => {
         const startTime = parseZonedDateTime(period.start + '[' + MBTA_TIMEZONE + ']');
         const endTime = parseZonedDateTime(period.end + '[' + MBTA_TIMEZONE + ']');
-        return toCalendarDate(startTime).compare(serviceDay) == 0 && serviceDay.compare(toCalendarDate(endTime)) <= 0;
-    }));
+        if (toCalendarDate(startTime).compare(serviceDay) == 0 && serviceDay.compare(toCalendarDate(endTime)) <= 0) {
+            return {
+                start: startTime,
+                end: endTime,
+            };
+        } else {
+            return null;
+        }
+    })).filter(period => period !== null);
     if (periodStartingAtCurrentDay.length === 0) {
         return '';
     }
-    const currentPeriodStart = new Date(periodStartingAtCurrentDay[0].start);
-    if (currentPeriodStart.getHours() > 17) {
+    // do not show night symbol if we are already at night and this alert is for today
+    const currentPeriodIsAtNight = periodStartingAtCurrentDay[0].start.hour > 17 || periodStartingAtCurrentDay[0].start.hour < MBTA_SERVICE_START_HOUR;
+    const currentPeriodIsThisServiceDay = serviceDayString === currentServiceDayString;
+    if (currentPeriodIsAtNight && !currentPeriodIsThisServiceDay) {
         return '🌙︎';
     }
     return '';

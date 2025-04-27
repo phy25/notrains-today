@@ -67,7 +67,7 @@
                                 {:else}
                                     {#each thisAlerts as alert}
                                     <span class="badge-secondary-symbol" style:color={route.attributes?.color ? ('#' + route.attributes?.color) : 'inherit'}>
-                                        {getAlertBadgeSecondarySymbol(alert, currentServiceDate.toString())}
+                                        {getAlertBadgeSecondarySymbol(alert, currentServiceDate.toString(), currentServiceDate.toString())}
                                     </span>
                                     {/each}
                                 {/if}

@@ -52,7 +52,7 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
         {:else if filterdAlerts.length > 1}
             <span>⚠️</span>
         {:else}
-            <span>{getAlertBadgeSecondarySymbol(filterdAlerts[0], currentServiceDate.toString())}</span>
+            <span>{getAlertBadgeSecondarySymbol(filterdAlerts[0], currentServiceDate.toString(), currentServiceDate.toString())}</span>
         {/if}
     </div>
 
