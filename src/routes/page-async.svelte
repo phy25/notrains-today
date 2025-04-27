@@ -8,6 +8,8 @@ import DebugAllAlerts from "./debug-all-alerts.svelte";
 import Glance from "./glance.svelte";
 import { getProcessedAlertsAsSingleRoute, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
 import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
+import CalendarLink from "./(alerts)/[[route_type=route_type]]/calendar-link.svelte";
+	import { isDebug } from "$lib/common";
 
 const { data, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeType }: {
     data: {
@@ -52,6 +54,10 @@ const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString())
     routeMap={data.routeMap}
     routeType={routeType}
 />
+
+{#if isDebug()}
+<CalendarLink type="calendar" alertsByDay={data.alertsByDay} routeMap={data.routeMap} {currentServiceDate} />
+{/if}
 
 {#if alertsToday}
 <DayDetail

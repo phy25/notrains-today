@@ -7,6 +7,8 @@ import type { Snapshot } from '@sveltejs/kit';
 import { parseDate, type DateValue } from '@internationalized/date';
 import { page } from '$app/state';
 	import DebugAllAlerts from '../../../debug-all-alerts.svelte';
+	import { isDebug } from '$lib/common';
+	import CalendarLink from '../calendar-link.svelte';
 
 const { data }: PageProps = $props();
 
@@ -51,6 +53,10 @@ export const snapshot: Snapshot<string> = {
 <svelte:head>
   <title>notrains.today {m.calendar()}</title>
 </svelte:head>
+
+{#if isDebug()}
+<CalendarLink type="today" alertsByDay={data.alertsByDay} routeMap={data.routeMap} currentServiceDate={data.current_service_date} />
+{/if}
 
 {#if data.data.length > 0}
     <Calendar
