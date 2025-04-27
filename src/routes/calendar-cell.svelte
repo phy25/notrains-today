@@ -16,9 +16,10 @@
         routeMap: Map<string, any>;
         currentServiceDate: DateValue;
         linkToCalendar?: boolean;
+        alwaysShowSecondarySymbol?: boolean;
     };
 
-    const {date, month, weekday, alertsByDay, routeMap, currentServiceDate, linkToCalendar = false}: CalendarCellProps = $props();
+    const {date, month, weekday, alertsByDay, routeMap, currentServiceDate, linkToCalendar = false, alwaysShowSecondarySymbol = false}: CalendarCellProps = $props();
     const dateString = $derived(date.toString());
     const alerts: MbtaAlert[] = $derived.by(() => {
         if (alertsByDay.has(dateString) && currentServiceDate.toString() <= dateString) {
@@ -69,7 +70,7 @@
                 {#snippet child({ props })}
                     <a
                         {...props}
-                        class="calendar-day {routeAlertsCount.size > 5 ? 'calendar-day--many-alerts' : ''} {routeAlertsCount.size > 10 ? 'calendar-day--too-many-alerts' : ''}"
+                        class="calendar-day {routeAlertsCount.size > 5 && !alwaysShowSecondarySymbol ? 'calendar-day--many-alerts' : ''} {routeAlertsCount.size > 10 && !alwaysShowSecondarySymbol ? 'calendar-day--too-many-alerts' : ''}"
                         href={(linkToCalendar && props['data-disabled'] !== '') ? `${calendarPath}#date=${dateString}` : undefined}
                         role="button"
                     >
@@ -147,7 +148,7 @@
 .calendar-day .weekday {
     font-style: italic;
 }
-@media (max-width: 30rem) {
+@media (max-width: 21rem) {
     .calendar-day .weekday {
         display: none;
     }

@@ -160,7 +160,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
     minValue={currentServiceDate}
     maxValue={maxValue}
     onValueChange={onStickyWeekValueChange}
-    weekdayFormat="short"
+    weekdayFormat="narrow"
     alertsByDay={alertsByDay}
     routeMap={routeMap}
     currentServiceDate={currentServiceDate}

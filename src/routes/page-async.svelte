@@ -79,12 +79,14 @@ const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString())
         minValue={currentServiceDate}
         maxValue={currentServiceDate.add({ weeks: 1 })}
         weekStartsOn={getDayOfWeek(currentServiceDate, getLocale())}
-        weekdayFormat="short"
+        weekdayFormat="narrow"
         alertsByDay={data.alertsByDay}
         routeMap={data.routeMap}
         currentServiceDate={currentServiceDate}
         locale={getLocale()}
-        linkToCalendar={true} />
+        linkToCalendar={true}
+        alwaysShowSecondarySymbol={true}
+        />
 </div>
 
 {#if isCurrentServiceNightOwl}

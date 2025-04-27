@@ -14,6 +14,7 @@ let {
     currentServiceDate,
     routeMap,
     linkToCalendar = false,
+    alwaysShowSecondarySymbol = false,
 } = $props();
 </script>
 
@@ -30,9 +31,6 @@ let {
     preventDeselect={true}
 >
     {#snippet children({ months, weekdays })}
-    <div
-        class="flex flex-col space-y-4 pt-4 sm:flex-row sm:space-x-4 sm:space-y-0"
-    >
         {#each months as month, i (i)}
         <Calendar.Grid class="w-full border-collapse select-none space-y-1">
             <Calendar.GridBody>
@@ -42,7 +40,7 @@ let {
                     {#snippet child({ props })}
                     <tr {...props} class="calendar-row">
                         {#each weekDates as date, weekday_i}
-                        <CalendarCell {date} {month} {alertsByDay} {currentServiceDate} {routeMap} linkToCalendar={linkToCalendar} weekday={weekdayFormat ? weekdays[weekday_i] : undefined}></CalendarCell>
+                        <CalendarCell {date} {month} {alertsByDay} {currentServiceDate} {routeMap} {alwaysShowSecondarySymbol} linkToCalendar={linkToCalendar} weekday={weekdayFormat ? weekdays[weekday_i] : undefined}></CalendarCell>
                         {/each}
                     </tr>
                     {/snippet}
@@ -52,7 +50,6 @@ let {
             </Calendar.GridBody>
         </Calendar.Grid>
         {/each}
-    </div>
     {/snippet}
 </Calendar.Root>
 
