@@ -20,8 +20,8 @@
         routeType: string
     } = $props();
     const expandedAlerts: MbtaAlert[] = $derived(alertsToday);
-    const commuterRailAlertsByEffects = $derived(getAlertsMapByEffect(
-        expandedAlerts.filter(alert => alert.attributes.informed_entity.some(entity => entity.route_type === 2))));
+    const nonSubwayAlertsByEffects = $derived(getAlertsMapByEffect(
+        expandedAlerts.filter(alert => alert.attributes.informed_entity.some(entity => entity.route_type !== 0 && entity.route_type !== 1))));
     
     const nowTime = toTime(now(MBTA_TIMEZONE));
     const noDowntownTransfer = $derived(isCurrentServiceNightOwl && MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME.compare(nowTime) <= 0);
@@ -49,9 +49,9 @@
         <GlanceSubwayRoute mainRouteId="Blue" color="#003da5" textColor="#FFF" unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Blue')} isServiceEnded={serviceEndedData.get('Blue')} {currentServiceDate} {noDowntownTransfer} />
     </div>
     {/if}
-    {#if routeType === 'commuter-rail' || routeType === 'trains' }
+    {#if routeType !== 'subway' }
     <div class="route-expanded route-expanded-first">
-        {#each commuterRailAlertsByEffects as [effect, alerts]}
+        {#each nonSubwayAlertsByEffects as [effect, alerts]}
             <div class="effect-item">
                 <div class="has-alert-text">{getEffect(effect)}</div>
                 <div class="badge-groups">
@@ -59,18 +59,16 @@
                         {@const thisAlerts = alerts.filter(alert => alert.attributes.informed_entity.every(entity => entity.route == route.route_id))}
                         <div class="badge-group">
                             <MbtaRouteBadgeCompound type="long" routeId={route.route_id} routeAttributes={route.attributes} />
-                            {#if isDebug()}
-                                {#if thisAlerts.length > 2}
+                            {#if thisAlerts.length > 2}
+                            <span class="badge-secondary-symbol" style:color={route.attributes?.color ? ('#' + route.attributes?.color) : 'inherit'}>
+                                {thisAlerts.length}x
+                            </span>
+                            {:else}
+                                {#each thisAlerts as alert}
                                 <span class="badge-secondary-symbol" style:color={route.attributes?.color ? ('#' + route.attributes?.color) : 'inherit'}>
-                                    {thisAlerts.length}x
+                                    {getAlertBadgeSecondarySymbol(alert, currentServiceDate.toString(), currentServiceDate.toString())}
                                 </span>
-                                {:else}
-                                    {#each thisAlerts as alert}
-                                    <span class="badge-secondary-symbol" style:color={route.attributes?.color ? ('#' + route.attributes?.color) : 'inherit'}>
-                                        {getAlertBadgeSecondarySymbol(alert, currentServiceDate.toString(), currentServiceDate.toString())}
-                                    </span>
-                                    {/each}
-                                {/if}
+                                {/each}
                             {/if}
                         </div>
                     {/each}
