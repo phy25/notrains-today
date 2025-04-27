@@ -10,7 +10,7 @@ import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
 
 const { day, alerts, showNightOwl, routeMap, hideAuxiliary = false }: {
     day: string;
-    alerts: MbtaAlert[];
+    alerts?: MbtaAlert[];
     showNightOwl: boolean;
     routeMap: Map<string, any>;
     hideAuxiliary?: boolean;
@@ -29,7 +29,7 @@ if (showNightOwl) {
 <h2>{dateFormatter.format(dayObject.toDate(MBTA_TIMEZONE))}{#if showNightOwl && day == getDateString(currentServiceDate)}<small>{m.toServiceEndingNightOwl({hour: MBTA_SERVICE_START_HOUR})}</small>{/if}</h2>
 {/if}
 
-{#each alerts as alert}
+{#each alerts || [] as alert}
     {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
     {@const unique_routes = alert.attributes.informed_entity.map(entity => entity.route).filter((value, index, self) => self.indexOf(value) === index).sort((a, b) => a.localeCompare(b))}
     {@const descriptionArr = alert.attributes?.description?.split(/\r?\n/g) || []}

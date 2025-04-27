@@ -4,11 +4,19 @@ import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 import DayDetail from "./day-detail.svelte";
 import { Calendar } from "bits-ui";
-import { endOfMonth, parseDate, type DateValue } from "@internationalized/date";
+import { endOfWeek, endOfMonth, parseDate, type DateValue } from "@internationalized/date";
 import CalendarCell from "./calendar-cell.svelte";
 import CalendarOneweek from "./calendar-oneweek.svelte";
+	import type { MbtaAlert } from "$lib/mbta-types";
 
-let { dayValue = $bindable(), alerts = [], alertsByDay: _alertsByDay = null, routeMap, currentServiceDate, showNightOwl } = $props();
+let { dayValue = $bindable(), alerts = [], alertsByDay: _alertsByDay = undefined, routeMap, currentServiceDate, showNightOwl } : {
+  dayValue: DateValue,
+  alerts?: MbtaAlert[],
+  alertsByDay?: Map<string, MbtaAlert[]>,
+  routeMap: any,
+  currentServiceDate: DateValue,
+  showNightOwl: boolean
+} = $props();
 const alertsByDay = $derived(_alertsByDay || getAlertsAsDays(alerts, routeMap));
 
 const maxValue = $derived.by(() => {
@@ -25,6 +33,10 @@ let stickyWeekDom: HTMLDivElement;
 let mainCalendarEndY: number = $state(-1);
 let stickyCalendarStartY: number = $state(-1);
 let stickyWeekShowing = $state(false);
+// do not show sticky week if today is the last day in the week
+// (where sticky week is not clickable)
+let shouldHideStickWeek = $derived(
+  dayValue.compare(currentServiceDate) === 0 && dayValue.compare(endOfWeek(dayValue, getLocale())) === 0);
 
 $effect(() => {
   dayValue; // re-run when dayValue changes
@@ -52,7 +64,7 @@ const onResize = () => {
 };
 
 const onWindowScroll = () => {
-  stickyWeekShowing = window.scrollY >= stickyCalendarStartY && stickyWeekDom.offsetHeight < window.innerHeight * 0.5;
+  stickyWeekShowing = !shouldHideStickWeek && window.scrollY >= stickyCalendarStartY && stickyWeekDom.offsetHeight < window.innerHeight * 0.5;
 };
 
 export const scrollToDayDetail = () => {
