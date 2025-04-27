@@ -8,6 +8,8 @@ import { endOfWeek, endOfMonth, parseDate, type DateValue } from "@international
 import CalendarCell from "./calendar-cell.svelte";
 import CalendarOneweek from "./calendar-oneweek.svelte";
 	import type { MbtaAlert } from "$lib/mbta-types";
+	import { resolveRoute } from "$app/paths";
+	import { page } from "$app/state";
 
 let { dayValue = $bindable(), alerts = [], alertsByDay: _alertsByDay = undefined, routeMap, currentServiceDate, showNightOwl } : {
   dayValue: DateValue,
@@ -100,7 +102,11 @@ const onStickyWeekValueChange = (value?: DateValue) => {
         <div {...props} class="calendar-header">
           <Calendar.PrevButton>
             {#snippet child({ props })}
+            {#if props.disabled}
+              <a class="calendar-header-btn" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>⭘</a>
+            {:else}
               <button {...props} class="calendar-header-btn">◀</button>
+            {/if}
             {/snippet}
           </Calendar.PrevButton>
           <Calendar.Heading>
@@ -173,11 +179,13 @@ const onStickyWeekValueChange = (value?: DateValue) => {
 .calendar-header {
   display: flex;
   flex-direction: row;
+  height: 3em;
 }
 .calendar-heading {
   text-align: center;
   margin: 0.5em 0;
   font-size: 1.1em;
+  line-height: 1.8em;
   color: var(--color-accent);
   flex: 1;
 }
@@ -192,8 +200,11 @@ const onStickyWeekValueChange = (value?: DateValue) => {
   border-radius: 0.25em;
   transition: background-color 0.2s ease;
   margin: 0.3em 0;
-  min-height: 32px;
-  min-width: 32px;
+  min-height: 36px;
+  min-width: 36px;
+  box-sizing: border-box;
+  text-decoration: none;
+  text-align: center;
 }
 .calendar-header-btn:hover, .calendar-header-btn:focus {
   background: #CCC;
