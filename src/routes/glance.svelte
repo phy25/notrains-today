@@ -63,7 +63,7 @@
                             <span class="badge-secondary-symbol" style:color={route.attributes?.color ? ('#' + route.attributes?.color) : 'inherit'}>
                                 {thisAlerts.length}x
                             </span>
-                            {:else}
+                            {:else if route.attributes?.type === 2}
                                 {#each thisAlerts as alert}
                                 <span class="badge-secondary-symbol" style:color={route.attributes?.color ? ('#' + route.attributes?.color) : 'inherit'}>
                                     {getAlertBadgeSecondarySymbol(alert, currentServiceDate.toString(), currentServiceDate.toString())}
