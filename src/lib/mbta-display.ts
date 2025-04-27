@@ -118,7 +118,7 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString:
         .map((entity) => entity.route)
         .filter((route, index, arr) => route && arr.indexOf(route) === index);
     // if informed entities includes multiple lines, do not proceed and return a generic symbol
-    if (uniqueRoutes.length > 1) {
+    if (uniqueRoutes.length > 1 && !isSplitBranchRouteAlert(alert)) {
         return '…';
     }
 
@@ -407,6 +407,10 @@ const alertHasAllGreenLineBranches = (alert: MbtaAlert) => {
     return false;
 }
 
+const alertIsSplitBranchRoute = (alert: MbtaAlert) => {
+    return alert.attributes.informed_entity.every(entity => entity.route && entity.route.startsWith('Green'));
+}
+
 /**
  * Merge alerts that affect all branches of a line without a specific station impact.
  * Green line and red line have inconsistent treatments even though they both have branches.
@@ -415,7 +419,7 @@ const alertHasAllGreenLineBranches = (alert: MbtaAlert) => {
  * Right now we leave them as is. Red will be a unified route. Green will be separate routes.
  */
 export const isSplitBranchRouteAlert = (alert: MbtaAlert) => {
-    return alertHasAllGreenLineBranches(alert);
+    return alertHasAllGreenLineBranches(alert) || alertIsSplitBranchRoute(alert);
 }
 
 export const mergeSplitBranchRouteAlerts = (alerts: MbtaAlert[]) => {
