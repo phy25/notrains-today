@@ -20,6 +20,7 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
         data: MbtaAlert[];
         alertsByDay: ReturnType<typeof getAlertsAsDays>;
         routeMap: Map<string, any>;
+        lastUpdated: string;
     }>(async (resolve, reject) => {
         // not including accessibility and parking alerts for now
         const url = 'https://api-v3.mbta.com/alerts?include=routes&filter%5Bactivity%5D=BOARD,EXIT,RIDE,BRINGING_BIKE&filter%5Broute_type%5D=' + QUERY_ROUTE_TYPE_MAPPING[route_type];

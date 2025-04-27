@@ -2,7 +2,7 @@
 	import { Calendar } from "bits-ui";
     import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
     import { getAlertBadgeSecondarySymbol, getLineName, getPillName } from "$lib/mbta-display";
-	import { DEFAULT_QUERY_ROUTE_TYPE, type MbtaAlert } from "$lib/mbta-types";
+	import { type MbtaAlert } from "$lib/mbta-types";
     import type { DateValue } from "@internationalized/date";
 	import { getProcessedAlertsAsSingleRoute } from "$lib/calendar";
 	import { page } from "$app/state";
