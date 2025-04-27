@@ -36,7 +36,10 @@ const routesList = $derived.by(() => {
 const linkHref = $derived(resolveRoute(type === 'today' ? '/[[route_type]]' : '/[[route_type]]/calendar', { route_type: page.params.route_type }));
 </script>
 
-<a href={linkHref}>
+<a href={linkHref} title={type === 'today' ? m.alertsToday() : m.alertsCalendar()}>
+    {#if type !== 'today'}
+        <div class="link-icon">›</div>
+    {/if}
     {#if type === 'today'}
         <div class="link-icon">‹</div>
     {/if}    
