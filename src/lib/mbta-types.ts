@@ -38,6 +38,7 @@ export const RAPID_TRANSIT_QUERY_ROUTE_TYPE = 'rapid-transit';
 export const RAPID_TRANSIT_BUS_ROUTES = ['741', '742', '743', '746', '749', '751'];
 
 export const QUERY_ROUTE_TYPE_MAPPING: Record<string, string> = {
+    'mbta': '0,1,2,3,4',
     'trains': '0,1,2',
     'subway': '0,1',
     [RAPID_TRANSIT_QUERY_ROUTE_TYPE]: '0,1,3',
@@ -45,6 +46,13 @@ export const QUERY_ROUTE_TYPE_MAPPING: Record<string, string> = {
     'commuter-rail': '2',
     'ferry': '4',
 };
+
+export const QUERY_ROUTE_TYPE_WITH_SUBWAY = [
+    'mbta',
+    'trains',
+    'subway',
+    RAPID_TRANSIT_QUERY_ROUTE_TYPE,
+];
 
 export const DEFAULT_QUERY_ROUTE_TYPE = 'trains';
 

@@ -4,7 +4,7 @@
 	import { m } from "$lib/paraglide/messages";
     import { now, toCalendarDateTime, toTime, type AnyCalendarDate } from "@internationalized/date";
 	import GlanceSubwayRoute from "./glance-subway-route.svelte";
-	import { MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME, MBTA_TIMEZONE, RAPID_TRANSIT_QUERY_ROUTE_TYPE, type MbtaAlert } from "$lib/mbta-types";
+	import { MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME, MBTA_TIMEZONE, QUERY_ROUTE_TYPE_WITH_SUBWAY, RAPID_TRANSIT_QUERY_ROUTE_TYPE, type MbtaAlert } from "$lib/mbta-types";
 	import { getLocale } from "$lib/paraglide/runtime";
 	import { alertsToRouteRenderingList, getAlertsMapByEffect } from "$lib/calendar";
 	import { getAlertBadgeSecondarySymbol, getEffect } from "$lib/mbta-display";
@@ -35,7 +35,7 @@
 </script>
 
 <div class="glance-rapid-transit-grid">
-    {#if routeType === 'subway' || routeType === 'trains' || routeType === RAPID_TRANSIT_QUERY_ROUTE_TYPE }
+    {#if QUERY_ROUTE_TYPE_WITH_SUBWAY.includes(routeType) }
     <div class="route-with-branches">
         <GlanceSubwayRoute mainRouteId="Green" color="#00843d" textColor="#FFF" branchRouteIds={["Green-B", "Green-C", "Green-D", "Green-E"]} unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Green')} isServiceEnded={serviceEndedData.get('Green')} {currentServiceDate} {noDowntownTransfer} />
     </div>
