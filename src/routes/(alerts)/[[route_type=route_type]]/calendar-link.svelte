@@ -93,7 +93,7 @@ a:hover, a:focus {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.4em 1em;
+    gap: 0.4em 0.6em;
     flex: 1;
 }
 .link-heading {
