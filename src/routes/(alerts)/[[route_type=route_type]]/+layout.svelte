@@ -69,8 +69,13 @@
   <title>notrains.today</title>
 </svelte:head>
 
-<div class="tab-wrapper {isDebug() ? 'debug' : ''}">
+<header class="tab-wrapper {isDebug() ? 'debug' : ''}">
 	<div class="tab-content">
+		{#if isDebug()}
+			<a class="header-text notranslate" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>
+				<h1>notrains.today{tab_id !== 'today' ? '?' : ''}</h1>
+			</a>
+		{:else}
 		<div class="tab">
 			<a class="tab-item {tab_id === 'today' && 'selected'}" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>
 				<div class="tab-item-heading notranslate">
@@ -109,12 +114,16 @@
 				</div>
 			</a>
 		</div>
+		{/if}
 		{#if isDebug()}
-			<div class="tab-side-btn"><a href={resolveRoute(page.route.id || '/bus', { route_type: 'bus' })}>
-				<span>🚇</span><span>🚂</span></a></div>
+			<div class="tab-side-btn">
+				<a href={resolveRoute(page.route.id || '/bus', { route_type: 'bus' })}>
+					<span>🚇 🚂</span>
+				</a>
+			</div>
 		{/if}
 	</div>
-</div>
+</header>
 
 <div class="page-content">
 	{@render children()}
@@ -154,7 +163,7 @@
 
 <style>
 .tab-wrapper {
-    background: var(--background-color);
+    background: linear-gradient(45deg, #195581, #2580C1) var(--background-color);
     --background-color: #195581;
     color: #FFF;
     padding: 0.4em;
@@ -162,14 +171,53 @@
     justify-content: center;
 	min-width: var(--page-content-min-width);
 }
+.tab-item:first-child{
+	--background-color: #195581;
+}
+.tab-item:last-child{
+	--background-color: #2580C1;
+}
+a {
+    color: inherit;
+}
+@media (max-width: 21rem) {
+    .tab-wrapper {
+        padding: 0.4em 0.2em;
+    }
+}
 .tab-wrapper.debug {
 	background-image: repeating-linear-gradient(
 		-45deg,
 		#2580C1,
 		#2580C1 10px,
-		transparent 10px,
-		transparent 2.5rem
+		#195581 10px,
+		#195581 2.5rem
 	);
+	padding: 0;
+}
+.tab-content {
+	display: flex;
+    width: 100%;
+    max-width: var(--page-content-max-width);
+	box-sizing: border-box;
+	align-items: stretch;
+}
+.tab-wrapper.debug .tab-content {
+	min-height: 3em;
+}
+.header-text {
+	flex: 1;	
+	padding: 0.3em 0.5em;
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	gap: 0 0.5em;
+	flex-wrap: wrap;
+}
+.header-text h1 {
+	font-weight: bold;
+	font-size: 1.2em;
+	margin: 0;
 }
 .tab-side-btn {
 	display: flex;
@@ -185,17 +233,6 @@
 	min-width: 48px;
 	box-sizing: border-box;
 	text-decoration: none;
-}
-@media (max-width: 21rem) {
-    .tab-wrapper {
-        padding: 0.4em 0.2em;
-    }
-}
-.tab-content {
-	display: flex;
-    width: 100%;
-    max-width: var(--page-content-max-width);
-	box-sizing: border-box;
 }
 .tab {
     display: flex;
@@ -216,7 +253,6 @@
     cursor: pointer;
     border-radius: 0.3em;
     text-decoration: none;
-    color: inherit;
 	transition: background-color 0.2s ease;
 }
 .tab-item:hover, .tab-item:focus {
