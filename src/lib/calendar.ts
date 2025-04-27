@@ -56,7 +56,7 @@ export const getProcessedAlertsAsSingleRoute = (alerts: MbtaAlert[]) => {
         expandAlertsToSingleRoute(alerts.filter(alert => !isSplitBranchRouteAlert(alert))));
 }
 
-export const expandAlertsToSingleRoute = (alerts: MbtaAlert[]) => {
+const expandAlertsToSingleRoute = (alerts: MbtaAlert[]) => {
     return alerts.flatMap(alert => {
         // generate a list of unique routes
         const uniqueRoutes = alert.attributes.informed_entity
@@ -130,7 +130,8 @@ export const getDateString = (date: Date) => {
 };
 
 export const alertsToRouteRenderingList = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
-    return alerts?.flatMap(alert => alert.attributes.informed_entity)
+    return alerts?.flatMap(alert => 
+        alert.attributes.informed_entity.sort((a, b) => (a.route_type - b.route_type) || a.route.localeCompare(b.route)))
         ?.map(entity => entity.route)
         ?.filter((value, index, self) => self.indexOf(value) === index)
         ?.map(route_id => {
