@@ -177,9 +177,6 @@
 .tab-item:last-child{
 	--background-color: #2580C1;
 }
-a {
-    color: inherit;
-}
 @media (max-width: 21rem) {
     .tab-wrapper {
         padding: 0.4em 0.2em;
@@ -213,6 +210,7 @@ a {
 	text-decoration: none;
 	gap: 0 0.5em;
 	flex-wrap: wrap;
+	color: inherit;
 }
 .header-text h1 {
 	font-weight: bold;
