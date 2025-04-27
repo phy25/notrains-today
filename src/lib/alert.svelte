@@ -30,4 +30,8 @@ a.alert {
     border-radius: 0.3em;
 }
 
+.alert > div:last-child {
+    flex: 1;
+}
+
 </style>
