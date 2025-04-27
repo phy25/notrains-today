@@ -8,6 +8,8 @@
     "trainsRunningAllCr": "截至 {time}，{MBTA} 的所有通勤铁路均正常运行。",
     "trainsRunningSomeCr": "截至 {time}，{MBTA} 的部分通勤铁路运行异常。",
     "calendar": "日历",
+    "alertsToday": "今日异常",
+    "alertsCalendar": "异常日历",
     "loading": "正在加载…",
     "mbtaAbbreviation": "MBTA",
     "noAlert": "服务正常",

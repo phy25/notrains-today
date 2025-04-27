@@ -9,6 +9,8 @@
     "trainsRunningSomeCr": "As of {time}, some commuter rail trains are not running on the {MBTA}.",
     "mbtaAbbreviation": "MBTA",
     "calendar": "Calendar",
+    "alertsToday": "Alerts Today",
+    "alertsCalendar": "Alerts Calendar",
     "loading": "Loading…",
     "noAlert": "All good",
     "multipleAlerts": "{count} alerts",

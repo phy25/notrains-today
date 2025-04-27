@@ -8,13 +8,18 @@ import { CalendarDate } from "@internationalized/date";
 import { m } from "$lib/paraglide/messages";
 
 const { alertsByDay, routeMap, currentServiceDate, type = 'calendar' } : {
-    alertsByDay: Map<string, MbtaAlert[]>,
-    routeMap: Map<string, any>,
-    currentServiceDate: CalendarDate,
-    type?: 'calendar' | 'today'
+    alertsByDay: Map<string, MbtaAlert[]>;
+    routeMap: Map<string, any>;
+    currentServiceDate: CalendarDate;
+    type?: 'calendar' | 'today';
 } = $props();
 
-const alerts_future_route_list = $derived.by(() => {
+const routesList = $derived.by(() => {
+    if (type === 'today') {
+        return alertsToRouteRenderingList(
+			getProcessedAlertsAsSingleRoute(alertsByDay.get(currentServiceDate.toString()) || []),
+			routeMap);
+    }
     let targetDate = currentServiceDate;
     const endSearchDate = targetDate.add({ months: 1 });
     while (targetDate.compare(endSearchDate) < 0) {
@@ -27,27 +32,38 @@ const alerts_future_route_list = $derived.by(() => {
         getProcessedAlertsAsSingleRoute(alertsByDay.get(targetDate.toString()) || []),
         routeMap);
 });
+
+const linkHref = $derived(resolveRoute(type === 'today' ? '/[[route_type]]' : '/[[route_type]]/calendar', { route_type: page.params.route_type }));
 </script>
 
-<a href={resolveRoute('/[[route_type]]/calendar', { route_type: page.params.route_type })}>
+<a href={linkHref}>
+    {#if type === 'today'}
+        <div class="link-icon">‹</div>
+    {/if}    
     <div class="link-text">
-        <div class="link-heading">Alert Calendar</div>
+        <div class="link-heading">
+            {#if type === 'today'}
+                {m.alertsToday()}    
+            {:else}
+                {m.alertsCalendar()}
+            {/if}
+        </div>
         <div class="link-summary">
-            {#each alerts_future_route_list as route}
+            {#each routesList as route}
                 <MbtaRouteBadgeCompound routeId={route.route_id} routeAttributes={route.attributes} />
             {/each}
         </div>
     </div>
-    <div class="link-icon">
-        ›
-    </div>
+    {#if type !== 'today'}
+        <div class="link-icon">›</div>
+    {/if}
 </a>
 
 <style>
 a {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: left;
     gap: 0 0.6em;
     text-decoration: none;
     color: inherit;
@@ -78,6 +94,7 @@ a:hover, a:focus {
     flex-wrap: wrap;
     align-items: center;
     gap: 0.4em 1em;
+    flex: 1;
 }
 .link-heading {
     font-weight: bold;
@@ -88,6 +105,6 @@ a:hover, a:focus {
     flex-wrap: wrap;
 }
 .link-icon {
-    font-size: 1.5em;
+    font-size: 1.2em;
 }
 </style>

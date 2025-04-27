@@ -59,31 +59,33 @@ const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString())
 <CalendarLink type="calendar" alertsByDay={data.alertsByDay} routeMap={data.routeMap} {currentServiceDate} />
 {/if}
 
-{#if alertsToday}
-<DayDetail
-    day={currentServiceDate.toString()}
-    alerts={alertsToday}
-    routeMap={data.routeMap}
-    showNightOwl={isCurrentServiceNightOwl}
-    hideAuxiliary={true}
-/>
-{:else}
-<p>{m.calendarDayNoAlerts()}</p>
-{/if}
+<div class="day-detail">
+    {#if alertsToday}
+    <DayDetail
+        day={currentServiceDate.toString()}
+        alerts={alertsToday}
+        routeMap={data.routeMap}
+        showNightOwl={isCurrentServiceNightOwl}
+    />
+    {:else}
+    <p>{m.calendarDayNoAlerts()}</p>
+    {/if}
+</div>
 
-<h2>{m.todayLookingAhead()}</h2>
-
-<CalendarOneweek
-    dayValue={currentServiceDate}
-    minValue={currentServiceDate}
-    maxValue={currentServiceDate.add({ weeks: 1 })}
-    weekStartsOn={getDayOfWeek(currentServiceDate, getLocale())}
-    weekdayFormat="short"
-    alertsByDay={data.alertsByDay}
-    routeMap={data.routeMap}
-    currentServiceDate={currentServiceDate}
-    locale={getLocale()}
-    linkToCalendar={true} />
+<div class="looking-ahead">
+    <h2>{m.todayLookingAhead()}</h2>
+    <CalendarOneweek
+        dayValue={currentServiceDate}
+        minValue={currentServiceDate}
+        maxValue={currentServiceDate.add({ weeks: 1 })}
+        weekStartsOn={getDayOfWeek(currentServiceDate, getLocale())}
+        weekdayFormat="short"
+        alertsByDay={data.alertsByDay}
+        routeMap={data.routeMap}
+        currentServiceDate={currentServiceDate}
+        locale={getLocale()}
+        linkToCalendar={true} />
+</div>
 
 {#if isCurrentServiceNightOwl}
 <p><em>{m.importantNotesServiceDayEnd({hour: MBTA_SERVICE_START_HOUR-1})}</em></p>
@@ -97,5 +99,9 @@ h1 {
     line-height: 1.2em;
     font-size: 1.1rem;
     font-weight: normal;
+}
+
+.day-detail {
+    margin: 1em 0;
 }
 </style>

@@ -100,9 +100,6 @@
     max-width: var(--page-content-max-width);
     min-width: var(--page-content-min-width);
     box-sizing: border-box;
-    margin: 0 0 1em;
-    padding-bottom: 0.5em;
-    border-bottom: 1px solid #92C6EA;
 }
 .glance-rapid-transit-grid > .route-expanded {
     grid-column: 1 / -1;
