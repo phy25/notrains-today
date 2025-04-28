@@ -73,6 +73,7 @@ a.alert {
     padding: 0.6em 1em;
     align-self: stretch;
     font-size: 1em;
+    min-height: 48px;
 }
 
 .alert > button:hover {
