@@ -27,18 +27,6 @@ const { data, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, route
 } = $props();
 
 const lastUpdatedDate = $derived(new Date(data.lastUpdated));
-const lastUpdatedTimeStr = $derived(
-    new DateFormatter(getLocale(), {timeStyle: 'short', timeZone: MBTA_TIMEZONE})
-        .format(lastUpdatedDate));
-const notrains_today = $derived(!!data.alertsByDay.get(currentServiceDate.toString())?.length);
-const MBTA_PLACEHOLDER = '%%MBTA%%';
-const notrains_today_text_array = $derived(
-    (
-        notrains_today ?
-        m.trainsRunningSome({MBTA: MBTA_PLACEHOLDER, time: lastUpdatedTimeStr}) :
-        m.trainsRunningAll({MBTA: MBTA_PLACEHOLDER, time: lastUpdatedTimeStr})
-    )
-    .split(MBTA_PLACEHOLDER) || []);
 
 const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString()));
 
@@ -61,12 +49,6 @@ $effect(() => {
     }, 1000 * 3);
 });
 </script>
-
-<h1>
-    {#each notrains_today_text_array as text, index}
-        {#if index > 0}<a href="https://www.mbta.com/alerts">{m.mbtaAbbreviation()}</a>{/if}{text}
-    {/each}
-</h1>
 
 <Glance
     alertsToday={getProcessedAlertsAsSingleRoute(alertsToday || [])}

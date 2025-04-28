@@ -12,12 +12,18 @@
 	import Header from '../../header.svelte';
 
 	const { data, children }: LayoutProps = $props();
+
+	const dataAsyncResult = $derived.by(async () => await data.data_async());
 	
 	const alerts_today_route_list = $derived((async () => {
-		const { alertsByDay, routeMap } = await data.data_async();
+		const { alertsByDay, routeMap } = await dataAsyncResult;
 		return alertsToRouteRenderingList(
 			getProcessedAlertsAsSingleRoute(alertsByDay.get(data.current_service_date.toString()) || []),
 			routeMap);
+	})());
+	const lastUpdatedStringAsync = $derived((async () => {
+		const { lastUpdated } = await dataAsyncResult;
+		return lastUpdated;
 	})());
 	const alerts_future_route_list = async () => {
 		const { alertsByDay, routeMap } = await data.data_async();
@@ -71,7 +77,7 @@
 </svelte:head>
 
 {#if isDebug()}
-<Header alertsTodayAsync={alerts_today_route_list}></Header>
+<Header alertsTodayAsync={alerts_today_route_list} {lastUpdatedStringAsync}></Header>
 {:else}
 <header class="tab-wrapper {isDebug() ? 'debug' : ''}">
 	<div class="tab-content">

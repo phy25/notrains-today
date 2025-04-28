@@ -2,9 +2,10 @@
 import { resolveRoute } from "$app/paths";
 import { page } from "$app/state";
 import { isDebug } from "$lib/common";
+import { MBTA_TIMEZONE } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
 
-const { alertsTodayAsync = Promise.resolve([]) } = $props();
+const { alertsTodayAsync = Promise.resolve([]), lastUpdatedStringAsync = Promise.resolve(null)} = $props();
 
 const page_type = $derived.by(() => {
     if (page.route.id === '/(alerts)/[[route_type=route_type]]/calendar') {
@@ -16,12 +17,20 @@ const page_type = $derived.by(() => {
     return 'info';
 });
 
+const getFormattedLastUpdatedTime = (timeString: string) => {
+    const date = new Date(timeString);
+    return new Intl.DateTimeFormat('en-US', { timeStyle: 'short', timeZone: MBTA_TIMEZONE }).format(date);
+};
+
 </script>
 
 <header class="tab-wrapper {isDebug() ? 'debug' : ''}">
 	<div class="tab-content">
         <a class="header-text notranslate" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>
-            <h1>notrains.today{#if page_type !== 'today'}?{:else}{#await alertsTodayAsync}?{:then list}{#if list.length == 0}?{/if}{/await}{/if}</h1>
+            <div class="header-text-flex">
+                <h1>notrains.today{#if page_type !== 'today'}?{:else}{#await alertsTodayAsync}?{:then list}{#if list.length == 0}?{/if}{/await}{/if}</h1>
+                {#if page_type === 'today'}{#await lastUpdatedStringAsync}{:then string}{#if string}<small>{m.asOfTime({time: getFormattedLastUpdatedTime(string)})}</small>{/if}{/await}{/if}
+            </div>
         </a>
         {#if page_type !== 'info'}
         <div class="tab-side-btn">
@@ -71,6 +80,10 @@ const page_type = $derived.by(() => {
     display: flex;
     align-items: center;
     text-decoration: none;
+}
+.header-text-flex {
+    display: flex;
+    align-items: baseline;
     gap: 0 0.5em;
     flex-wrap: wrap;
 }
