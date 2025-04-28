@@ -50,7 +50,7 @@ snapshot; // this is used by the sveltekit snapshot system
 </script>
 
 <svelte:head>
-  <title>notrains.today {m.calendar()}</title>
+  <title>notrains.today {m.alertsCalendar()}</title>
 </svelte:head>
 
 {#if data.data.length > 0}
