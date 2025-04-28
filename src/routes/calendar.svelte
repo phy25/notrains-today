@@ -7,17 +7,20 @@ import { Calendar } from "bits-ui";
 import { endOfWeek, endOfMonth, parseDate, type DateValue } from "@internationalized/date";
 import CalendarCell from "./calendar-cell.svelte";
 import CalendarOneweek from "./calendar-oneweek.svelte";
-	import type { MbtaAlert } from "$lib/mbta-types";
-	import { resolveRoute } from "$app/paths";
-	import { page } from "$app/state";
+import type { MbtaAlert } from "$lib/mbta-types";
+import { resolveRoute } from "$app/paths";
+import { page } from "$app/state";
+import { isDebug } from "$lib/common";
+import Glance from "./glance.svelte";
 
-let { dayValue = $bindable(), alerts = [], alertsByDay: _alertsByDay = undefined, routeMap, currentServiceDate, showNightOwl } : {
-  dayValue: DateValue,
-  alerts?: MbtaAlert[],
-  alertsByDay?: Map<string, MbtaAlert[]>,
-  routeMap: any,
-  currentServiceDate: DateValue,
-  showNightOwl: boolean
+let { dayValue = $bindable(), alerts = [], alertsByDay: _alertsByDay = undefined, routeMap, routeType, currentServiceDate, showNightOwl } : {
+  dayValue: DateValue;
+  alerts?: MbtaAlert[];
+  alertsByDay?: Map<string, MbtaAlert[]>;
+  routeMap: any;
+  routeType: string;
+  currentServiceDate: DateValue;
+  showNightOwl: boolean;
 } = $props();
 const alertsByDay = $derived(_alertsByDay || getAlertsAsDays(alerts, routeMap));
 
@@ -172,6 +175,17 @@ const onStickyWeekValueChange = (value?: DateValue) => {
     currentServiceDate={currentServiceDate}
     locale={getLocale()} />
 </div>
+
+{#if isDebug()}
+<Glance
+  alertsToday={alertsByDay.get(dayString) || []}
+  lastTrainData={new Map()}
+  currentServiceDate={dayValue}
+  isCurrentServiceNightOwl={currentServiceDate.compare(dayValue) == 0 ? showNightOwl : false}
+  routeMap={routeMap}
+  routeType={routeType}
+/>
+{/if}
 
 <DayDetail alerts={alertsByDay.get(dayString)} day={dayString} showNightOwl={showNightOwl} routeMap={routeMap} />
 

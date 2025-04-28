@@ -6,9 +6,7 @@ import type { PageProps } from './$types';
 import type { Snapshot } from '@sveltejs/kit';
 import { parseDate, type DateValue } from '@internationalized/date';
 import { page } from '$app/state';
-	import DebugAllAlerts from '../../../debug-all-alerts.svelte';
-	import { isDebug } from '$lib/common';
-	import CalendarLink from '../calendar-link.svelte';
+import DebugAllAlerts from '../../../debug-all-alerts.svelte';
 
 const { data }: PageProps = $props();
 
@@ -48,6 +46,7 @@ export const snapshot: Snapshot<string> = {
     }
   }
 };
+snapshot; // this is used by the sveltekit snapshot system
 </script>
 
 <svelte:head>
@@ -62,6 +61,7 @@ export const snapshot: Snapshot<string> = {
         routeMap={data.routeMap}
         currentServiceDate={data.current_service_date}
         showNightOwl={data.is_current_service_night_owl}
+        routeType={data.route_type}
         />
     
     <DebugAllAlerts data={data.data} routeMap={data.routeMap} />
