@@ -54,6 +54,12 @@ const ROUTE_PILL_MAPPING: Record<string, string> = {
     'CR-Newburyport': 'NBP',
     'CR-Providence': 'PVD',
     'CR-Foxboro': 'FOX',
+    'Boat-F1': 'Hingham',
+    'Boat-F4': 'CHS',
+    'Boat-Lynn': 'Lynn',
+    'Boat-EastBoston': 'EBos',
+    'Boat-F6': 'Winthrop',
+    'Boat-F7': 'Quincy',
 };
 
 export const SECONDARY_SYMBOLS: Record<string, {
