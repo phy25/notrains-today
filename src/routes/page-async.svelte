@@ -59,9 +59,7 @@ $effect(() => {
     routeType={routeType}
 />
 
-{#if isDebug()}
 <CalendarLink type="calendar" alertsByDay={data.alertsByDay} routeMap={data.routeMap} {currentServiceDate} />
-{/if}
 
 <div class="day-detail">
     {#if alertsToday}
