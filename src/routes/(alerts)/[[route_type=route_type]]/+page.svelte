@@ -1,22 +1,10 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
 	import PageAsync from '../../page-async.svelte';
-	import { invalidateAll } from '$app/navigation';
 	import { m } from '$lib/paraglide/messages';
 	import Error from '../../+error.svelte';
-	import Alert from '$lib/alert.svelte';
 
 	const { data }: PageProps = $props();
-    let isOutdated = $state(false);
-    $effect(() => {
-        data.data_async;
-        // when data_async changes, reset isOutdated
-        // which means if the page hasn't refreshed yet, do not remove isOutdated flag
-        isOutdated = false;
-        setTimeout(() => {
-            isOutdated = true;
-        }, 1000 * 60 * 10);
-    });
 </script>
 
 <svelte:head>
@@ -48,12 +36,3 @@
 {:catch}
 <Error />
 {/await}
-
-{#if isOutdated}
-<Alert
-    sticky={true}
-    onclick={(event: MouseEvent) => {event.preventDefault();invalidateAll();return false;}}
-    clickBtnText={m.refreshReminderButton()}>
-    {m.refreshReminder()}
-</Alert>
-{/if}

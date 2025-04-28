@@ -9,7 +9,9 @@ import Glance from "./glance.svelte";
 import { getProcessedAlertsAsSingleRoute, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
 import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
 import CalendarLink from "./(alerts)/[[route_type=route_type]]/calendar-link.svelte";
-	import { isDebug } from "$lib/common";
+import { isDebug } from "$lib/common";
+	import { invalidateAll } from "$app/navigation";
+	import Alert from "$lib/alert.svelte";
 
 const { data, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeType }: {
     data: {
@@ -24,9 +26,10 @@ const { data, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, route
     routeType: string
 } = $props();
 
+const lastUpdatedDate = $derived(new Date(data.lastUpdated));
 const lastUpdatedTimeStr = $derived(
     new DateFormatter(getLocale(), {timeStyle: 'short', timeZone: MBTA_TIMEZONE})
-        .format(new Date(data.lastUpdated)));
+        .format(lastUpdatedDate));
 const notrains_today = $derived(!!data.alertsByDay.get(currentServiceDate.toString())?.length);
 const MBTA_PLACEHOLDER = '%%MBTA%%';
 const notrains_today_text_array = $derived(
@@ -38,6 +41,25 @@ const notrains_today_text_array = $derived(
     .split(MBTA_PLACEHOLDER) || []);
 
 const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString()));
+
+let isOutdated = $state(false);
+let isOutdatedInvervalChecker: ReturnType<typeof setTimeout>|undefined = $state(undefined);
+$effect(() => {
+    data.lastUpdated;
+    // when lastUpdated changes, reset isOutdated
+    // which means if the page hasn't refreshed yet, do not remove isOutdated flag
+    isOutdated = false;
+    isOutdatedInvervalChecker = setInterval(() => {
+        if (Date.now() - lastUpdatedDate.getTime() < 1000 * 60 * 10) {
+            return;
+        }
+        isOutdated = true;
+        if (isOutdatedInvervalChecker) {
+            clearInterval(isOutdatedInvervalChecker);
+            isOutdatedInvervalChecker = undefined;
+        }
+    }, 1000 * 3);
+});
 </script>
 
 <h1>
@@ -95,6 +117,15 @@ const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString())
 {/if}
 
 <DebugAllAlerts data={data.data} routeMap={data.routeMap}></DebugAllAlerts>
+
+{#if isOutdated}
+<Alert
+    sticky={true}
+    onclick={(event: MouseEvent) => {event.preventDefault();invalidateAll();return false;}}
+    clickBtnText={m.refreshReminderButton()}>
+    {m.refreshReminder()}
+</Alert>
+{/if}
 
 <style>
 h1 {
