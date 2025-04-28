@@ -145,9 +145,6 @@
 .calendar-day .day, .calendar-day .right {
     flex: 1;
 }
-.calendar-day .weekday {
-    font-style: italic;
-}
 @media (max-width: 21rem) {
     .calendar-day .weekday {
         display: none;
