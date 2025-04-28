@@ -51,6 +51,7 @@
     "toServiceEndingNightOwl": "到今天 {hour}:00",
     "calendarDayNoAlerts": "本日无服务通知",
     "todayLookingAhead": "未来状况",
+    "tomorrowAndBeyondOneWeek": "明天到下周",
     "debugAllAlerts": "所有通知的调试视图",
     "footerAbout": "简介/隐私",
     "footerFeedback": "反馈",

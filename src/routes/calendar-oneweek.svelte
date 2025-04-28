@@ -35,7 +35,7 @@ let {
         <Calendar.Grid class="w-full border-collapse select-none space-y-1">
             <Calendar.GridBody>
             {#each month.weeks as weekDates}
-                {#if weekDates.find(day => day.compare(dayValue) === 0)}
+                {#if weekDates.find(day => day.compare(dayValue ? dayValue : minValue) === 0)}
                 <Calendar.GridRow>
                     {#snippet child({ props })}
                     <tr {...props} class="calendar-row">

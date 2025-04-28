@@ -51,6 +51,7 @@
     "toServiceEndingNightOwl": "to {hour}am today",
     "calendarDayNoAlerts": "No service alerts on the day",
     "todayLookingAhead": "Looking ahead",
+    "tomorrowAndBeyondOneWeek": "Tomorrow and beyond",
     "debugAllAlerts": "All alerts for troubleshooting",
     "footerAbout": "About/Privacy",
     "footerFeedback": "Feedback",

@@ -1,17 +1,16 @@
 <script lang="ts">
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
-import { DateFormatter, getDayOfWeek, type CalendarDate } from '@internationalized/date';
+import { getDayOfWeek, type CalendarDate } from '@internationalized/date';
 import CalendarOneweek from "./calendar-oneweek.svelte";
 import DayDetail from "./day-detail.svelte";
 import DebugAllAlerts from "./debug-all-alerts.svelte";
 import Glance from "./glance.svelte";
 import { getProcessedAlertsAsSingleRoute, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
-import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
+import { type MbtaAlert } from "$lib/mbta-types";
 import CalendarLink from "./(alerts)/[[route_type=route_type]]/calendar-link.svelte";
-import { isDebug } from "$lib/common";
-	import { invalidateAll } from "$app/navigation";
-	import Alert from "$lib/alert.svelte";
+import { invalidateAll } from "$app/navigation";
+import Alert from "$lib/alert.svelte";
 
 const { data, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeType }: {
     data: {
@@ -29,6 +28,7 @@ const { data, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, route
 const lastUpdatedDate = $derived(new Date(data.lastUpdated));
 
 const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString()));
+const tomorrowDate = $derived(currentServiceDate.add({ days: 1 }));
 
 let isOutdated = $state(false);
 let isOutdatedInvervalChecker: ReturnType<typeof setTimeout>|undefined = $state(undefined);
@@ -76,12 +76,12 @@ $effect(() => {
 </div>
 
 <div class="looking-ahead">
-    <h2>{m.todayLookingAhead()}</h2>
+    <h2>{m.tomorrowAndBeyondOneWeek()}</h2>
     <CalendarOneweek
-        dayValue={currentServiceDate}
-        minValue={currentServiceDate}
-        maxValue={currentServiceDate.add({ weeks: 1 })}
-        weekStartsOn={getDayOfWeek(currentServiceDate, getLocale())}
+        dayValue={null}
+        minValue={tomorrowDate}
+        maxValue={tomorrowDate.add({ weeks: 1})}
+        weekStartsOn={getDayOfWeek(tomorrowDate, getLocale())}
         weekdayFormat="narrow"
         alertsByDay={data.alertsByDay}
         routeMap={data.routeMap}
