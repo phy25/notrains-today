@@ -108,13 +108,6 @@ $effect(() => {
 {/if}
 
 <style>
-h1 {
-    margin: 0.5em 0 0.7em;
-    line-height: 1.2em;
-    font-size: 1.1rem;
-    font-weight: normal;
-}
-
 .day-detail {
     margin: 1em 0;
 }

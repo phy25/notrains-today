@@ -103,10 +103,13 @@ export const getLineName = (line: string, route_attributes?: any) => {
     if (line in LINE_NAMES) {
         return LINE_NAMES[line as keyof typeof LINE_NAMES];
     }
-    if (/^[0-9]+$/.test(line)) {
-        return m['mbtaLineNameBusRoute']({ route: line });
+    if (route_attributes.route_type === 3) {
+        return m['mbtaLineNameBusRoute']({ route: route_attributes?.short_name || line });
     }
     // TODO: fall back to use official name; ID should not be displayed in general
+    if (route_attributes?.short_name) {
+        return route_attributes?.short_name;
+    }
     if (route_attributes?.long_name) {
         return route_attributes?.long_name;
     }
