@@ -4,6 +4,8 @@ import { page } from "$app/state";
 import { isDebug } from "$lib/common";
 import { MBTA_TIMEZONE } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
+import { DateFormatter } from "@internationalized/date";
+import { getLocale } from "$lib/paraglide/runtime";
 
 const { alertsTodayAsync = Promise.resolve([]), lastUpdatedStringAsync = Promise.resolve(null)} = $props();
 
@@ -19,7 +21,7 @@ const page_type = $derived.by(() => {
 
 const getFormattedLastUpdatedTime = (timeString: string) => {
     const date = new Date(timeString);
-    return new Intl.DateTimeFormat('en-US', { timeStyle: 'short', timeZone: MBTA_TIMEZONE }).format(date);
+    return new DateFormatter(getLocale(), { timeStyle: 'short', timeZone: MBTA_TIMEZONE }).format(date);
 };
 
 </script>
