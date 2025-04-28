@@ -63,5 +63,11 @@
     "errorMbtaWebsite": "MBTA website",
     "openSourceSoftware": "Open Source Software",
     "githubRepo": "GitHub repo",
-    "currentVersion": "Current version"
+    "currentVersion": "Current version",
+    "routeTypeTrains": "Trains",
+    "routeTypeRapidTransit": "Rapid Transit",
+    "routeTypeCommuterRail": "Commuter Rail",
+    "routeTypeBus": "Bus",
+    "routeTypeFerry": "Ferry",
+    "routeTypeMBTA": "All Modes"
 }

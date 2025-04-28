@@ -34,8 +34,8 @@ const getFormattedLastUpdatedTime = (timeString: string) => {
         </a>
         {#if page_type !== 'info' && isDebug()}
         <div class="tab-side-btn">
-            <a href={resolveRoute(page.route.id || '/bus', { route_type: 'bus' })}>
-                Trains
+            <a href={resolveRoute(page.route.id || '/', { route_type: 'rapid-transit' })}>
+                {m.routeTypeRapidTransit()}
             </a>
         </div>
         {/if}

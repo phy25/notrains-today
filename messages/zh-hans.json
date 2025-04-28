@@ -63,5 +63,11 @@
     "errorMbtaWebsite": "MBTA 网站",
     "openSourceSoftware": "开源软件",
     "githubRepo": "GitHub 仓库",
-    "currentVersion": "当前版本"
+    "currentVersion": "当前版本",
+    "routeTypeTrains": "列车",
+    "routeTypeRapidTransit": "快速交通",
+    "routeTypeCommuterRail": "通勤铁路",
+    "routeTypeBus": "公交车",
+    "routeTypeFerry": "渡轮",
+    "routeTypeMBTA": "所有模式"
 }
