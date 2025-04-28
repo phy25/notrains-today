@@ -3,6 +3,7 @@
 	import { isDebug } from '$lib/common';
 	import { m } from '$lib/paraglide/messages';
 	import type { LayoutProps } from './$types';
+	import Header from '../header.svelte';
 
 	const { children }: LayoutProps = $props();
 	
@@ -27,22 +28,7 @@
   <title>notrains.today {m.footerAbout()}</title>
 </svelte:head>
 
-<div class="tab-wrapper {isDebug() ? 'debug' : ''}">
-    <div class="tab">
-        <a class="tab-item {tab_id === 'today' && 'selected'}" href="/">
-            <div class="tab-item-heading notranslate">
-				notrains.today?
-			</div>
-            <div>
-            </div>
-        </a>
-        <a class="tab-item" href="/calendar">
-            <div class="tab-item-heading">{m.calendar()}</div>
-            <div>
-            </div>
-        </a>
-    </div>
-</div>
+<Header></Header>
 
 <div class="page-content">
 	{@render children()}
@@ -56,69 +42,4 @@
 </div>
 
 <style>
-.tab-wrapper {
-    background: var(--background-color);
-    --background-color: #195581;
-    color: #FFF;
-    padding: 0.4em;
-    display: flex;
-    justify-content: space-around;
-	min-width: var(--page-content-min-width);
-}
-.tab-wrapper.debug {
-	background-image: repeating-linear-gradient(
-		-45deg,
-		#2580C1,
-		#2580C1 10px,
-		transparent 10px,
-		transparent 2.5rem
-	);
-}
-@media (max-width: 21rem) {
-    .tab-wrapper {
-        padding: 0.4em 0.2em;
-    }
-}
-.tab {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: stretch;
-    border: #FFF 1px solid;
-    border-radius: 0.3em;
-    padding: 0.2em;
-    width: 100%;
-    max-width: var(--page-content-max-width);
-    min-width: var(--page-content-min-width);
-	box-sizing: border-box;
-	gap: 0.1em;
-}
-.tab-item {
-    flex: 1;
-    padding: 0.3em 0.6em;
-    line-height: 1.4em;
-    cursor: pointer;
-    border-radius: 0.3em;
-    text-decoration: none;
-    color: inherit;
-	transition: background-color 0.2s ease;
-}
-.tab-item:hover, .tab-item:focus {
-    background: var(--background-color);
-    --background-color: #DDD;
-    color: #000;
-	outline: none;
-}
-.tab-item.selected {
-    background: var(--background-color);
-    --background-color: #FFF;
-    color: #000;
-}
-.tab .tab-item.selected:hover, .tab .tab-item.selected:focus {
-	background: var(--background-color);
-    --background-color: #EEE;
-}
-.tab-item-heading {
-    font-weight: bold;
-}
 </style>
