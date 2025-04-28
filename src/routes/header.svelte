@@ -32,7 +32,7 @@ const getFormattedLastUpdatedTime = (timeString: string) => {
                 {#if page_type === 'today'}{#await lastUpdatedStringAsync}{:then string}{#if string}<small>{m.asOfTime({time: getFormattedLastUpdatedTime(string)})}</small>{/if}{/await}{/if}
             </div>
         </a>
-        {#if page_type !== 'info'}
+        {#if page_type !== 'info' && isDebug()}
         <div class="tab-side-btn">
             <a href={resolveRoute(page.route.id || '/bus', { route_type: 'bus' })}>
                 Trains
