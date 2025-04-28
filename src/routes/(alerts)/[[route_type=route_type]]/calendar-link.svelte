@@ -14,26 +14,41 @@ const { alertsByDay, routeMap, currentServiceDate, type = 'calendar' } : {
     type?: 'calendar' | 'today';
 } = $props();
 
-const routesList = $derived.by(() => {
+const targetDate: CalendarDate | null = $derived.by(() => {
     if (type === 'today') {
-        return alertsToRouteRenderingList(
-			getProcessedAlertsAsSingleRoute(alertsByDay.get(currentServiceDate.toString()) || []),
-			routeMap);
-    }
-    let targetDate = currentServiceDate;
-    const endSearchDate = targetDate.add({ months: 1 });
-    while (targetDate.compare(endSearchDate) < 0) {
-        targetDate = targetDate.add({ days: 1 });
-        if (alertsByDay.get(targetDate.toString())?.length) {
-            break;
+        return currentServiceDate;
+    } else {
+        let targetDate = currentServiceDate;
+        const endSearchDate = targetDate.add({ months: 1 });
+        while (targetDate.compare(endSearchDate) < 0) {
+            targetDate = targetDate.add({ days: 1 });
+            if (alertsByDay.get(targetDate.toString())?.length) {
+                break;
+            }
+            if (targetDate.compare(endSearchDate) == 0) {
+                return null;
+            }
         }
+        return targetDate;
     }
-    return alertsToRouteRenderingList(
-        getProcessedAlertsAsSingleRoute(alertsByDay.get(targetDate.toString()) || []),
-        routeMap);
 });
 
-const linkHref = $derived(resolveRoute(type === 'today' ? '/[[route_type]]' : '/[[route_type]]/calendar', { route_type: page.params.route_type }));
+const routesList = $derived.by(() => {
+    if (targetDate) {
+        return alertsToRouteRenderingList(
+            getProcessedAlertsAsSingleRoute(alertsByDay.get(targetDate.toString()) || []),
+            routeMap);
+    }
+    return [];   
+});
+
+const linkHref = $derived.by(() => {
+    if (type === 'today') {
+        return resolveRoute('/[[route_type]]', { route_type: page.params.route_type });
+    } else {
+        return resolveRoute('/[[route_type]]/calendar', { route_type: page.params.route_type }) + (targetDate ? ('#date=' + targetDate.toString()) : '');
+    }
+});
 </script>
 
 <a href={linkHref} title={type === 'today' ? m.alertsToday() : m.alertsCalendar()}>
