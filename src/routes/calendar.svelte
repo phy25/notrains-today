@@ -106,7 +106,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
           <Calendar.PrevButton>
             {#snippet child({ props })}
             {#if props.disabled}
-              <a class="calendar-header-btn" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>⭘</a>
+              <a class="calendar-header-btn" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })} title={m.alertsToday()}>⭘</a>
             {:else}
               <button {...props} class="calendar-header-btn">◀</button>
             {/if}

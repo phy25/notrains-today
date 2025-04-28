@@ -26,7 +26,7 @@ const getFormattedLastUpdatedTime = (timeString: string) => {
 
 <header class="tab-wrapper {isDebug() ? 'debug' : ''}">
 	<div class="tab-content">
-        <a class="header-text notranslate" href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>
+        <a class="header-text notranslate" title={m.alertsToday()} href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>
             <div class="header-text-flex">
                 <h1>notrains.today{#if page_type !== 'today'}?{:else}{#await alertsTodayAsync}?{:then list}{#if list.length == 0}?{/if}{/await}{/if}</h1>
                 {#if page_type === 'today'}{#await lastUpdatedStringAsync}{:then string}{#if string}<small>{m.asOfTime({time: getFormattedLastUpdatedTime(string)})}</small>{/if}{/await}{/if}
