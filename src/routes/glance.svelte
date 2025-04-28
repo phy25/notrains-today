@@ -100,6 +100,7 @@
     max-width: var(--page-content-max-width);
     min-width: var(--page-content-min-width);
     box-sizing: border-box;
+    margin-top: 0.5em;
 }
 .glance-rapid-transit-grid > .route-expanded {
     grid-column: 1 / -1;
