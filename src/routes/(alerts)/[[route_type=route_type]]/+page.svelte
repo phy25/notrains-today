@@ -23,12 +23,6 @@
   <title>notrains.today</title>
 </svelte:head>
 
-{#if isOutdated}
-    <Alert onclick={(event: MouseEvent) => {event.preventDefault();invalidateAll();return false;}}>
-        {m.refreshReminder()}
-    </Alert>
-{/if}
-
 {#await data.data_async()}
     <p>{m.loading()}</p>
 {:then d}
@@ -54,3 +48,12 @@
 {:catch}
 <Error />
 {/await}
+
+{#if isOutdated}
+<Alert
+    sticky={true}
+    onclick={(event: MouseEvent) => {event.preventDefault();invalidateAll();return false;}}
+    clickBtnText={m.refreshReminderButton()}>
+    {m.refreshReminder()}
+</Alert>
+{/if}

@@ -1,17 +1,26 @@
 <script lang="ts">
-    const {children, onclick = undefined} = $props();
+    const {children, onclick = undefined, sticky = false, clickBtnText = undefined} = $props();
 </script>
 
-
-{#if onclick}
-    <!-- svelte-ignore a11y_invalid_attribute -->
-    <a class="alert" onclick={onclick} href="">
-        <div>⚠️</div> <div>{@render children?.()}</div>
-    </a>
-{:else}
-    <div class="alert">
-        <div>⚠️</div> <div>{@render children?.()}</div>
+{#if sticky}
+    <div class="alert sticky">
+        <div>⚠️</div>
+        <div class="alert-text">{@render children?.()}</div>
+        {#if clickBtnText}
+            <button onclick={onclick}>{clickBtnText}</button>
+        {/if}
     </div>
+{:else}
+    {#if onclick}
+        <!-- svelte-ignore a11y_invalid_attribute -->
+        <a class="alert" onclick={onclick} href="">
+            <div>⚠️</div> <div class="alert-text">{@render children?.()}</div>
+        </a>
+    {:else}
+        <div class="alert">
+            <div>⚠️</div> <div class="alert-text">{@render children?.()}</div>
+        </div>
+    {/if}
 {/if}
 
 <style>
@@ -21,17 +30,57 @@ a.alert {
 
 .alert {
     margin: 0.5em 0;
-    padding: 0.6em 0.4em;
     background: #C9E3F5;
     color: #000;
     display: flex;
     align-items: baseline;
     gap: 0.3em;
-    border-radius: 0.3em;
+    border-radius: 0.5em;
 }
 
-.alert > div:last-child {
+.alert > * {
+    padding: 0.6em 0;
+}
+
+.alert > :first-child {
+    padding-left: 0.4em;
+}
+
+.alert > :last-child {
+    padding-right: 0.4em;
+}
+
+.alert.sticky {
+    position: sticky;
+    bottom: 1em;
+    left: 0;
+    z-index: 100;
+    max-width: 100%;
+    margin: 0 0.5em;
+}
+
+.alert > div.alert-text {
     flex: 1;
+}
+
+.alert > button, .alert > button:last-child {
+    background: none;
+    border: none;
+    border-left: 1px solid #ACD4F0;
+    border-radius: 0 0.5em 0.5em 0;
+    color: inherit;
+    cursor: pointer;
+    padding: 0.6em 1em;
+    align-self: stretch;
+    font-size: 1em;
+}
+
+.alert > button:hover {
+    background: #ACD4F0;
+}
+
+.alert > button:focus {
+    outline: 2px solid #000;
 }
 
 </style>
