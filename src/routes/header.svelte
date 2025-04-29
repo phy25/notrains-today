@@ -109,6 +109,13 @@ let isMenuOpen = $state(false);
                                             </a>
                                         {/snippet}
                                     </DropdownMenu.Item>
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} href="/about#languages">
+                                                Language 🌐
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
                                 </DropdownMenu.Group>
                             </div>
                         </div>

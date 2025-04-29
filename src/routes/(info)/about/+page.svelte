@@ -21,7 +21,7 @@ const version = typeof window !== 'undefined' ? (window as OurWindow)?.SENTRY_RE
 
 <Debugger />
 
-<h2>Languages</h2>
+<h2 id="languages">Languages</h2>
 
 {#each locales as locale}
 	<button onclick={() => switchToLanguage(locale)} class={getLocale() === locale ? 'selected' : ''}>
