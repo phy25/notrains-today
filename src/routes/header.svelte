@@ -53,7 +53,10 @@ let isMenuOpen = $state(false);
             <DropdownMenu.Trigger>
                 {#snippet child({ props })}
                 <button {...props} class="tab-side-btn {isMenuOpen ? 'open' : ''}">
-                    <span>{QUERY_ROUTE_TYPE_DROPDOWN_M[(routeType || '') in QUERY_ROUTE_TYPE_DROPDOWN_M ? (routeType || '') : '']()}</span><span>▾</span>
+                    <div class="tab-side-btn-flex">
+                        <span>{QUERY_ROUTE_TYPE_DROPDOWN_M[(routeType || '') in QUERY_ROUTE_TYPE_DROPDOWN_M ? (routeType || '') : '']()}</span>
+                        <span>▾</span>
+                    </div>
                 </button>
                 {/snippet}
             </DropdownMenu.Trigger>
@@ -172,7 +175,6 @@ let isMenuOpen = $state(false);
     display: flex;
     align-items: center;
     padding: 0.5em 0.2em;
-    gap: 0.2em;
     min-width: 48px;
     box-sizing: border-box;
     background: transparent;
@@ -181,8 +183,16 @@ let isMenuOpen = $state(false);
     cursor: pointer;
     font-size: 1em;
 }
+.tab-side-btn:hover {
+    color: #DDD;
+}
 .tab-side-btn.open {
     user-select: none;
+}
+.tab-side-btn-flex {
+    display: flex;
+    align-items: baseline;
+    gap: 0.2em;
 }
 .dropdown-menu-content {
     background: var(--background-color);
@@ -192,6 +202,7 @@ let isMenuOpen = $state(false);
     box-sizing: border-box;
     border-radius: 0 0 0.3em 0.3em;
     border: 1px solid #DDD;
+    border-top: none;
 }
 .dropdown-menu-content:focus-visible {
     outline: none;
