@@ -4,11 +4,17 @@ export const ssr = false;
 import { filterHighPriorityAlerts, overrideAlerts } from '$lib/mbta-overides';
 import { DEFAULT_QUERY_ROUTE_TYPE, MBTA_TIMEZONE, QUERY_ROUTE_TYPE_MAPPING, RAPID_TRANSIT_BUS_ROUTES, RAPID_TRANSIT_QUERY_ROUTE_TYPE, type MbtaAlert } from '$lib/mbta-types';
 import type { LayoutLoad } from './$types';
-import { alertsToRouteRenderingList, getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
+import { getAlertsAsDays, MBTA_SERVICE_START_HOUR } from '$lib/calendar';
 import { now, parseDate, toCalendarDate } from "@internationalized/date";
 import { captureException } from '@sentry/sveltekit';
 
-let data_async_data: { data: MbtaAlert[]; alertsByDay: Map<string, MbtaAlert[]>; routeMap: Map<string, any>; lastUpdated: string; } | null = null;
+let data_async_data: {
+    data: MbtaAlert[];
+    alertsByDay: Map<string, MbtaAlert[]>;
+    routeMap: Map<string, any>;
+    lastUpdated: string;
+    rawResponse: any;
+} | null = null;
 let data_async_hash: string | null = null;
 let date_async_lastUpdated: number = 0;
 
@@ -21,6 +27,7 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
         alertsByDay: ReturnType<typeof getAlertsAsDays>;
         routeMap: Map<string, any>;
         lastUpdated: string;
+        rawResponse: any;
     }>(async (resolve, reject) => {
         // not including accessibility and parking alerts for now
         const url = 'https://api-v3.mbta.com/alerts?include=routes&filter%5Bactivity%5D=BOARD,EXIT,RIDE,BRINGING_BIKE&filter%5Broute_type%5D=' + QUERY_ROUTE_TYPE_MAPPING[route_type];
@@ -108,6 +115,7 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
                 alertsByDay,
                 routeMap,
                 lastUpdated,
+                rawResponse: json,
             };
             data_async_hash = route_type;
             date_async_lastUpdated = Date.now();

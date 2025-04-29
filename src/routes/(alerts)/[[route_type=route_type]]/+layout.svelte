@@ -72,7 +72,7 @@
 						const name = 'alerts-'+page.params.route_type+'.json';
 						getCurrentScope().clearAttachments();
 						getCurrentScope().addAttachment({
-							data: JSON.stringify((await data.data_async()).data),
+							data: JSON.stringify((await data.data_async()).rawResponse),
 							filename: name,
 							contentType: 'application/json',
 						});
