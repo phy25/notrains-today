@@ -73,9 +73,22 @@ const onWindowScroll = () => {
 };
 
 export const scrollToDayDetail = () => {
-  window.scrollTo({
-    top: mainCalendarEndY + 2,
-  });
+  const documentHeight = Math.max(
+    document.body.scrollHeight,
+    document.documentElement.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.offsetHeight,
+    document.body.clientHeight,
+    document.documentElement.clientHeight
+  );
+  // Calculate the maximum possible scroll position
+  const maxScrollTop = documentHeight - window.innerHeight;
+  const targetTop = mainCalendarEndY + 2;
+  if (targetTop <= maxScrollTop) {
+    window.scrollTo({
+      top: targetTop,
+    });
+  }
 };
 
 const onStickyWeekValueChange = (value?: DateValue) => {
