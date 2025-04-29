@@ -4,6 +4,7 @@
 	import { m } from "$lib/paraglide/messages";
 	import Header from "./header.svelte";
 	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 
     const MBTA_PLACEHOLDER = '%%MBTA%%';
     const error_text_array = m.errorSeeAlso({MBTA: MBTA_PLACEHOLDER}).split(MBTA_PLACEHOLDER) || [];
@@ -18,7 +19,7 @@
     <Alert clickBtnText={m.errorRetryButton()} onclick={(event: MouseEvent) => {
         event.preventDefault();
         if (page.status == 404) {
-            location.href = '/';
+            goto('/');
             return;
         }
         location.reload();

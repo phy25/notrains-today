@@ -2,12 +2,14 @@
 import { resolveRoute } from "$app/paths";
 import { page } from "$app/state";
 import { isDebug } from "$lib/common";
-import { MBTA_TIMEZONE } from "$lib/mbta-types";
+import { MBTA_TIMEZONE, QUERY_ROUTE_TYPE_DROPDOWN_M } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
 import { DateFormatter } from "@internationalized/date";
 import { getLocale } from "$lib/paraglide/runtime";
+import { DropdownMenu } from "bits-ui";
+import { fly } from "svelte/transition";
 
-const { alertsTodayAsync = Promise.resolve([]), lastUpdatedStringAsync = Promise.resolve(null)} = $props();
+const { alertsTodayAsync = Promise.resolve([]), lastUpdatedStringAsync = Promise.resolve(null), routeType = undefined} = $props();
 
 const page_type = $derived.by(() => {
     if (page.route.id === '/(alerts)/[[route_type=route_type]]/calendar') {
@@ -24,22 +26,94 @@ const getFormattedLastUpdatedTime = (timeString: string) => {
     return new DateFormatter(getLocale(), { timeStyle: 'short', timeZone: MBTA_TIMEZONE }).format(date);
 };
 
+let isMenuOpen = $state(false);
+
 </script>
 
 <header class="tab-wrapper {isDebug() ? 'debug' : ''}">
 	<div class="tab-content">
-        <a class="header-text notranslate" title={m.alertsToday()} href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}>
+        <a
+            class="header-text notranslate"
+            title={m.alertsToday()}
+            href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}
+            onclick={(e) => {
+                if (page_type === 'today') {
+                    e.preventDefault();
+                    isMenuOpen = !isMenuOpen;
+                }
+            }}
+            >
             <div class="header-text-flex">
                 <h1>notrains.today{#if page_type !== 'today'}?{:else}{#await alertsTodayAsync}?{:then list}{#if list.length == 0}?{/if}{/await}{/if}</h1>
                 {#if page_type === 'today'}{#await lastUpdatedStringAsync}{:then string}{#if string}<small>{m.asOfTime({time: getFormattedLastUpdatedTime(string)})}</small>{/if}{/await}{/if}
             </div>
         </a>
-        {#if page_type !== 'info' && isDebug()}
-        <div class="tab-side-btn">
-            <a href={resolveRoute(page.route.id || '/', { route_type: 'rapid-transit' })}>
-                {m.routeTypeRapidTransit()}
-            </a>
-        </div>
+        {#if page_type !== 'info'}
+        <DropdownMenu.Root bind:open={isMenuOpen}>
+            <DropdownMenu.Trigger>
+                {#snippet child({ props })}
+                <button {...props} class="tab-side-btn {isMenuOpen ? 'open' : ''}">
+                    <span>{QUERY_ROUTE_TYPE_DROPDOWN_M[(routeType || '') in QUERY_ROUTE_TYPE_DROPDOWN_M ? (routeType || '') : '']()}</span><span>▾</span>
+                </button>
+                {/snippet}
+            </DropdownMenu.Trigger>
+
+            <DropdownMenu.Portal>
+                <DropdownMenu.Content forceMount align="end" onInteractOutside={(event: PointerEvent) => {event.preventDefault(); isMenuOpen = false;}}>
+                    {#snippet child({ wrapperProps, props, open })}
+                        {#if open}
+                        <div {...wrapperProps} data-sveltekit-preload-data="false">
+                            <div {...props} class="dropdown-menu-content" transition:fly={{ duration: 200 }}>
+                                <DropdownMenu.Group>
+                                    {#if routeType !== 'trains'}
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} href={resolveRoute(page.route.id || '/', { route_type: '' })}>
+                                                {m.routeTypeTrains()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    {/if}
+                                    {#if routeType !== 'rapid-transit'}
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} href={resolveRoute(page.route.id || '/', { route_type: 'rapid-transit' })}>
+                                                {m.routeTypeRapidTransit()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    {/if}
+                                    {#if routeType !== 'commuter-rail'}
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} href={resolveRoute(page.route.id || '/', { route_type: 'commuter-rail' })}>
+                                                {m.routeTypeCommuterRail()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    {/if}
+                                </DropdownMenu.Group>
+                                <DropdownMenu.Separator>
+                                    {#snippet child({ props })}
+                                        <hr {...props} />
+                                    {/snippet}
+                                </DropdownMenu.Separator>
+                                <DropdownMenu.Group>
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} href="/about">
+                                                {m.footerAbout()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                </DropdownMenu.Group>
+                            </div>
+                        </div>
+                        {/if}
+                    {/snippet}
+                </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+        </DropdownMenu.Root>
         {/if}
 	</div>
 </header>
@@ -96,17 +170,48 @@ const getFormattedLastUpdatedTime = (timeString: string) => {
 }
 .tab-side-btn {
     display: flex;
-    align-items: stretch;
-}
-.tab-side-btn a {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 0.5em;
+    padding: 0.5em 0.2em;
     gap: 0.2em;
     min-width: 48px;
     box-sizing: border-box;
+    background: transparent;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1em;
+}
+.tab-side-btn.open {
+    user-select: none;
+}
+.dropdown-menu-content {
+    background: var(--background-color);
+    --background-color: #FFF;
+    color: #121212;
+    outline: none;
+    box-sizing: border-box;
+    border-radius: 0 0 0.3em 0.3em;
+    border: 1px solid #DDD;
+}
+.dropdown-menu-content:focus-visible {
+    outline: none;
+}
+.dropdown-menu-content a {
+    display: flex;
     text-decoration: none;
+    min-height: 48px;
+    align-items: center;
+    padding: 0.5em 4em 0.5em 1em;
+    box-sizing: border-box;
+}
+.dropdown-menu-content a:hover, .dropdown-menu-content a:focus {
+    color: #195581;
+    background: #DDD;
+    outline: none;
+}
+.dropdown-menu-content hr {
+    margin: 0;
+    border: none;
+    border-top: 1px solid #DDD;
 }
 </style>

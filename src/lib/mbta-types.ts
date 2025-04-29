@@ -1,4 +1,5 @@
 import {Time} from '@internationalized/date';
+import { m } from './paraglide/messages';
 
 export interface MbtaAlert {
     attributes: {
@@ -45,6 +46,13 @@ export const QUERY_ROUTE_TYPE_MAPPING: Record<string, string> = {
     'bus': '3',
     'commuter-rail': '2',
     'ferry': '4',
+};
+
+export const QUERY_ROUTE_TYPE_DROPDOWN_M: Record<string, typeof m.routeTypeTrains> = {
+    '': m.routeTypeMBTA,
+    'trains': m.routeTypeTrains,
+    'rapid-transit': m.routeTypeRapidTransit,
+    'commuter-rail': m.routeTypeCommuterRail,
 };
 
 export const QUERY_ROUTE_TYPE_WITH_SUBWAY = [

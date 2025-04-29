@@ -55,7 +55,7 @@
   <title>notrains.today</title>
 </svelte:head>
 
-<Header alertsTodayAsync={alerts_today_route_list} {lastUpdatedStringAsync}></Header>
+<Header alertsTodayAsync={alerts_today_route_list} {lastUpdatedStringAsync} routeType={data.route_type}></Header>
 
 <div class="page-content">
 	{@render children()}
