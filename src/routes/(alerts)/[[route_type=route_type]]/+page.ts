@@ -29,6 +29,12 @@ export const load = (async ({ parent, fetch }) => {
             return lastTrainTimes;
         });
     }
+
+    if (parentData.data_async_awaited) {
+        // SPA reload. Do not resolve page data until the new data is fetched
+        await lastTrainDataAsync;
+    }
+
     return {
         ...parentData,
         data_async: parentData.data_async,

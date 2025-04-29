@@ -129,9 +129,11 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
     });
 
     const data_async = () => data_async_promise;
+    let data_async_awaited = false;
     if (data_async_data) {
         // SPA reload. Do not resolve page data until the new data is fetched
         await data_async_promise;
+        data_async_awaited = true;
     }
 
     let currentServiceTime = now(MBTA_TIMEZONE);
@@ -156,5 +158,6 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
         current_service_date: currentServiceDate,
         is_current_service_night_owl: isNightOwl,
         data_async: data_async,
+        data_async_awaited,
     };
 };
