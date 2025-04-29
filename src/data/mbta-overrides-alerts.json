@@ -14,11 +14,10 @@
         },
         {
             "type": "replace",
-            "match_id": "638237",
+            "match_id": "640365",
             "note": "Issue only impacts one station rather than the entire route",
             "item": {
                 "attributes": {
-                    "effect": "TRACK_CHANGE",
                     "informed_entity": [
                         {
                             "route_type": 0,
