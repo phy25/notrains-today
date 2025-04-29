@@ -87,25 +87,25 @@
                 
             {#if routeType === 'mbta' || routeType === RAPID_TRANSIT_QUERY_ROUTE_TYPE }
             <div class="badge-group">
-                <MbtaRouteBadge pillLabel="Sliver Line" type="long" color="#7c878e" textColor="#FFF" />
+                <MbtaRouteBadge pillLabel="SL" type="long" color="#7c878e" textColor="#FFF" />
                 <div class="no-alert-text">{m.noAlert()}</div>
             </div>
             {/if}
             {#if routeType === 'mbta' || routeType === 'trains' || routeType === 'commuter-rail' }
                 <div class="badge-group">
-                    <MbtaRouteBadge pillLabel="Commuter Rail" type="long" color="#80276c" textColor="#FFF" />
+                    <MbtaRouteBadge pillLabel={m.routeTypeCommuterRail()} type="long" color="#80276c" textColor="#FFF" />
                     <div class="no-alert-text">{m.noAlert()}</div>
                 </div>
             {/if}
             {#if routeType === 'mbta' || routeType === 'bus' }
                 <div class="badge-group">
-                    <MbtaRouteBadge pillLabel="Bus" type="long" color="#ffc72c" textColor="#000" />
+                    <MbtaRouteBadge pillLabel={m.routeTypeBus()} type="long" color="#ffc72c" textColor="#000" />
                     <div class="no-alert-text">{m.noAlert()}</div>
                 </div>
             {/if}
             {#if routeType === 'mbta' || routeType === 'ferry' }
                 <div class="badge-group">
-                    <MbtaRouteBadge pillLabel="Ferry" type="long" color="#008eaa" textColor="#FFF" />
+                    <MbtaRouteBadge pillLabel={m.routeTypeFerry()} type="long" color="#008eaa" textColor="#FFF" />
                     <div class="no-alert-text">{m.noAlert()}</div>
                 </div>
             {/if}
