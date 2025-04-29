@@ -50,15 +50,17 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
             {/if}
         {:else if false && branchesAlerts.length}
             <span>◤</span>
-        {:else if filterdAlerts.length > 1}
+        {:else if filterdAlerts.length > 2}
             <span>⚠️</span>
         {:else}
-            {#if mainRouteId === 'Green'}
-            <span>{getAlertBadgeSecondarySymbolForGreenLineGlance(filterdAlerts[0]) + 
-                getAlertBadgeSecondarySymbolTime(filterdAlerts[0], currentServiceDate.toString(), currentServiceDate.toString())}</span>
-            {:else}
-            <span>{getAlertBadgeSecondarySymbol(filterdAlerts[0], currentServiceDate.toString(), currentServiceDate.toString())}</span>
-            {/if}
+            {#each filterdAlerts as alert}
+                {#if mainRouteId === 'Green'}
+                <span>{getAlertBadgeSecondarySymbolForGreenLineGlance(alert) + 
+                    getAlertBadgeSecondarySymbolTime(alert, currentServiceDate.toString(), currentServiceDate.toString())}</span>
+                {:else}
+                <span>{getAlertBadgeSecondarySymbol(alert, currentServiceDate.toString(), currentServiceDate.toString())}</span>
+                {/if}
+            {/each}
         {/if}
     </div>
 
