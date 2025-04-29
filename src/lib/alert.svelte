@@ -11,15 +11,26 @@
         {/if}
     </div>
 {:else}
-    {#if onclick}
-        <!-- svelte-ignore a11y_invalid_attribute -->
-        <a class="alert" onclick={onclick} href="">
-            <div>⚠️</div> <div class="alert-text">{@render children?.()}</div>
-        </a>
-    {:else}
+    
+    {#if clickBtnText}
         <div class="alert">
-            <div>⚠️</div> <div class="alert-text">{@render children?.()}</div>
+            <div>⚠️</div>
+            <div class="alert-text">{@render children?.()}</div>
+            {#if clickBtnText && onclick}
+                <button onclick={onclick}>{clickBtnText}</button>
+            {/if}
         </div>
+    {:else}
+        {#if onclick}
+            <!-- svelte-ignore a11y_invalid_attribute -->
+            <a class="alert" onclick={onclick} href="">
+                <div>⚠️</div> <div class="alert-text">{@render children?.()}</div>
+            </a>
+        {:else}
+            <div class="alert">
+                <div>⚠️</div> <div class="alert-text">{@render children?.()}</div>
+            </div>
+        {/if}
     {/if}
 {/if}
 
@@ -61,6 +72,7 @@ a.alert {
 
 .alert > div.alert-text {
     flex: 1;
+    padding-right: 0.5em;
 }
 
 .alert > button, .alert > button:last-child {

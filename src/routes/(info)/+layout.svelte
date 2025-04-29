@@ -1,13 +1,11 @@
 <script lang="ts">
 	import '$lib/style.css';
-	import { isDebug } from '$lib/common';
 	import { m } from '$lib/paraglide/messages';
 	import type { LayoutProps } from './$types';
 	import Header from '../header.svelte';
 
 	const { children }: LayoutProps = $props();
 	
-	const tab_id = 'today';
 	let feedbackBtnDom: HTMLButtonElement;
 	$effect(() => {
 		feedbackBtnDom;
