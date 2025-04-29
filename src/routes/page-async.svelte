@@ -11,6 +11,8 @@ import { type MbtaAlert } from "$lib/mbta-types";
 import CalendarLink from "./(alerts)/[[route_type=route_type]]/calendar-link.svelte";
 import { invalidateAll } from "$app/navigation";
 import Alert from "$lib/alert.svelte";
+import { resolveRoute } from "$app/paths";
+import { page } from "$app/state";
 
 const { data, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeType }: {
     data: {
@@ -76,7 +78,10 @@ $effect(() => {
 </div>
 
 <div class="looking-ahead">
-    <h2>{m.tomorrowAndBeyondOneWeek()}</h2>
+    <a class="title-link" href={resolveRoute('/[[route_type]]/calendar', { route_type: page.params.route_type }) + '#date=' + tomorrowDate.toString()}>
+        <h2>{m.tomorrowAndBeyondOneWeek()}</h2>
+        <div class="link-icon">›</div>
+    </a>
     <CalendarOneweek
         dayValue={null}
         minValue={tomorrowDate}
@@ -110,5 +115,21 @@ $effect(() => {
 <style>
 .day-detail {
     margin: 1em 0;
+}
+
+.title-link {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    text-decoration: none;
+    margin: 0 0 0.6em 0;
+}
+
+.title-link h2 {
+    margin: 0;
+}
+
+.title-link .link-icon {
+    font-size: 1.5em;
 }
 </style>

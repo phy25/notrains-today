@@ -11,6 +11,9 @@ body {
 a, button.link, a:visited {
     color: #195581;
 }
+a:hover, a:visited:hover, button.link:hover {
+    color: #2580C1;
+}
 @media (prefers-color-scheme: dark) {
     body {
         --color-accent: #92C6EA;

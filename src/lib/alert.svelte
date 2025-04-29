@@ -67,7 +67,7 @@ a.alert {
     left: 0;
     z-index: 100;
     max-width: 100%;
-    margin: 0 0.5em;
+    margin: 0em;
 }
 
 .alert > div.alert-text {
@@ -82,7 +82,7 @@ a.alert {
     border-radius: 0 0.5em 0.5em 0;
     color: inherit;
     cursor: pointer;
-    padding: 0.6em 1em;
+    padding: 0.6em 0.8em;
     align-self: stretch;
     font-size: 1em;
     min-height: 48px;
