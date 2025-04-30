@@ -57,6 +57,7 @@
 		<code>{data.version.substring(0, 8)}</code>
 		{/if}
 	{:catch error}
+		{console.error(error) && ''}
 		{#if data.version}
 			<code>{data.version.substring(0, 8)}</code>
 		{:else}
