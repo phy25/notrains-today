@@ -4,11 +4,12 @@ import type { PageLoad } from './$types';
 import { version } from '$app/environment';
 
 export const load = (async ({ fetch }) => {
-    const githubResponseAsync = fetch(
+    const githubResponse = await fetch(
         'https://api.github.com/repos/phy25/notrains-today/commits?per_page=1&sha=' + version)
-        .then(response => response.json());
+        .then(response => response.json())
+        .catch(error => {console.error(error); return [];});
     return {
-        githubResponseAsync,
+        githubResponse,
         version,
     };
 }) satisfies PageLoad;

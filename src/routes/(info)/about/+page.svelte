@@ -12,6 +12,11 @@
 	}
 
 	const untranslatedLegalDisclaimer = m.untranslatedLegalDisclaimer();
+	const feedbackPlaceholder = '%%%FEEDBACK%%%';
+	const aboutDescriptionContactArray = m.aboutDescriptionContact({feedback: feedbackPlaceholder}).split(feedbackPlaceholder);
+	const aboutDescFeedbackClick = () => {
+		document.querySelector('footer button.feedback')?.click();
+	};
 </script>
 
 <Debugger />
@@ -37,35 +42,22 @@
 
 <h2 id="about">{m.aboutThisSite()}</h2>
 <p>{m.aboutDescriptionOne()}</p>
-<p>{m.aboutDescriptionTwo()}</p>
+<p>{m.aboutDescriptionTwo()}{#each aboutDescriptionContactArray as text, i}{text}{#if i == 0}<button class="link" onclick={aboutDescFeedbackClick}>{m.footerFeedback()}</button>{/if}{/each}</p>
 
 <p>
-	{m.currentVersion()} 
-	{#await data.githubResponseAsync}
-	<code>
-		{#if data.version}
-			<a href="https://github.com/phy25/notrains-today/commit/{data.version}">{data.version.substring(0, 8)}</a>
-		{:else}
-			edge
-		{/if}
-	</code>
-	{:then githubResponse}
-		{#if (githubResponse || [])[0]?.commit?.message}
-		<a href="https://github.com/phy25/notrains-today/commit/{data.version}"><code>
-			{data.version.substring(0, 8)}</code>: {githubResponse[0]?.commit?.message?.split('\n')[0]}</a>
-		{:else}
-		<code>{data.version.substring(0, 8)}</code>
-		{/if}
-	{:catch error}
-		{console.error(error) && ''}
-		{#if data.version}
-			<code>{data.version.substring(0, 8)}</code>
-		{:else}
-			<code>edge</code>
-		{/if}
-	{/await}
-	— <a href="https://github.com/phy25/notrains-today">{m.githubRepo()}</a>
+	{m.currentVersion()} <code>{data.version.substring(0, 8) || 'edge'}</code>
+	<em>{untranslatedLegalDisclaimer}</em>
+	You can find more information about <a href="https://github.com/phy25/notrains-today">this software on GitHub</a>.
+	For example, this is what changed in the latest version:
 </p>
+{#if (data.githubResponse || [])[0]?.commit?.message}
+<ul>
+	<li style="word-wrap: break-word;">
+		{data.githubResponse[0]?.commit?.message?.split('\n')[0]}
+		<a href="https://github.com/phy25/notrains-today/commit/{data.version}">(commit)</a>
+	</li>
+</ul>
+{/if}
 
 <h2>{m.privacyPolicy()}</h2>
 

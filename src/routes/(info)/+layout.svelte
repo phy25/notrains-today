@@ -34,7 +34,7 @@
 		<p>
 			<span class="notranslate">☺ notrains.today</span>
 			<a href="/about">{m.footerAbout()}</a>
-			<button bind:this={feedbackBtnDom} type="button" class="link" onclick={(event)=>{(event.target as HTMLButtonElement).blur();/* get autofocus in the sentry dialog working */return false;}}>{m.footerFeedback()}</button>
+			<button bind:this={feedbackBtnDom} type="button" class="link feedback" onclick={(event)=>{(event.target as HTMLButtonElement).blur();/* get autofocus in the sentry dialog working */return false;}}>{m.footerFeedback()}</button>
 		</p>
 	</footer>
 </div>

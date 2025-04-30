@@ -73,5 +73,6 @@
     "routeTypeMBTA": "All Modes",
     "aboutThisSite": "About this site",
     "aboutDescriptionOne": "notrains.today is a free and open-source web application that provides simple interface for service alerts information on the MBTA transit system in the Greater Boston area, in today view and calendar view.",
-    "aboutDescriptionTwo": "This app is not affiliated with the MBTA, but uses data service from the MBTA/MassDOT."
+    "aboutDescriptionTwo": "This app is not affiliated with the MBTA, but uses data service from the MBTA/MassDOT. ",
+    "aboutDescriptionContact": "The easiest way to contact the developer is to use the {feedback} button at the page bottom."
 }

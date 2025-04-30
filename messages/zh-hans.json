@@ -73,5 +73,6 @@
     "routeTypeMBTA": "所有模式",
     "aboutThisSite": "关于本站",
     "aboutDescriptionOne": "notrains.today 是一个免费、开源的网页应用，用简单的界面显示大波士顿地区的 MBTA 公共交通服务通知，提供今日界面和月历界面。",
-    "aboutDescriptionTwo": "本站与 MBTA 没有从属关系，但使用 MBTA/MassDOT 提供的数据服务。"
+    "aboutDescriptionTwo": "本站与 MBTA 没有从属关系，但使用 MBTA/MassDOT 提供的数据服务。",
+    "aboutDescriptionContact": "如需联系开发者，最简单的方式是通过页面下方的{feedback}按钮。"
 }
