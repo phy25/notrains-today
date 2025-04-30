@@ -47,7 +47,7 @@
     "alert": "Alert",
     "importantNotes": "Important notes",
     "importantNotesServiceDayEnd": "For night owls, dates above reflect MBTA service days which end at {hour}:59am.",
-    "untilNextDayServiceEnding": "(until {hour}am next day)",
+    "untilNextDayServiceEnding": "until {hour}am next day",
     "toServiceEndingNightOwl": "to {hour}am today",
     "calendarDayNoAlerts": "No service alerts on the day",
     "todayLookingAhead": "Looking ahead",
@@ -70,5 +70,8 @@
     "routeTypeCommuterRail": "Commuter Rail",
     "routeTypeBus": "Bus",
     "routeTypeFerry": "Ferry",
-    "routeTypeMBTA": "All Modes"
+    "routeTypeMBTA": "All Modes",
+    "aboutThisSite": "About this site",
+    "aboutDescriptionOne": "notrains.today is a free and open-source web application that provides simple interface for service alerts information on the MBTA transit system in the Greater Boston area, in today view and calendar view.",
+    "aboutDescriptionTwo": "This app is not affiliated with the MBTA, but uses data service from the MBTA/MassDOT."
 }

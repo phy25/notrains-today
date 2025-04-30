@@ -1,7 +1,10 @@
 <script lang="ts">
+	import '$lib/style.css';
 	import { m } from '$lib/paraglide/messages';
 	import { locales, setLocale, getLocale, type Locale } from '$lib/paraglide/runtime';
 	import Debugger from './debugger.svelte';
+
+	const { data }: PageProps = $props();
 
 	function switchToLanguage(newLanguage: Locale) {
 		setLocale(newLanguage);
@@ -9,25 +12,19 @@
 	}
 
 	const untranslatedLegalDisclaimer = m.untranslatedLegalDisclaimer();
-
-	interface OurWindow {
-		SENTRY_RELEASE?: {
-			id?: string;
-		};
-	}
-
-const version = typeof window !== 'undefined' ? (window as OurWindow)?.SENTRY_RELEASE?.id : undefined;
 </script>
 
 <Debugger />
 
 <h2 id="languages">Languages</h2>
 
+<ul>
 {#each locales as locale}
-	<button onclick={() => switchToLanguage(locale)} class={getLocale() === locale ? 'selected' : ''}>
+	<li><button onclick={() => switchToLanguage(locale)} class="link">
 		{m.currentLocaleName({}, { locale: locale })}
-	</button>
+	</button></li>
 {/each}
+</ul>
 
 <details>
 	<summary>Contribute to translations</summary>
@@ -38,26 +35,47 @@ const version = typeof window !== 'undefined' ? (window as OurWindow)?.SENTRY_RE
 	</p>
 </details>
 
-<h2>{m.openSourceSoftware()}</h2>
-
+<h2 id="about">{m.aboutThisSite()}</h2>
+<p>{m.aboutDescriptionOne()}</p>
+<p>{m.aboutDescriptionTwo()}</p>
 
 <p>
-	{m.currentVersion()} <code>
-	{#if version}
-		<a href="https://github.com/phy25/notrains-today/commit/{version}">{version.substring(0, 8)}</a>
-	{:else}
-		edge
-	{/if}
+	{m.currentVersion()} 
+	{#await data.githubResponseAsync}
+	<code>
+		{#if data.version}
+			<a href="https://github.com/phy25/notrains-today/commit/{data.version}">{data.version.substring(0, 8)}</a>
+		{:else}
+			edge
+		{/if}
 	</code>
+	{:then githubResponse}
+		{#if (githubResponse || [])[0]?.commit?.message}
+		<a href="https://github.com/phy25/notrains-today/commit/{data.version}"><code>
+			{data.version.substring(0, 8)}</code>: {githubResponse[0]?.commit?.message?.split('\n')[0]}</a>
+		{:else}
+		<code>{data.version.substring(0, 8)}</code>
+		{/if}
+	{:catch error}
+		{#if data.version}
+			<code>{data.version.substring(0, 8)}</code>
+		{:else}
+			<code>edge</code>
+		{/if}
+	{/await}
+	— <a href="https://github.com/phy25/notrains-today">{m.githubRepo()}</a>
 </p>
-<p><a href="https://github.com/phy25/notrains-today">{m.githubRepo()}</a></p>
 
 <h2>{m.privacyPolicy()}</h2>
 
 {#if untranslatedLegalDisclaimer}
-	<p><em>{m.untranslatedLegalDisclaimer()}</em></p>
+	<p><em>{untranslatedLegalDisclaimer}</em></p>
 {/if}
 
+<p>
+	notrains.today uses session cookies to save your language preference.
+	You can disable cookies in your browser settings.
+</p>
 <p>
 	notrains.today uses data service from MBTA, a Massachusetts public agency in the United States. <a
 		href="https://www.mbta.com/policies/privacy-policy"
@@ -76,6 +94,13 @@ const version = typeof window !== 'undefined' ? (window as OurWindow)?.SENTRY_RE
 		>Privacy policy of Functional Software, Inc. can be found here.</a
 	>
 	We only retain data from this service for 30 days.
+</p>
+<p>
+	notrains.today uses data service from GitHub, a Delaware-based company in the United
+	States. <a
+		href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+		>Privacy policy of GitHub, Inc. can be found here.</a
+	>
 </p>
 <!--<p>
 	notrains.today uses hosting service from Amazon Web Services, a Delaware-based company in
