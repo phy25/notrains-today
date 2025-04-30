@@ -4,6 +4,7 @@ import { isDebug } from "$lib/common";
 let isDebugOn = $state(isDebug());
 let date = $state((typeof localStorage !== 'undefined' && localStorage.getItem('debugDate')) || '');
 let nightOwl = $state((typeof localStorage !== 'undefined' && localStorage.getItem('debugNightOwl')) || 'auto');
+let earlyBird = $state((typeof localStorage !== 'undefined' && localStorage.getItem('debugEarlyBird')) || 'auto');
 
 const onDateChange = (e: Event) => {
     localStorage.setItem('debugDate', date);
@@ -11,6 +12,10 @@ const onDateChange = (e: Event) => {
 
 const onNightOwlChange = (e: Event) => {
     localStorage.setItem('debugNightOwl', nightOwl);
+};
+
+const onEarlyBirdChange = (e: Event) => {
+    localStorage.setItem('debugEarlyBird', earlyBird);
 };
 
 const exitDebug = () => {
@@ -27,6 +32,13 @@ const exitDebug = () => {
     <p><label>Force date <input type="date" bind:value={date} onchange={onDateChange} /></label></p>
     <p><label>Force night owl
         <select bind:value={nightOwl} onchange={onNightOwlChange}>
+            <option value="auto">auto</option>
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select>
+    </label></p>
+    <p><label>Force early bird
+        <select bind:value={earlyBird} onchange={onEarlyBirdChange}>
             <option value="auto">auto</option>
             <option value="true">true</option>
             <option value="false">false</option>

@@ -113,11 +113,20 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
         isNightOwl = false;
     }
 
+    let isEarlyBird = currentServiceTime.hour >= MBTA_SERVICE_START_HOUR && currentServiceTime.hour < 7;
+    if ((typeof localStorage !== 'undefined') && localStorage.getItem('debugEarlyBird') === 'true') {
+        isEarlyBird = true;
+    }
+    if ((typeof localStorage !== 'undefined') && localStorage.getItem('debugEarlyBird') === 'false') {
+        isEarlyBird = false;
+    }
+
     return {
         route_id: route.id,
         route_type: route_type,
         current_service_date: currentServiceDate,
         is_current_service_night_owl: isNightOwl,
+        is_current_service_early_bird: isEarlyBird,
         data_async: data_async,
         data_async_awaited,
     };
