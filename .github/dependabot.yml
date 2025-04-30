@@ -7,6 +7,10 @@ updates:
     groups:
       security:
         applies-to: "security-updates"
+        patterns:
+        - *
       functional-minor-patch:
         applies-to: "version-updates"
         update-types: ["minor", "patch"]
+        patterns:
+        - *
