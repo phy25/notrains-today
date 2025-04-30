@@ -100,6 +100,7 @@ summary {
 summary .badge-groups {
     display: inline-flex;
     gap: 0.3em;
+    flex-wrap: wrap;
 }
 summary .badge-group {
     user-select: none;
