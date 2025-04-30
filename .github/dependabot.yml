@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: "daily"
     groups:
-      security-updates:
+      security:
         applies-to: security-updates
       functional-minor-patch:
         update-types: ["minor", "patch"]
