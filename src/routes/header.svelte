@@ -211,6 +211,21 @@ let isMenuOpen = $state(false);
     border: 1px solid #DDD;
     border-top: none;
 }
+.dropdown-menu-content hr {
+    margin: 0;
+    border: none;
+    border-top: 1px solid #DDD;
+}
+@media (prefers-color-scheme: dark) {
+    .dropdown-menu-content {
+        --background-color: #000;
+        color: #FFF;
+        border-color: #444;
+    }
+    .dropdown-menu-content hr {
+        border-color: #444;
+    }
+}
 .dropdown-menu-content:focus-visible {
     outline: none;
 }
@@ -226,10 +241,5 @@ let isMenuOpen = $state(false);
     color: #195581;
     background: #DDD;
     outline: none;
-}
-.dropdown-menu-content hr {
-    margin: 0;
-    border: none;
-    border-top: 1px solid #DDD;
 }
 </style>
