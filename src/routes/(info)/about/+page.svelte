@@ -3,6 +3,7 @@
 	import { m } from '$lib/paraglide/messages';
 	import { locales, setLocale, getLocale, type Locale } from '$lib/paraglide/runtime';
 	import Debugger from './debugger.svelte';
+	import type { PageProps } from './$types';
 
 	const { data }: PageProps = $props();
 
@@ -15,8 +16,9 @@
 	const feedbackPlaceholder = '%%%FEEDBACK%%%';
 	const aboutDescriptionContactArray = m.aboutDescriptionContact({feedback: feedbackPlaceholder}).split(feedbackPlaceholder);
 	const aboutDescFeedbackClick = () => {
-		document.querySelector('footer button.feedback')?.click();
+		(document.querySelector('footer button.feedback') as HTMLButtonElement)?.click();
 	};
+	const currentLocale = getLocale();
 </script>
 
 <Debugger />
@@ -25,9 +27,15 @@
 
 <ul>
 {#each locales as locale}
-	<li><button onclick={() => switchToLanguage(locale)} class="link">
-		{m.currentLocaleName({}, { locale: locale })}
-	</button></li>
+	<li>
+		{#if locale === currentLocale}
+			<strong>{m.currentLocaleName({}, { locale: locale })}</strong>
+		{:else}
+			<button onclick={() => switchToLanguage(locale)} class="link">
+				{m.currentLocaleName({}, { locale: locale })}
+			</button>
+		{/if}
+	</li>
 {/each}
 </ul>
 
