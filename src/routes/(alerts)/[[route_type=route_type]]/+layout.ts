@@ -49,69 +49,30 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
                 reject(new Error('Error fetching data: ' + JSON.stringify(json)));
                 return;
             }
-            const routeMap: Map<string, any> = new Map((json.included || [])
-                .filter((entity: any) => entity.type === 'route')
-                // add Green wihch does not always be included
-                .concat([
-                    {
-                        "attributes": {
-                            "color": "00843D",
-                            "description": "Rapid Transit",
-                            "direction_destinations": [
-                                "Westbound",
-                                "Eastbound"
-                            ],
-                            "direction_names": [
-                                "West",
-                                "East"
-                            ],
-                            "fare_class": "Rapid Transit",
-                            "long_name": "Green Line",
-                            "short_name": "",
-                            "sort_order": 10032,
-                            "text_color": "FFFFFF",
-                            "type": 0
-                        },
-                        "id": "Green",
-                        "links": {
-                            "self": "/routes/Green"
-                        },
-                        "relationships": {
-                            "agency": {
-                                "data": {
-                                    "id": "1",
-                                    "type": "agency"
-                                }
-                            },
-                            "line": {
-                                "data": {
-                                    "id": "line-Green",
-                                    "type": "line"
-                                }
-                            }
-                        },
-                        "type": "route"
-                    }
-                ])
-                .map((route: any) => [route.id, route]));
-            const overridenData = (() => {
-                const alerts = overrideAlerts(json.data || []);
+            const overridenJson = (() => {
+                const j = overrideAlerts(json || {});
                 if (route_type !== RAPID_TRANSIT_QUERY_ROUTE_TYPE) {
-                    return alerts;
+                    return j;
                 }
-                return alerts.filter(alert => {
-                    if (alert.attributes.informed_entity.length === 0) {
-                        return true;
-                    }
-                    if (alert.attributes.informed_entity[0].route_type !== 3) {
-                        return true;
-                    }
-                    return alert.attributes.informed_entity.some((entity: any) => RAPID_TRANSIT_BUS_ROUTES.includes(entity.route));
-                });
+                return {
+                    ...j,
+                    data: j.data.filter(alert => {
+                        if (alert.attributes.informed_entity.length === 0) {
+                            return true;
+                        }
+                        if (alert.attributes.informed_entity[0].route_type !== 3) {
+                            return true;
+                        }
+                        return alert.attributes.informed_entity.some((entity: any) => RAPID_TRANSIT_BUS_ROUTES.includes(entity.route));
+                    })
+                };
             })();
-            const alertsByDay = getAlertsAsDays(filterHighPriorityAlerts(overridenData), routeMap);
+            const routeMap: Map<string, any> = new Map((overridenJson.included || [])
+                .filter((entity: any) => entity.type === 'route')
+                .map((route: any) => [route.id, route]));
+            const alertsByDay = getAlertsAsDays(filterHighPriorityAlerts(overridenJson.data), routeMap);
             data_async_data = {
-                data: filterHighPriorityAlerts(overridenData),
+                data: filterHighPriorityAlerts(overridenJson.data),
                 alertsByDay,
                 routeMap,
                 lastUpdated,

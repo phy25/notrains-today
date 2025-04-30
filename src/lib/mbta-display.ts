@@ -31,6 +31,7 @@ export const LINE_NAMES = {
     'Orange': m['mbtaLineNameOrange'](),
     'Blue': m['mbtaLineNameBlue'](),
     'Green': m['mbtaLineNameGreen'](),
+    'CR': m.routeTypeCommuterRail(),
 }
 
 const ROUTE_PILL_MAPPING: Record<string, string> = {
@@ -61,6 +62,21 @@ const ROUTE_PILL_MAPPING: Record<string, string> = {
     'Boat-F6': 'Winthrop',
     'Boat-F7': 'Quincy',
 };
+
+export const COMMUTER_RAIL_COMMON_ROUTES = [
+    'CR-Fairmount',
+    'CR-NewBedford',
+    'CR-Fitchburg',
+    'CR-Worcester',
+    'CR-Franklin',
+    'CR-Greenbush',
+    'CR-Haverhill',
+    'CR-Kingston',
+    'CR-Lowell',
+    'CR-Needham',
+    'CR-Newburyport',
+    'CR-Providence',
+];
 
 export const SECONDARY_SYMBOLS: Record<string, {
     symbol: string;

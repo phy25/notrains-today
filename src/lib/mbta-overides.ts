@@ -1,6 +1,7 @@
 import { data as rawData } from '$lib/../data/mbta-overrides-alerts.json';
 import { withScope } from '@sentry/sveltekit';
 import type { MbtaAlert } from './mbta-types';
+import { COMMUTER_RAIL_COMMON_ROUTES } from './mbta-display';
 
 interface OverrideInsertEntry {
     type: 'insert';
@@ -53,7 +54,7 @@ const MBTA_NOTRAINS_EQUIVALENT_EFFECTS = [
     'SUSPENSION',
 ];
 
-export const overrideAlerts = (alerts: MbtaAlert[]) => {
+export const overrideAlerts = (json: {data?: MbtaAlert[]; included: any;}) => {
     const data: OverrideEntry[] = rawData as OverrideEntry[];
     const removeEntryMap: Map<string, OverrideRemoveEntry> = new Map();
     const replaceEntryMap: Map<string, OverrideReplaceEntry> = new Map();
@@ -75,7 +76,7 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
         }
     });
 
-    const newAlerts: MbtaAlert[] = alerts
+    const newAlerts: MbtaAlert[] = (json.data || [])
         .filter((alert: any) => {
             const removeEntry = removeEntryMap.get(alert.id);
             if (removeEntry) {
@@ -142,10 +143,118 @@ export const overrideAlerts = (alerts: MbtaAlert[]) => {
                 }
             }
             return alert;
+        })
+        .map((alert: any) => {
+            if (alert.attributes.informed_entity.length === COMMUTER_RAIL_COMMON_ROUTES.length) {
+                // check if the alert contains all commuter rail routes
+                const remainingRoutes = [...COMMUTER_RAIL_COMMON_ROUTES];
+                alert.attributes.informed_entity
+                    .filter((entity: any) => entity.route_type === 2 && !entity.stop)
+                    .forEach((entity: any) => {
+                        let index = remainingRoutes.findIndex((route) => route === entity.route);
+                        if (index >= 0) {
+                            remainingRoutes.splice(index, 1);
+                        }
+                    });
+                if (remainingRoutes.length == 0) {
+                    // remove all commuter rail routes
+                    return {
+                        ...alert,
+                        attributes: {
+                            ...alert.attributes,
+                            informed_entity: [{
+                                route_type: 2,
+                                activities: alert.attributes.informed_entity[0].activities,
+                                route: 'CR'
+                            }]
+                        }
+                    };
+                }
+            }
+            return alert;
         });
 
     newAlerts.push(...newEntryList);
-    return newAlerts;
+
+    const included = json.included || [];
+
+    // add Green wihch does not always be included
+    included.push({
+        "attributes": {
+            "color": "00843D",
+            "description": "Rapid Transit",
+            "direction_destinations": [
+                "Westbound",
+                "Eastbound"
+            ],
+            "direction_names": [
+                "West",
+                "East"
+            ],
+            "fare_class": "Rapid Transit",
+            "long_name": "Green Line",
+            "short_name": "",
+            "sort_order": 10032,
+            "text_color": "FFFFFF",
+            "type": 0
+        },
+        "id": "Green",
+        "links": {
+            "self": "/routes/Green"
+        },
+        "relationships": {
+            "agency": {
+                "data": {
+                    "id": "1",
+                    "type": "agency"
+                }
+            },
+            "line": {
+                "data": {
+                    "id": "line-Green",
+                    "type": "line"
+                }
+            }
+        },
+        "type": "route"
+    },{
+        "attributes": {
+            "color": "80276C",
+            "description": "Regional Rail",
+            "direction_destinations": ["Outbound", "Inbound"],
+            "direction_names": ["Outbound", "Inbound"],
+            "fare_class": "Commuter Rail",
+            "long_name": "Commuter Rail",
+            "short_name": "CR",
+            "sort_order": 10000,
+            "text_color": "FFFFFF",
+            "type": 2
+        },
+        "id": "CR",
+        "links": {
+            "self": "/routes/CR"
+        },
+        "relationships": {
+            "agency": {
+                "data": {
+                    "id": "1",
+                    "type": "agency"
+                }
+            },
+            "line": {
+                "data": {
+                    "id": "line-CR",
+                    "type": "line"
+                }
+            }
+        },
+        "type": "route"
+    });
+
+    return {
+        ...json,
+        data: newAlerts
+    };
 }
 
 export const filterHighPriorityAlerts = (alerts: MbtaAlert[]) => {
