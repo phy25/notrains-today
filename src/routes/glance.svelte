@@ -27,7 +27,7 @@
     const noDowntownTransfer = $derived(isCurrentServiceNightOwl && MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME.compare(nowTime) <= 0);
     const serviceEndedData = $derived.by(() => {
         const currentDate = Date.now();
-        return new Map(lastTrainData.entries().map(([route, dateString]) => {
+        return new Map(lastTrainData?.entries()?.map(([route, dateString]) => {
             return [route, +new Date(dateString) <= currentDate];
         }));
     });
