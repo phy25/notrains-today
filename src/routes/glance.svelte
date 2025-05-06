@@ -27,9 +27,14 @@
     const noDowntownTransfer = $derived(isCurrentServiceNightOwl && MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME.compare(nowTime) <= 0);
     const serviceEndedData = $derived.by(() => {
         const currentDate = Date.now();
-        return new Map(lastTrainData?.entries()?.map(([route, dateString]) => {
-            return [route, +new Date(dateString) <= currentDate];
-        }));
+        if (lastTrainData?.entries()?.map !== undefined) {
+            // we keep getting errors on entries().map() not defined
+            return new Map(lastTrainData?.entries()?.map(([route, dateString]) => {
+                return [route, +new Date(dateString) <= currentDate];
+            }));
+        } else {
+            return new Map();
+        } 
     });
     const noTransferPossible = $derived(serviceEndedData.values().filter((value) => !value).toArray().length <= 1);
 </script>
