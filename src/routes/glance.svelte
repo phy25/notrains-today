@@ -37,7 +37,7 @@
             return new Map();
         } 
     });
-    const noTransferPossible = $derived(serviceEndedData.values().filter((value) => !value).toArray().length <= 1);
+    const noTransferPossible = $derived([...(serviceEndedData.size ? serviceEndedData.values() : []).filter((value) => !value)].length <= 1);
 </script>
 
 <div class="glance-rapid-transit-grid">
