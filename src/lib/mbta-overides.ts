@@ -1,11 +1,14 @@
 import { data as rawData } from '$lib/../data/mbta-overrides-alerts.json';
 import { withScope } from '@sentry/sveltekit';
-import type { MbtaAlert } from './mbta-types';
+import { MBTA_TIMEZONE, type MbtaAlert } from './mbta-types';
 import { COMMUTER_RAIL_COMMON_ROUTES } from './mbta-display';
+import { parseDate, parseZonedDateTime } from '@internationalized/date';
 
 interface OverrideInsertEntry {
     type: 'insert';
     item: object;
+    match_not_route?: string;
+    match_not_service_dates?: string[];
 }
 
 interface OverrideRemoveEntry {
@@ -59,7 +62,7 @@ export const overrideAlerts = (json: {data?: MbtaAlert[]; included: any;}) => {
     const removeEntryMap: Map<string, OverrideRemoveEntry> = new Map();
     const replaceEntryMap: Map<string, OverrideReplaceEntry> = new Map();
     const removeRouteEntryMap: Map<string, OverrideRemoveRouteEntry> = new Map();
-    const newEntryList: MbtaAlert[] = [];
+    const newEntryList: OverrideInsertEntry[] = [];
 
     data.forEach((override) => {
         if (override.type === 'remove') {
@@ -69,7 +72,7 @@ export const overrideAlerts = (json: {data?: MbtaAlert[]; included: any;}) => {
             replaceEntryMap.set(override.match_id, override);
         }
         if (override.type === 'insert' && override.item) {
-            newEntryList.push(override.item as MbtaAlert);
+            newEntryList.push(override);
         }
         if (override.type === 'remove-route') {
             removeRouteEntryMap.set(override.match_id, override);
@@ -174,7 +177,23 @@ export const overrideAlerts = (json: {data?: MbtaAlert[]; included: any;}) => {
             return alert;
         });
 
-    newAlerts.push(...newEntryList);
+    newEntryList.forEach((override: OverrideInsertEntry) => {
+        if (override.match_not_route) {
+            const alert = override.item as MbtaAlert;
+            const hitRoute = false; // TODO: loop through existing alerts and check if any match the new route
+            if (hitRoute) {
+                withScope(function (scope) {
+                    scope.setExtra('alert', alert);
+                    scope.captureMessage(
+                        `Alert ${alert.id} not inserted due to rule mismatch, rule has match_not_route: ${override.match_not_route}`,
+                        "warning");
+                });
+                return;
+            }
+        } else {
+            newAlerts.push(override.item as MbtaAlert);
+        }
+    });
 
     const included = json.included || [];
 
