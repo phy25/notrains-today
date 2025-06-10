@@ -23,16 +23,20 @@ const _getLocale = getLocale;
 const originalLanguages = window.navigator.languages;
 let inGetLocale = false;
 
-Object.defineProperty(navigator, 'languages', {
-	get: function() {
-	  return inGetLocale ? originalLanguages.map(l => {
-		if (l.toLowerCase().startsWith('zh-cn')) {
-			return 'zh-Hans';
+try {
+	Object.defineProperty(navigator, 'languages', {
+		get: function() {
+		return inGetLocale ? originalLanguages.map(l => {
+			if (l.toLowerCase().startsWith('zh-cn')) {
+				return 'zh-Hans';
+			}
+			return l;
+		}) : originalLanguages;
 		}
-		return l;
-	  }) : originalLanguages;
-	}
-});
+	});
+} catch (e) {
+	console.warn('Failed to patch navigator.languages', e);
+}
 
 overwriteGetLocale(() => {
 	inGetLocale = true;
