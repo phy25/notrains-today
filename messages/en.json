@@ -35,6 +35,7 @@
     "mbtaAlertEffectModifiedService": "Modified Service",
     "mbtaAlertEffectTrackChange": "Platform Change",
     "mbtaAlertEffectSnowRoute": "Snow Route",
+    "mbtaAlertEffectExtraService": "Extra Service",
     "mbtaAlertEffectWithLineDefault": "{line} {effect}",
     "mbtaLineNameMattapan": "Mattapan Trolley",
     "mbtaLineNameBlue": "Blue Line",

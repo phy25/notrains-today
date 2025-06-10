@@ -17,6 +17,7 @@ export const EFFECT_MESSAGES = {
     'SERVICE_CHANGE': m['mbtaAlertEffectServiceChange'],
     'SCHEDULE_CHANGE': m['mbtaAlertEffectScheduleChange'],
     'ADDITIONAL_SERVICE': m['mbtaAlertEffectAdditionalService'],
+    'EXTRA_SERVICE': m['mbtaAlertEffectExtraService'],
     'MODIFIED_SERVICE': m['mbtaAlertEffectModifiedService'],
     'TRACK_CHANGE': m['mbtaAlertEffectTrackChange'],
     'SNOW_ROUTE': m['mbtaAlertEffectSnowRoute'],

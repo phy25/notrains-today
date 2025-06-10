@@ -35,6 +35,7 @@
     "mbtaAlertEffectModifiedService": "服务调整",
     "mbtaAlertEffectTrackChange": "站台变更",
     "mbtaAlertEffectSnowRoute": "雪天绕行",
+    "mbtaAlertEffectExtraService": "额外服务",
     "mbtaAlertEffectWithLineDefault": "{line}{effect}",
     "mbtaLineNameMattapan": "Mattapan 线（马塔潘线）",
     "mbtaLineNameBlue": "蓝线",
