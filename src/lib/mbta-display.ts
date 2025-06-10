@@ -229,7 +229,9 @@ export const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayStr
     // do not show night symbol if we are already at night and this alert is for today
     const currentPeriodIsAtNight = periodStartingAtCurrentDay[0].start.hour > 17 || periodStartingAtCurrentDay[0].start.hour < MBTA_SERVICE_START_HOUR;
     const currentPeriodIsThisServiceDay = serviceDayString === currentServiceDayString;
-    if (currentPeriodIsAtNight && !currentPeriodIsThisServiceDay) {
+    const currentTime = now(MBTA_TIMEZONE);
+    const todayIsAtNight = currentTime.hour > 17 || currentTime.hour < MBTA_SERVICE_START_HOUR;
+    if (currentPeriodIsAtNight && (!currentPeriodIsThisServiceDay || !todayIsAtNight)) {
         return '🌙︎';
     }
     return '';
