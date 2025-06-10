@@ -54,6 +54,7 @@ $effect(() => {
 
 <Glance
     alertsToday={getProcessedAlertsAsSingleRoute(alertsToday || [])}
+    serviceDate={currentServiceDate}
     currentServiceDate={currentServiceDate}
     isCurrentServiceNightOwl={isCurrentServiceNightOwl}
     lastTrainData={lastTrainData}

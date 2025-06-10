@@ -193,7 +193,8 @@ const onStickyWeekValueChange = (value?: DateValue) => {
 <Glance
   alertsToday={alertsByDay.get(dayString) || []}
   lastTrainData={new Map()}
-  currentServiceDate={dayValue}
+  serviceDate={dayValue}
+  currentServiceDate={currentServiceDate}
   isCurrentServiceNightOwl={currentServiceDate.compare(dayValue) == 0 ? showNightOwl : false}
   routeMap={routeMap}
   routeType={routeType}

@@ -11,9 +11,10 @@
 	import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
     
 
-    const { alertsToday, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeMap, routeType }: {
+    const { alertsToday, lastTrainData, serviceDate, currentServiceDate, isCurrentServiceNightOwl, routeMap, routeType }: {
         alertsToday: MbtaAlert[],
         lastTrainData: Map<string, string>,
+        serviceDate: AnyCalendarDate,
         currentServiceDate: AnyCalendarDate,
         isCurrentServiceNightOwl: boolean,
         routeMap: Map<string, any>,
@@ -42,16 +43,16 @@
 <div class="glance-rapid-transit-grid">
     {#if QUERY_ROUTE_TYPE_WITH_SUBWAY.includes(routeType) }
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Green" color="#00843d" textColor="#FFF" branchRouteIds={["Green-B", "Green-C", "Green-D", "Green-E"]} unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Green')} isServiceEnded={serviceEndedData.get('Green')} {currentServiceDate} {noDowntownTransfer} />
+        <GlanceSubwayRoute mainRouteId="Green" color="#00843d" textColor="#FFF" branchRouteIds={["Green-B", "Green-C", "Green-D", "Green-E"]} unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Green')} isServiceEnded={serviceEndedData.get('Green')} {currentServiceDate} {serviceDate} {noDowntownTransfer} />
     </div>
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Red" color="#da291c" textColor="#FFF" branchRouteIds={["Mattapan"]} unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Red')} isServiceEnded={serviceEndedData.get('Red')} {currentServiceDate} {noDowntownTransfer} />
+        <GlanceSubwayRoute mainRouteId="Red" color="#da291c" textColor="#FFF" branchRouteIds={["Mattapan"]} unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Red')} isServiceEnded={serviceEndedData.get('Red')} {currentServiceDate} {serviceDate} {noDowntownTransfer} />
     </div>
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Orange" color="#ed8b00" textColor="#FFF" unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Orange')} isServiceEnded={serviceEndedData.get('Orange')} {currentServiceDate} {noDowntownTransfer} />
+        <GlanceSubwayRoute mainRouteId="Orange" color="#ed8b00" textColor="#FFF" unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Orange')} isServiceEnded={serviceEndedData.get('Orange')} {currentServiceDate} {serviceDate} {noDowntownTransfer} />
     </div>
     <div class="route-with-branches">
-        <GlanceSubwayRoute mainRouteId="Blue" color="#003da5" textColor="#FFF" unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Blue')} isServiceEnded={serviceEndedData.get('Blue')} {currentServiceDate} {noDowntownTransfer} />
+        <GlanceSubwayRoute mainRouteId="Blue" color="#003da5" textColor="#FFF" unfilteredAlerts={expandedAlerts} lastTrainTime={lastTrainData.get('Blue')} isServiceEnded={serviceEndedData.get('Blue')} {currentServiceDate} {serviceDate} {noDowntownTransfer} />
     </div>
     {/if}
     {#if routeType !== 'subway' }
@@ -71,7 +72,7 @@
                             {:else if route.attributes?.type === 2}
                                 {#each thisAlerts as alert}
                                 <span class="badge-secondary-symbol" style:color={route.attributes?.color ? ('#' + route.attributes?.color) : 'inherit'}>
-                                    {getAlertBadgeSecondarySymbol(alert, currentServiceDate.toString(), currentServiceDate.toString())}
+                                    {getAlertBadgeSecondarySymbol(alert, serviceDate.toString(), currentServiceDate.toString())}
                                 </span>
                                 {/each}
                             {/if}

@@ -8,7 +8,7 @@ import { getLocale } from "$lib/paraglide/runtime";
 import { DateFormatter } from "@internationalized/date";
 
 
-const { mainRouteId, color, textColor, branchRouteIds = [], unfilteredAlerts, currentServiceDate, noDowntownTransfer, lastTrainTime = undefined, isServiceEnded = false } = $props();
+const { mainRouteId, color, textColor, branchRouteIds = [], unfilteredAlerts, serviceDate, currentServiceDate, noDowntownTransfer, lastTrainTime = undefined, isServiceEnded = false } = $props();
 const filterdAlerts: MbtaAlert[] = $derived(mergeAlertInformedEntity(unfilteredAlerts.filter((alert: MbtaAlert) =>
     alert.attributes.informed_entity.some(entity => entity.route === mainRouteId || branchRouteIds.includes(entity.route))
 )));
@@ -56,9 +56,9 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
             {#each filterdAlerts as alert}
                 {#if mainRouteId === 'Green'}
                 <span>{getAlertBadgeSecondarySymbolForGreenLineGlance(alert) + 
-                    getAlertBadgeSecondarySymbolTime(alert, currentServiceDate.toString(), currentServiceDate.toString())}</span>
+                    getAlertBadgeSecondarySymbolTime(alert, serviceDate.toString(), currentServiceDate.toString())}</span>
                 {:else}
-                <span>{getAlertBadgeSecondarySymbol(alert, currentServiceDate.toString(), currentServiceDate.toString())}</span>
+                <span>{getAlertBadgeSecondarySymbol(alert, serviceDate.toString(), currentServiceDate.toString())}</span>
                 {/if}
             {/each}
         {/if}
