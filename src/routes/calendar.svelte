@@ -57,7 +57,7 @@ const onResize = () => {
   if (mainCalendarDom && stickyWeekDom) {
     mainCalendarEndY = mainCalendarDom.offsetHeight + mainCalendarDom.offsetTop - stickyWeekDom.offsetHeight;
 
-    const selectedCell = (mainCalendarDom.querySelector('[data-selected][data-bits-calendar-cell]') as HTMLElement);
+    const selectedCell = (mainCalendarDom.querySelector('[data-selected][data-calendar-cell]') as HTMLElement);
     if (selectedCell) {
       stickyCalendarStartY = selectedCell?.getBoundingClientRect()?.y + window.scrollY - 1;
     } else {
@@ -263,7 +263,7 @@ const onStickyWeekValueChange = (value?: DateValue) => {
   visibility: visible;
 }
 :global {
-  .calendar-sticky-week > [data-bits-calendar-root] {
+  .calendar-sticky-week > [data-calendar-root] {
     width: 100%;
     max-width: var(--page-content-max-width);
     min-width: var(--page-content-min-width);

@@ -54,7 +54,7 @@ let {
 </Calendar.Root>
 
 <style>
-:global([data-bits-calendar-grid]) {
+:global([data-calendar-grid]) {
     table-layout: fixed;
     width: 100%;
     height: 100%;
