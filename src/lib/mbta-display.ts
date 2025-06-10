@@ -363,8 +363,33 @@ const getAlertBadgeSecondarySymbolForOrangeLine = (alert: MbtaAlert) => {
     if (hasNorthSegment && !hasCoreSegment && !hasSouthSegment) {
         return '◤'; // north of north station
     }
+    if (!hasNorthSegment && !hasCoreSegment && hasSouthSegment) {
+        return '◣'; // south branch
+    }
+    if (!hasNorthSegment && hasCoreSegment && hasSouthSegment) {
+        return '⇙'; // south and core segments
+    }
     return '•';
 }
+
+const BLUE_LINE_DOWNTOWN_STOP_IDS = [
+    'place-bomnl',
+    'place-gover',
+    'place-state',
+    'place-aqucl',
+];
+
+const BLUE_LINE_EAST_BOSTON_SHORE_STOP_IDS = [
+    'place-mvbcl',
+    'place-aport',
+];
+
+const BLUE_LINE_CARHOUSE_OUTBOUND_STOP_IDS = [
+    'place-sdmnl',
+    'place-bmmnl',
+    'place-rbmnl',
+    'place-wondl',
+];
 
 const getAlertBadgeSecondarySymbolForBlueLine = (alert: MbtaAlert) => {
     // single stop, Bowdoin TODO this needs to be more generalized
@@ -372,6 +397,21 @@ const getAlertBadgeSecondarySymbolForBlueLine = (alert: MbtaAlert) => {
         .filter(entity => entity.stop && entity.stop.startsWith('place-'))
         .every(entity => entity.stop === 'place-bomnl')) {
         return '◤';
+    }
+
+    const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
+
+    const hasDowntownSegments = (
+        BLUE_LINE_DOWNTOWN_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+    const hasEastBostonShoreSegments = (
+        BLUE_LINE_EAST_BOSTON_SHORE_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+    const hasCarhouseOutboundSegments = (
+        BLUE_LINE_CARHOUSE_OUTBOUND_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+    if (hasDowntownSegments && hasEastBostonShoreSegments && !hasCarhouseOutboundSegments) {
+        return '⇙'; // downtown to east boston shore (mid-route)
     }
     return '•';
 }
