@@ -18,6 +18,8 @@ export interface MbtaAlert {
             route_type: number;
             route: string;
             activities: string[];
+            trip: string | null;
+            direction_id: number | null;
         }[];
         lifecycle: string;
         service_effect: string;

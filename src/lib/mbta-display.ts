@@ -186,6 +186,10 @@ const getAlertBadgeSecondarySymbolWithoutTime = (alert: MbtaAlert, uniqueRoutes:
         // TODO: determine direction for general cases
         return '•';
     }
+    if (uniqueRoutes[0].startsWith('CR-') && alert.attributes.informed_entity.every(entity => entity.trip)) {
+        // if it impacts a trip, show inbound/outbound symbol
+        return getAlertBadgeSecondarySymbolForCommuterRail(alert);
+    }
 
     const effectSymbol = getAlertBadgeSecondarySymbolForEffect(alert);
     if (effectSymbol) {
@@ -617,6 +621,17 @@ const NEWBURYPORT_SOUTH_PARENT_STOP_IDS = [
 ];
 
 const getAlertBadgeSecondarySymbolForCommuterRail = (alert: MbtaAlert) => {
+    // if it impacts a trip, show inbound/outbound symbol
+    if (alert.attributes.informed_entity.every(entity => entity.trip)) {
+        // Fallback if we don't have direction symbols
+        // currently all CR trips put outbound at 0
+        if (alert.attributes.informed_entity.every(entity => entity.trip && entity.direction_id === 0)) {
+            return 'Out'; // outbound
+        }
+        if (alert.attributes.informed_entity.every(entity => entity.trip && entity.direction_id === 1)) {
+            return 'In'; // inbound
+        }
+    }
     // for now we do a simple check by checking if the alert impacts all stop on a branch rather than some
     // TODO: check stop by stop to determine range intersection
     const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
