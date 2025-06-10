@@ -137,7 +137,7 @@ let isMenuOpen = $state(false);
     justify-content: center;
     min-width: var(--page-content-min-width);
 }
-.tab-wrapper a {
+.tab-wrapper a, .tab-wrapper a:hover {
     color: inherit;
 }
 .tab-wrapper.debug {
