@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { mergeAlertInformedEntity } from "$lib/calendar";
+import { mergeAlertInformedEntity } from "$lib/calendar";
 import { getAlertBadgeSecondarySymbol, getAlertBadgeSecondarySymbolForGreenLineGlance, getAlertBadgeSecondarySymbolTime, getEffect, getLineName, getPillName } from "$lib/mbta-display";
 import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 import { SECONDARY_SYMBOLS } from "$lib/mbta-symbols";
@@ -9,7 +9,7 @@ import { getLocale } from "$lib/paraglide/runtime";
 import { DateFormatter } from "@internationalized/date";
 
 
-const { mainRouteId, color, textColor, branchRouteIds = [], unfilteredAlerts, serviceDate, currentServiceDate, noDowntownTransfer, lastTrainTime = undefined, isServiceEnded = false } = $props();
+const { mainRouteId, color, textColor, branchRouteIds = [], unfilteredAlerts, serviceDate, currentServiceDate, noDowntownTransfer, lastTrainTime = undefined, isServiceEnded = false, isCurrentServiceNightOwl = false } = $props();
 const filterdAlerts: MbtaAlert[] = $derived(mergeAlertInformedEntity(unfilteredAlerts.filter((alert: MbtaAlert) =>
     alert.attributes.informed_entity.some(entity => entity.route === mainRouteId || branchRouteIds.includes(entity.route))
 )));
@@ -20,6 +20,7 @@ const lastTrainFormatted = $derived(lastTrainTime
     ? new DateFormatter(getLocale(), {timeStyle: 'short', timeZone: MBTA_TIMEZONE})
         .format(new Date(lastTrainTime)).replace(" ", "\xa0") // non-breaking space for English
     : null);
+const lastTrainMessage = $derived(!isCurrentServiceNightOwl ? m.glanceFirstTrainTime : m.glanceLastTrainTime);
 const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current) => {
     current.attributes?.informed_entity
         ?.map(entity => entity.route)
@@ -66,10 +67,10 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
     </div>
 
     {#if isServiceEnded && lastTrainFormatted}
-        <div class="has-alert-text">{m.glanceLastTrainTime({time: lastTrainFormatted})}</div>
+        <div class="has-alert-text">{lastTrainMessage({time: lastTrainFormatted})}</div>
     {:else if filterdAlerts.length == 0}
         {#if lastTrainFormatted}
-            <div class="no-alert-text">{m.glanceLastTrainTime({time: lastTrainFormatted})}</div>
+            <div class="no-alert-text">{lastTrainMessage({time: lastTrainFormatted})}</div>
         {:else}
             <div class="no-alert-text">{m.noAlert()}</div>
         {/if}
