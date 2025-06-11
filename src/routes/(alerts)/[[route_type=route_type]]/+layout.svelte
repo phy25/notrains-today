@@ -4,11 +4,12 @@
 	import { QUERY_ROUTE_TYPE_MAPPING } from '$lib/mbta-types';
 	import { m } from '$lib/paraglide/messages';
 	import type { LayoutProps } from './$types';
-	import { alertsToRouteRenderingList, getProcessedAlertsAsSingleRoute } from '$lib/calendar';
+	import { alertsToRouteRenderingList, getBannerAlerts, getProcessedAlertsAsSingleRoute } from '$lib/calendar';
 	import { afterNavigate } from '$app/navigation';
 	import { resolveRoute } from '$app/paths';
 	import { page } from '$app/state';
 	import Header from '../../header.svelte';
+	import BannerAlert from '../../banner-alert.svelte';
 
 	const { data, children }: LayoutProps = $props();
 
@@ -24,6 +25,12 @@
 		const { lastUpdated } = await dataAsyncResult;
 		return lastUpdated;
 	})());
+
+	const bannerAlertsAsync = $derived((async () => {
+		const { data } = await dataAsyncResult;
+		return getBannerAlerts(data);
+	})());
+
 	let debugClickTimes = 0;
 	const trackDebugClicks = () => {
 		debugClickTimes++;
@@ -58,6 +65,12 @@
 <Header alertsTodayAsync={alerts_today_route_list} {lastUpdatedStringAsync} routeType={data.route_type}></Header>
 
 <div class="page-content">
+	{#await bannerAlertsAsync then bannerAlerts}
+		{#each bannerAlerts as alert}
+			<BannerAlert alert={alert} />
+		{/each}
+	{/await}
+
 	{@render children()}
 	<footer>
 		{#if isDebug()}

@@ -3,7 +3,7 @@ import { m } from './paraglide/messages';
 
 export interface MbtaAlert {
     attributes: {
-        active_period: { end: string; start: string }[];
+        active_period: { end?: string; start: string }[];
         banner: string | null;
         cause: string;
         created_at: string;

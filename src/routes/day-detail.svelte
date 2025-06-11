@@ -79,7 +79,6 @@ if (showNightOwl) {
         {#if alert.attributes?.url}
         <p><em>{m.learnMoreAt()}<a href={alert.attributes?.url} target="_blank">{alert.attributes?.url}</a> ({m.alert()} #{alert.id})</em></p>
         {:else}
-        
         <p><em><a href="https://www.mbta.com/schedules/{unique_routes[0]}/alerts" target="_blank">{m.alert()} #{alert.id}</a></em></p>
         {/if}
 
@@ -91,6 +90,7 @@ if (showNightOwl) {
 {/each}
 
 <style>
+@import './alert-detail.css';
 h2 > small {
     padding-left: 0.5em;
 }
@@ -107,21 +107,5 @@ summary .badge-group {
 }
 summary .alert-title {
     font-weight: bold;
-}
-.alert-image-container {
-    overflow-x: auto;
-    max-width: 100%;
-}
-.alert-image-container img {
-    max-width: 100%;
-    max-height: 80vh;
-}
-/* this is based on the pixels of the image */
-@media (max-width: 640px) {
-    .alert-image-container img {
-        max-width: 200%;
-        width: 200%;
-        max-height: none;
-    }
 }
 </style>

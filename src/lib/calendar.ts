@@ -8,15 +8,13 @@ export const MBTA_SERVICE_START_HOUR = 3;
 
 const insertSingleAlert = (alert: MbtaAlert, days: Map<string, MbtaAlert[]>, filterRoute?: string) => {
     alert.attributes.active_period.forEach((period) => {
-        if (!period.start || !period.end) {
-            // TODO: what to do with ferry alerts with no end time
-            return;
-        }
         const startDate = new Date(period.start);
-        const endDate = new Date(period.end);
+        // TODO: what to do with ferry alerts with no end time
+        // for now, we will need to at least insert them to today for indefinite emergencies
         const currentDate = new Date(startDate);
         // only when the change is after MBTA_SERVICE_START_HOUR we mark it on that day
         currentDate.setHours(MBTA_SERVICE_START_HOUR, 30, 0, 0);
+        const endDate = new Date(period.end || currentDate);
 
         while (currentDate <= endDate) {
             const dateString = getDateString(currentDate);
@@ -46,7 +44,7 @@ const hasShortTermImpact = (alert: MbtaAlert) => {
     if (alert.attributes.active_period.length !== 1) {
         return false;
     }
-    return (+new Date(alert.attributes.active_period[0].end) - Date.now()) <= 1000*60*60*3;
+    return !alert.attributes.active_period[0].end || (+new Date(alert.attributes.active_period[0].end) - Date.now()) <= 1000*60*60*3;
 }
 
 export const getProcessedAlertsAsSingleRoute = (alerts: MbtaAlert[]) => {
@@ -167,3 +165,11 @@ export const alertsToRouteRenderingList = (alerts: MbtaAlert[], routeMap: Map<st
             }
         });
 };
+
+export const getBannerAlerts = (alerts: MbtaAlert[]) => {
+    return alerts.filter(alert => alert.attributes.banner)
+        .sort((a, b) => {
+            // sort by severity
+            return b.attributes.severity - a.attributes.severity;
+        });
+}

@@ -2,12 +2,11 @@
 import { resolveRoute } from "$app/paths";
 import { page } from "$app/state";
 import { isDebug } from "$lib/common";
-import { MBTA_TIMEZONE, QUERY_ROUTE_TYPE_DROPDOWN_M } from "$lib/mbta-types";
+import { QUERY_ROUTE_TYPE_DROPDOWN_M } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
-import { DateFormatter } from "@internationalized/date";
-import { getLocale } from "$lib/paraglide/runtime";
 import { DropdownMenu } from "bits-ui";
 import { fly } from "svelte/transition";
+import { getFormattedTime } from "$lib/mbta-display";
 
 const { alertsTodayAsync = Promise.resolve([]), lastUpdatedStringAsync = Promise.resolve(null), routeType = undefined} = $props();
 
@@ -20,11 +19,6 @@ const page_type = $derived.by(() => {
     }
     return 'info';
 });
-
-const getFormattedLastUpdatedTime = (timeString: string) => {
-    const date = new Date(timeString);
-    return new DateFormatter(getLocale(), { timeStyle: 'short', timeZone: MBTA_TIMEZONE }).format(date);
-};
 
 let isMenuOpen = $state(false);
 
@@ -45,7 +39,7 @@ let isMenuOpen = $state(false);
             >
             <div class="header-text-flex">
                 <h1>notrains.today{#if page_type !== 'today'}?{:else}{#await alertsTodayAsync}?{:then list}{#if list.length == 0}?{/if}{/await}{/if}</h1>
-                {#if page_type === 'today'}{#await lastUpdatedStringAsync}{:then string}{#if string}<small>{m.asOfTime({time: getFormattedLastUpdatedTime(string)})}</small>{/if}{/await}{/if}
+                {#if page_type === 'today'}{#await lastUpdatedStringAsync}{:then string}{#if string}<small>{m.asOfTime({time: getFormattedTime(string)})}</small>{/if}{/await}{/if}
             </div>
         </a>
         {#if page_type !== 'info'}

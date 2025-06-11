@@ -1,12 +1,11 @@
 import { data as rawData } from '$lib/../data/mbta-overrides-alerts.json';
 import { withScope } from '@sentry/sveltekit';
-import { MBTA_TIMEZONE, type MbtaAlert } from './mbta-types';
+import { type MbtaAlert } from './mbta-types';
 import { COMMUTER_RAIL_COMMON_ROUTES } from './mbta-display';
-import { parseDate, parseZonedDateTime } from '@internationalized/date';
 
 interface OverrideInsertEntry {
     type: 'insert';
-    item: object;
+    item: MbtaAlert;
     match_not_route?: string;
     match_not_service_dates?: string[];
 }
@@ -33,7 +32,7 @@ interface OverrideReplaceEntry {
 
 type OverrideEntry = OverrideInsertEntry | OverrideRemoveEntry | OverrideReplaceEntry | OverrideRemoveRouteEntry;
 
-const MBTA_URGENT_SEVERITY = 7;
+export const MBTA_URGENT_SEVERITY = 7;
 
 const MBTA_SERVICE_CHANGE_LOW_SEVERITY = 3;
 
@@ -179,7 +178,7 @@ export const overrideAlerts = (json: {data?: MbtaAlert[]; included: any;}) => {
 
     newEntryList.forEach((override: OverrideInsertEntry) => {
         if (override.match_not_route) {
-            const alert = override.item as MbtaAlert;
+            const alert = override.item;
             const hitRoute = false; // TODO: loop through existing alerts and check if any match the new route
             if (hitRoute) {
                 withScope(function (scope) {
@@ -191,7 +190,7 @@ export const overrideAlerts = (json: {data?: MbtaAlert[]; included: any;}) => {
                 return;
             }
         } else {
-            newAlerts.push(override.item as MbtaAlert);
+            newAlerts.push(override.item);
         }
     });
 

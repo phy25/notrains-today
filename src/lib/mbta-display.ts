@@ -1,8 +1,9 @@
 import { m } from '$lib/paraglide/messages';
-import { now, parseDate, parseZonedDateTime, toCalendarDate } from "@internationalized/date";
+import { DateFormatter, now, parseDate, parseZonedDateTime, toCalendarDate } from "@internationalized/date";
 import { MBTA_TIMEZONE, type MbtaAlert } from './mbta-types';
 import { MBTA_SERVICE_START_HOUR } from './calendar';
 import { SECONDARY_SYMBOLS } from './mbta-symbols';
+import { getLocale } from '$lib/paraglide/runtime';
 
 export const EFFECT_MESSAGES = {
     'CANCELLATION': m['mbtaAlertEffectCancellation'],
@@ -79,6 +80,11 @@ export const COMMUTER_RAIL_COMMON_ROUTES = [
     'CR-Newburyport',
     'CR-Providence',
 ];
+
+export const getFormattedTime = (timeString: string) => {
+    const date = new Date(timeString);
+    return new DateFormatter(getLocale(), { timeStyle: 'short', timeZone: MBTA_TIMEZONE }).format(date);
+};
 
 export const effectRawDisplayFormat = (effect: string) => {
     return effect.replace('_', ' ')
@@ -211,7 +217,7 @@ export const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayStr
 
     const periodStartingAtCurrentDay = alert.attributes.active_period.map((period => {
         const startTime = parseZonedDateTime(period.start + '[' + MBTA_TIMEZONE + ']');
-        const endTime = parseZonedDateTime(period.end + '[' + MBTA_TIMEZONE + ']');
+        const endTime = parseZonedDateTime((period.end || period.start) + '[' + MBTA_TIMEZONE + ']');
         if (toCalendarDate(startTime).compare(serviceDay) == 0 && serviceDay.compare(toCalendarDate(endTime)) <= 0) {
             return {
                 start: startTime,
