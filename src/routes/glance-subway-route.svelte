@@ -2,6 +2,7 @@
 	import { mergeAlertInformedEntity } from "$lib/calendar";
 import { getAlertBadgeSecondarySymbol, getAlertBadgeSecondarySymbolForGreenLineGlance, getAlertBadgeSecondarySymbolTime, getEffect, getLineName, getPillName } from "$lib/mbta-display";
 import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
+import { SECONDARY_SYMBOLS } from "$lib/mbta-symbols";
 import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
@@ -44,14 +45,14 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
             <span>💤︎</span>
         {:else if filterdAlerts.length == 0}
             {#if noDowntownTransfer}
-                <span>🌙︎</span>
+                <span>{SECONDARY_SYMBOLS.NIGHT.symbol}</span>
             {:else}
-                <span>✅</span>
+                <span>{SECONDARY_SYMBOLS.ALL_GOOD_COLOR.symbol}</span>
             {/if}
         {:else if false && branchesAlerts.length}
             <span>◤</span>
         {:else if filterdAlerts.length > 2}
-            <span>⚠️</span>
+            <span>{SECONDARY_SYMBOLS.ALERT_COLOR.symbol}</span>
         {:else}
             {#each filterdAlerts as alert}
                 {#if mainRouteId === 'Green'}

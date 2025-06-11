@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { isDebug } from "$lib/common";
 	import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 	import { m } from "$lib/paraglide/messages";
     import { now, toCalendarDateTime, toTime, type AnyCalendarDate } from "@internationalized/date";
@@ -9,6 +8,7 @@
 	import { alertsToRouteRenderingList, getAlertsMapByEffect } from "$lib/calendar";
 	import { getAlertBadgeSecondarySymbol, getEffect } from "$lib/mbta-display";
 	import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
+	import { SECONDARY_SYMBOLS } from "$lib/mbta-symbols";
     
 
     const { alertsToday, lastTrainData, serviceDate, currentServiceDate, isCurrentServiceNightOwl, routeMap, routeType }: {
@@ -120,7 +120,7 @@
     {/if}
     {#if isCurrentServiceNightOwl && !noTransferPossible}
     <div class="route-expanded"><p>
-        🌙︎ {m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {
+        {SECONDARY_SYMBOLS.NIGHT.symbol} {m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {
         timeStyle: "short",
     }).format(toCalendarDateTime(now(MBTA_TIMEZONE), MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME).toDate(MBTA_TIMEZONE))})}<a href="https://www.mbta.com/lasttrip">{m.learnMore()}</a></p>
     </div>

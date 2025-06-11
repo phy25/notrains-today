@@ -2,6 +2,7 @@ import { m } from '$lib/paraglide/messages';
 import { now, parseDate, parseZonedDateTime, toCalendarDate } from "@internationalized/date";
 import { MBTA_TIMEZONE, type MbtaAlert } from './mbta-types';
 import { MBTA_SERVICE_START_HOUR } from './calendar';
+import { SECONDARY_SYMBOLS } from './mbta-symbols';
 
 export const EFFECT_MESSAGES = {
     'CANCELLATION': m['mbtaAlertEffectCancellation'],
@@ -79,13 +80,6 @@ export const COMMUTER_RAIL_COMMON_ROUTES = [
     'CR-Providence',
 ];
 
-export const SECONDARY_SYMBOLS: Record<string, {
-    symbol: string;
-    description_message_func: () => string;
-}> = {
-
-};
-
 export const effectRawDisplayFormat = (effect: string) => {
     return effect.replace('_', ' ')
         .toLowerCase()
@@ -146,7 +140,7 @@ export const getAlertBadgeSecondarySymbol = (alert: MbtaAlert, serviceDayString:
         .filter((route, index, arr) => route && arr.indexOf(route) === index);
     // if informed entities includes multiple lines, do not proceed and return a generic symbol
     if (uniqueRoutes.length > 1) {
-        return '…';
+        return SECONDARY_SYMBOLS.MULTIPLE_ROUTES.symbol;
     }
     return getAlertBadgeSecondarySymbolWithoutTime(alert, uniqueRoutes)
          + getAlertBadgeSecondarySymbolTime(alert, serviceDayString, currentServiceDayString);
@@ -175,16 +169,16 @@ const getAlertBadgeSecondarySymbolWithoutTime = (alert: MbtaAlert, uniqueRoutes:
         // detour impacting multiple stops, show detour symbol
         if (alert.attributes.informed_entity.every(entity => entity.stop) && alert.attributes.informed_entity.length > 1) {
             if (alert.attributes.effect === 'DETOUR') {
-                return '🚧︎';
+                return SECONDARY_SYMBOLS.DETOUR.symbol;
             }
         }
 
         if (alert.attributes.effect === 'STOP_CLOSURE') {
-            return '↷';
+            return SECONDARY_SYMBOLS.STOP_CLOSURE.symbol;
         }
 
         // TODO: determine direction for general cases
-        return '•';
+        return SECONDARY_SYMBOLS.SOME_STOPS.symbol;
     }
     if (uniqueRoutes[0].startsWith('CR-') && alert.attributes.informed_entity.every(entity => entity.trip)) {
         // if it impacts a trip, show inbound/outbound symbol
@@ -196,16 +190,16 @@ const getAlertBadgeSecondarySymbolWithoutTime = (alert: MbtaAlert, uniqueRoutes:
         return effectSymbol;
     }
 
-    return '▣';
+    return SECONDARY_SYMBOLS.WHOLE_ROUTE.symbol;
 }
 
 const getAlertBadgeSecondarySymbolForEffect = (alert: MbtaAlert) => {
     if (alert.attributes.effect === 'DELAY') {
-        return '⧗';
+        return SECONDARY_SYMBOLS.DELAY.symbol;
     }
 
     if (alert.attributes.effect === 'SHUTTLE') {
-        return '🚌︎';
+        return SECONDARY_SYMBOLS.SHUTTLE.symbol;
     }
 
     return null;
@@ -236,7 +230,7 @@ export const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayStr
     const currentTime = now(MBTA_TIMEZONE);
     const todayIsAtNight = currentTime.hour > 17 || currentTime.hour < MBTA_SERVICE_START_HOUR;
     if (currentPeriodIsAtNight && (!currentPeriodIsThisServiceDay || !todayIsAtNight)) {
-        return '🌙︎';
+        return SECONDARY_SYMBOLS.NIGHT.symbol;
     }
     return '';
 }
@@ -299,25 +293,25 @@ const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
     );
 
     if (!hasAshmontBranch && !hasBraintreeBranch && !hasSharedHarvardNorthBranch && !hasSharedBranch) {
-        return '•'; // can't determine branch
+        return SECONDARY_SYMBOLS.SOME_STOPS.symbol; // can't determine branch
     }
     if (hasSharedHarvardNorthBranch && !hasSharedBranch && !hasAshmontBranch && !hasBraintreeBranch) {
-        return '◤'; // northbound branch, north of Harvard
+        return SECONDARY_SYMBOLS.RED_NORTH_OF_HARVARD.symbol; // northbound branch, north of Harvard
     }
     if (hasSharedHarvardNorthBranch && hasSharedBranch && !hasAshmontBranch && !hasBraintreeBranch) {
-        return '▲'; // northbound branch
+        return SECONDARY_SYMBOLS.RED_NORTHBOUND.symbol; // northbound branch
     }
     if (!hasSharedHarvardNorthBranch && !hasSharedBranch && hasAshmontBranch && !hasBraintreeBranch) {
-        return '◣'; // Ashmont branch
+        return SECONDARY_SYMBOLS.RED_ASHMONT_BRANCH.symbol; // Ashmont branch
     }
     if (!hasSharedHarvardNorthBranch && !hasSharedBranch && !hasAshmontBranch && hasBraintreeBranch) {
-        return '◢'; // Braintree branch
+        return SECONDARY_SYMBOLS.RED_BRAINTREE_BRANCH.symbol; // Braintree branch
     }
     if (!hasSharedHarvardNorthBranch && !hasSharedBranch && hasAshmontBranch && hasBraintreeBranch) {
-        return '▼'; // both southbound branches
+        return SECONDARY_SYMBOLS.RED_BOTH_SOUTHBOUND_BRANCHES.symbol; // both southbound branches
     }
     // assume all stops are affected. we could be wrong
-    return '▣';
+    return SECONDARY_SYMBOLS.WHOLE_ROUTE.symbol;
 }
 
 // north of north station, north to south
@@ -365,15 +359,15 @@ const getAlertBadgeSecondarySymbolForOrangeLine = (alert: MbtaAlert) => {
         ORANGE_LINE_SOUTH_STOP_IDS.every((stop) => informedStops.includes(stop))
     );
     if (hasNorthSegment && !hasCoreSegment && !hasSouthSegment) {
-        return '◤'; // north of north station
+        return SECONDARY_SYMBOLS.ORANGE_NORTH_SHORE.symbol; // north of north station
     }
     if (!hasNorthSegment && !hasCoreSegment && hasSouthSegment) {
-        return '◣'; // south branch
+        return SECONDARY_SYMBOLS.ORANGE_SOUTH.symbol; // south branch
     }
     if (!hasNorthSegment && hasCoreSegment && hasSouthSegment) {
-        return '⇙'; // south and core segments
+        return SECONDARY_SYMBOLS.ORANGE_SOUTH_AND_CORE.symbol; // south and core segments
     }
-    return '•';
+    return SECONDARY_SYMBOLS.SOME_STOPS.symbol;
 }
 
 const BLUE_LINE_DOWNTOWN_STOP_IDS = [
@@ -400,7 +394,7 @@ const getAlertBadgeSecondarySymbolForBlueLine = (alert: MbtaAlert) => {
     if (alert.attributes.informed_entity
         .filter(entity => entity.stop && entity.stop.startsWith('place-'))
         .every(entity => entity.stop === 'place-bomnl')) {
-        return '◤';
+        return SECONDARY_SYMBOLS.BLUE_BOWDOIN.symbol;
     }
 
     const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
@@ -415,9 +409,9 @@ const getAlertBadgeSecondarySymbolForBlueLine = (alert: MbtaAlert) => {
         BLUE_LINE_CARHOUSE_OUTBOUND_STOP_IDS.every((stop) => informedStops.includes(stop))
     );
     if (hasDowntownSegments && hasEastBostonShoreSegments && !hasCarhouseOutboundSegments) {
-        return '⇙'; // downtown to east boston shore (mid-route)
+        return SECONDARY_SYMBOLS.BLUE_DOWNTOWN_TO_EAST_BOSTON_HARBOR.symbol; // downtown to east boston shore (mid-route)
     }
-    return '•';
+    return SECONDARY_SYMBOLS.SOME_STOPS.symbol;
 }
 
 const GREEN_LINE_GLX_D_SEGMENT_STOP_IDS = [
@@ -457,7 +451,7 @@ export const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
 
     // single stop, Boston College TODO this needs to be more generalized
     if (informedStops.every(stop => stop === 'place-lake')) {
-        return '◣';
+        return SECONDARY_SYMBOLS.GREEN_BOSTON_COLLEGE.symbol;
     }
 
     // TODO: Green line is the most complicated one. We build as new alerts surface.
@@ -477,22 +471,22 @@ export const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
 
     if (hasGLXDSegment && hasDESharedSegment && !hasCoreSegment) {
         // Green line has split branch routes on the same alert. This will show up alongside D.
-        return '▲'; // north of core, D
+        return SECONDARY_SYMBOLS.GREEN_NORTH_OF_CORE.symbol; // north of core, D
     }
     if (hasGLXESegment && hasDESharedSegment && !hasCoreSegment) {
         // Green line has split branch routes on the same alert. This will show up alongside E.
-        return '▲'; // north of core, E
+        return SECONDARY_SYMBOLS.GREEN_NORTH_OF_CORE.symbol; // north of core, E
     }
     if (hasGLXDSegment && !hasCoreSegment) {
         // Green line has split branch routes on the same alert. This will show up alongside D.
-        return '◤'; // GLX D or charles river outage
+        return SECONDARY_SYMBOLS.GREEN_GLX.symbol; // GLX D or charles river outage
     }
     if (hasGLXESegment && !hasCoreSegment) {
         // Green line has split branch routes on the same alert. This will show up alongside E.
-        return '◤'; // GLX E or charles river outage
+        return SECONDARY_SYMBOLS.GREEN_GLX.symbol; // GLX E or charles river outage
     }
     // can't determine branch
-    return '•';
+    return SECONDARY_SYMBOLS.SOME_STOPS.symbol;
 }
 
 /**
@@ -521,27 +515,27 @@ export const getAlertBadgeSecondarySymbolForGreenLineGlance = (alert: MbtaAlert)
         );
 
         if (hasGLXDSegment && hasGLXESegment && hasDESharedSegment && !hasCoreSegment) {
-            return '▲'; // north of core, D+E
+            return SECONDARY_SYMBOLS.GREEN_NORTH_OF_CORE.symbol; // north of core, D+E
         }
         if (hasGLXDSegment && !hasGLXESegment && !hasDESharedSegment && !hasCoreSegment) {
-            return '◤'; // D only
+            return SECONDARY_SYMBOLS.GREEN_GLX_D.symbol; // D only
         }
         if (hasGLXESegment && !hasGLXDSegment && !hasDESharedSegment && !hasCoreSegment) {
             // Green line has split branch routes on the same alert. This will show up alongside E.
-            return '◥'; // E only
+            return SECONDARY_SYMBOLS.GREEN_GLX_E.symbol; // E only
         }
-        // TOOD: charles river outage 🦆
+        // TODO: charles river outage 🦆
 
         if (effectSymbol) {
             return effectSymbol;
         }
-        return '⚠️';
+        return SECONDARY_SYMBOLS.ALERT_COLOR.symbol;
     }
     
     if (effectSymbol) {
         return effectSymbol;
     }
-    return '▣';
+    return SECONDARY_SYMBOLS.WHOLE_ROUTE.symbol;
 }
 
 
@@ -626,10 +620,10 @@ const getAlertBadgeSecondarySymbolForCommuterRail = (alert: MbtaAlert) => {
         // Fallback if we don't have direction symbols
         // currently all CR trips put outbound at 0
         if (alert.attributes.informed_entity.every(entity => entity.trip && entity.direction_id === 0)) {
-            return 'Out'; // outbound
+            return SECONDARY_SYMBOLS.OUTBOUND.symbol; // outbound
         }
         if (alert.attributes.informed_entity.every(entity => entity.trip && entity.direction_id === 1)) {
-            return 'In'; // inbound
+            return SECONDARY_SYMBOLS.INBOUND.symbol; // inbound
         }
     }
     // for now we do a simple check by checking if the alert impacts all stop on a branch rather than some
@@ -649,12 +643,12 @@ const getAlertBadgeSecondarySymbolForCommuterRail = (alert: MbtaAlert) => {
     );
 
     if (hasHavenhillSouthSegment || hasLowellSouthSegment) {
-        return '▼';
+        return SECONDARY_SYMBOLS.CR_NORTH_INTO_BOSTON.symbol;
     }
 
     if (hasNewburyportSouthSegment) {
-        return '◣';
+        return SECONDARY_SYMBOLS.CR_NEWBURYPORT_INFO_BOSTON.symbol;
     }
     // can't determine branch
-    return '•';
+    return SECONDARY_SYMBOLS.SOME_STOPS.symbol;
 }
