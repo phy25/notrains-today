@@ -37,7 +37,7 @@ export const load = (async ({ parent, fetch }) => {
         lastTrainDataAsync = loadServiceHours('end', parentData.current_service_date, fetch);
     }
 
-    if (parentData.is_current_service_early_bird && isDebug()) {
+    if (parentData.is_current_service_early_bird) {
         // load first train data
         lastTrainDataAsync = loadServiceHours('start', parentData.current_service_date, fetch);
     }
