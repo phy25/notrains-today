@@ -9,6 +9,7 @@ let descriptionInput = $state('');
 let imageUrlInput = $state('');
 let infoUrlInput = $state('');
 let modelInput = $state();
+let overrideTypeInput = $state('none');
 
 interface GitHubModelResponse {
     choices: {
@@ -93,7 +94,7 @@ Commuter rail uses a different header format. Please use this instead. Example:
                 "temperature": 0.7,
                 "top_p": 1.0,
                 "max_completion_tokens": 5000,
-                "model": "openai/gpt-4.1",
+                "model": modelInput,
                 "response_format": {
                     type: "json_object",
                 }
@@ -107,6 +108,22 @@ Commuter rail uses a different header format. Please use this instead. Example:
         console.log(data);
         return data as GitHubModelResponse;
     })();
+};
+
+const formatJsonText = (text: string, override_type: string) => {
+    try {
+        let obj = JSON.parse(text);
+        if (override_type === 'insert') {
+            obj = {
+                type: 'insert',
+                item: obj,
+            };
+        }
+        return JSON.stringify(obj, null, 2);
+    } catch (error) {
+        console.error('Error parsing JSON:', error);
+        return text;
+    }
 };
 </script>
 
@@ -157,10 +174,19 @@ Commuter rail uses a different header format. Please use this instead. Example:
 <form onsubmit={onInvokeSubmit}>
     <fieldset>
         <legend>Alert Details</legend>
-        <label for="image-url">Image URL (optional)</label>
-        <input type="url" id="image-url" bind:value={imageUrlInput} />
-        <label for="info-url">Info URL (optional)</label>
-        <input type="url" id="info-url" bind:value={infoUrlInput} />
+        <p>
+            <label for="image-url">Image URL (optional)</label>
+            <input type="url" id="image-url" bind:value={imageUrlInput} />
+            <label for="info-url">Info URL (optional)</label>
+            <input type="url" id="info-url" bind:value={infoUrlInput} />
+        </p>
+        <p>
+            <label for="override-type">Override item type</label>
+            <select name="override-type" bind:value={overrideTypeInput}>
+                <option value="none">none</option>
+                <option value="insert">insert</option>
+            </select>
+        </p>
     </fieldset>
 
     <fieldset>
@@ -185,7 +211,9 @@ Commuter rail uses a different header format. Please use this instead. Example:
 {:then modelResponse}
     <h3>Generated Alert</h3>
     {#each (modelResponse?.choices || []).map(c => c?.message?.content) as content}
-        <pre><code>{JSON.stringify(JSON.parse(content), null, 2)}</code></pre>
+        {@const output = formatJsonText(content, overrideTypeInput)}
+        <button onclick={() => navigator.clipboard.writeText(output)}>Copy</button>
+        <pre><code>{output}</code></pre>
     {:else}
         <p>No content generated.</p>
     {/each}
@@ -210,10 +238,14 @@ dd {
     margin-bottom: 0.5rem;
 }
 textarea {
+    box-sizing: border-box;
     width: 100%;
+    resize: vertical;
     padding: 0.5rem;
-    border: 1px solid #ccc;
     border-radius: 0.3rem;
-    font-family: monospace;
+    font-family: inherit;
+}
+pre {
+    overflow-x: auto;
 }
 </style>
