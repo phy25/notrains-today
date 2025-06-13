@@ -8,6 +8,7 @@ interface OverrideInsertEntry {
     item: MbtaAlert;
     match_not_route?: string;
     match_not_service_dates?: string[];
+    included: any[];
 }
 
 interface OverrideRemoveEntry {
@@ -174,7 +175,9 @@ export const overrideAlerts = (json: {data?: MbtaAlert[]; included: any;}) => {
                 }
             }
             return alert;
-        });
+        });        
+
+    const included = json.included || [];
 
     newEntryList.forEach((override: OverrideInsertEntry) => {
         if (override.match_not_route) {
@@ -192,9 +195,10 @@ export const overrideAlerts = (json: {data?: MbtaAlert[]; included: any;}) => {
         } else {
             newAlerts.push(override.item);
         }
+        if (override.included) {
+            included.push(...override.included);
+        }
     });
-
-    const included = json.included || [];
 
     // add Green wihch does not always be included
     included.push({
