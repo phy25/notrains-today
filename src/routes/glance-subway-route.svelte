@@ -43,7 +43,7 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
     <div class="badge-group">
         <MbtaRouteBadge pillLabel={getPillName(mainRouteId, {})} type="long" color={color} textColor={textColor} fullName={getLineName(mainRouteId)}></MbtaRouteBadge>
         {#if isServiceEnded}
-            <span>💤︎</span>
+            <span>{SECONDARY_SYMBOLS.SERVICE_ENDED.symbol}</span>
         {:else if filterdAlerts.length == 0}
             {#if noDowntownTransfer}
                 <span>{SECONDARY_SYMBOLS.NIGHT.symbol}</span>

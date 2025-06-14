@@ -80,6 +80,7 @@
     "mbtaAlertBadgeSecondarySymbolMultipleRoutes": "Multiple routes are affected",
     "mbtaAlertEffectWholeRoute": "The whole route is affected",
     "mbtaAlertBadgeSecondarySymbolNight": "The service will be affected later in the evening",
+    "mbtaAlertBadgeSecondarySymbolServiceEnded": "The service has ended",
     "mbtaAlertBadgeSecondarySymbolSomeStops": "Some stops are affected",
     "mbtaAlertBadgeSecondarySymbolOutbound": "The outbound service is affected",
     "mbtaAlertBadgeSecondarySymbolInbound": "The inbound service is affected",

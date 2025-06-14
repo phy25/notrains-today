@@ -40,6 +40,10 @@ export const SECONDARY_SYMBOLS: Record<string, {
         symbol: '🌙︎',
         description_message_func: m['mbtaAlertBadgeSecondarySymbolNight'],
     },
+    SERVICE_ENDED: {
+        symbol: '💤︎',
+        description_message_func: m['mbtaAlertBadgeSecondarySymbolServiceEnded'],
+    },
     SOME_STOPS: {
         symbol: '•',
         description_message_func: m['mbtaAlertBadgeSecondarySymbolSomeStops'],
