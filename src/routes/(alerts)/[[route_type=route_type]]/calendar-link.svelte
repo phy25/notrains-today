@@ -6,6 +6,7 @@ import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
 import type { MbtaAlert } from "$lib/mbta-types";
 import { CalendarDate } from "@internationalized/date";
 import { m } from "$lib/paraglide/messages";
+import CalendarIcon from "./calendar-icon.svelte";
 
 const { alertsByDay, routeMap, currentServiceDate, type = 'calendar' } : {
     alertsByDay: Map<string, MbtaAlert[]>;
@@ -51,7 +52,7 @@ const linkHref = $derived.by(() => {
 });
 </script>
 
-<a href={linkHref} title={type === 'today' ? m.alertsToday() : m.alertsCalendar()}>
+<a href={linkHref} title={type === 'today' ? m.alertsToday() : (m.alertsCalendar())}>
     {#if type === 'today'}
         <div class="link-icon">‹</div>
     {/if}    
@@ -60,7 +61,7 @@ const linkHref = $derived.by(() => {
             {#if type === 'today'}
                 {m.alertsToday()}    
             {:else}
-                📅 {m.alertsCalendar()}
+                <CalendarIcon date={targetDate} />{m.alertsCalendar()}
             {/if}
         </div>
         <div class="link-summary">
@@ -89,6 +90,7 @@ a {
     border-radius: 0.5em;
     color: #195581;
     background: var(--background-color);
+    line-height: 1;
 }
 a:hover, a:focus {
     --background-color: #DDD;
