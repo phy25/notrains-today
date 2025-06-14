@@ -45,11 +45,11 @@ export const SECONDARY_SYMBOLS: Record<string, {
         description_message_func: m['mbtaAlertBadgeSecondarySymbolSomeStops'],
     },
     OUTBOUND: {
-        symbol: 'Out',
+        symbol: 'Out ',
         description_message_func: m['mbtaAlertBadgeSecondarySymbolOutbound'],
     },
     INBOUND: {
-        symbol: 'In',
+        symbol: 'In ',
         description_message_func: m['mbtaAlertBadgeSecondarySymbolInbound'],
     },
     RED_NORTH_OF_HARVARD: {
