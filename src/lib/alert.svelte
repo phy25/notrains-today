@@ -4,8 +4,10 @@
 
 {#if sticky}
     <div class="alert sticky">
-        <div>⚠️</div>
-        <div class="alert-text">{@render children?.()}</div>
+        <div class="alert-content">
+            <div>⚠️</div>
+            <div class="alert-text">{@render children?.()}</div>
+        </div>
         {#if clickBtnText}
             <button onclick={onclick}>{clickBtnText}</button>
         {/if}
@@ -14,8 +16,10 @@
     
     {#if clickBtnText}
         <div class="alert">
-            <div>⚠️</div>
-            <div class="alert-text">{@render children?.()}</div>
+            <div class="alert-content">
+                <div>⚠️</div>
+                <div class="alert-text">{@render children?.()}</div>
+            </div>
             {#if clickBtnText && onclick}
                 <button onclick={onclick}>{clickBtnText}</button>
             {/if}
@@ -23,11 +27,11 @@
     {:else}
         {#if onclick}
             <!-- svelte-ignore a11y_invalid_attribute -->
-            <a class="alert" onclick={onclick} href="">
+            <a class="alert alert-content" onclick={onclick} href="">
                 <div>⚠️</div> <div class="alert-text">{@render children?.()}</div>
             </a>
         {:else}
-            <div class="alert">
+            <div class="alert alert-content">
                 <div>⚠️</div> <div class="alert-text">{@render children?.()}</div>
             </div>
         {/if}
@@ -44,9 +48,16 @@ a.alert {
     background: #C9E3F5;
     color: #000;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 0.3em;
     border-radius: 0.5em;
+}
+
+.alert-content {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3em;
+    flex: 1;
 }
 
 .alert > * {
@@ -70,7 +81,7 @@ a.alert {
     margin: 0em;
 }
 
-.alert > div.alert-text {
+.alert div.alert-text {
     flex: 1;
     padding-right: 0.5em;
 }
