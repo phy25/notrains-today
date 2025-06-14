@@ -219,6 +219,7 @@ export const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayStr
         const startTime = parseZonedDateTime(period.start + '[' + MBTA_TIMEZONE + ']');
         const endTime = parseZonedDateTime((period.end || period.start) + '[' + MBTA_TIMEZONE + ']');
         if (toCalendarDate(startTime).compare(serviceDay) == 0 && serviceDay.compare(toCalendarDate(endTime)) <= 0) {
+            // this check does not respect after midnight cases yet
             return {
                 start: startTime,
                 end: endTime,
@@ -230,12 +231,14 @@ export const getAlertBadgeSecondarySymbolTime = (alert: MbtaAlert, serviceDayStr
     if (periodStartingAtCurrentDay.length === 0) {
         return '';
     }
-    // do not show night symbol if we are already at night and this alert is for today
+    // show night symbol if the alert starts at night
+    // - if it is for today, we should be outside active period
+    // - if it is not for today, always show night symbol
     const currentPeriodIsAtNight = periodStartingAtCurrentDay[0].start.hour > 17 || periodStartingAtCurrentDay[0].start.hour < MBTA_SERVICE_START_HOUR;
     const currentPeriodIsThisServiceDay = serviceDayString === currentServiceDayString;
     const currentTime = now(MBTA_TIMEZONE);
-    const todayIsAtNight = currentTime.hour > 17 || currentTime.hour < MBTA_SERVICE_START_HOUR;
-    if (currentPeriodIsAtNight && (!currentPeriodIsThisServiceDay || !todayIsAtNight)) {
+    const currentPeriodNotStarted = currentTime.compare(periodStartingAtCurrentDay[0].start) <= 0;
+    if (currentPeriodIsAtNight && (!currentPeriodIsThisServiceDay || currentPeriodNotStarted)) {
         return SECONDARY_SYMBOLS.NIGHT.symbol;
     }
     return '';

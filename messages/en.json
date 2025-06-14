@@ -79,7 +79,7 @@
     "aboutDescriptionContact": "The easiest way to contact the developer is to use the {feedback} button at the page bottom.",
     "mbtaAlertBadgeSecondarySymbolMultipleRoutes": "Multiple routes are affected",
     "mbtaAlertEffectWholeRoute": "The whole route is affected",
-    "mbtaAlertBadgeSecondarySymbolNight": "The service is affected in the evening",
+    "mbtaAlertBadgeSecondarySymbolNight": "The service will be affected later in the evening",
     "mbtaAlertBadgeSecondarySymbolSomeStops": "Some stops are affected",
     "mbtaAlertBadgeSecondarySymbolOutbound": "The outbound service is affected",
     "mbtaAlertBadgeSecondarySymbolInbound": "The inbound service is affected",
