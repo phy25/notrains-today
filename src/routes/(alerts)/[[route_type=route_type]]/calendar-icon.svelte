@@ -41,9 +41,9 @@
 }
 .calendar-icon .date {
     font-size: 0.6rem;
-    line-height: 0.7rem;
-    padding: 0.05rem 0 0;
     height: 0.7rem;
+    line-height: 0.8rem;
+    /* cutoff is expected; this is to make enough space for the top */
     color: #333;
     background: #F0F0F0;
     border-bottom-left-radius: 0.2rem;
