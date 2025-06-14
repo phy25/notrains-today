@@ -48,7 +48,7 @@ $effect(() => {
             clearInterval(isOutdatedInvervalChecker);
             isOutdatedInvervalChecker = undefined;
         }
-    }, 1000 * 3);
+    }, 1000 * 2);
 });
 </script>
 
