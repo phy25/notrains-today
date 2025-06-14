@@ -7,8 +7,9 @@
 </script>
 
 {#if date}
-    <div class="calendar-icon" aria-label={date.toString()}>
-        <div class="day">{new DateFormatter(getLocale() || 'en', {weekday: 'short'}).format(date.toDate(MBTA_TIMEZONE))}</div>
+    {@const dayString = new DateFormatter(getLocale() || 'en', {weekday: 'short'}).format(date.toDate(MBTA_TIMEZONE))}
+    <div class="calendar-icon" aria-label={date.toString() + ' ' + dayString}>
+        <div class="day">{dayString}</div>
         <div class="date">{date.day}</div>
     </div>&nbsp;
 {:else}

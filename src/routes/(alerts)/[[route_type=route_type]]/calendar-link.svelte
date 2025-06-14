@@ -3,10 +3,11 @@ import { resolveRoute } from "$app/paths";
 import { page } from "$app/state";
 import { alertsToRouteRenderingList, getProcessedAlertsAsSingleRoute } from "$lib/calendar";
 import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
-import type { MbtaAlert } from "$lib/mbta-types";
-import { CalendarDate } from "@internationalized/date";
+import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
+import { CalendarDate, DateFormatter } from "@internationalized/date";
 import { m } from "$lib/paraglide/messages";
 import CalendarIcon from "./calendar-icon.svelte";
+	import { getLocale } from "$lib/paraglide/runtime";
 
 const { alertsByDay, routeMap, currentServiceDate, type = 'calendar' } : {
     alertsByDay: Map<string, MbtaAlert[]>;
@@ -50,9 +51,17 @@ const linkHref = $derived.by(() => {
         return resolveRoute('/[[route_type]]/calendar', { route_type: page.params.route_type }) + (targetDate ? ('#date=' + targetDate.toString()) : '');
     }
 });
+
+const linkTitle = $derived.by(() => {
+    if (type === 'today') {
+        return m.alertsToday();
+    } else {
+        return m.alertsCalendar() + (targetDate ? ` (${new DateFormatter(getLocale(), { month: 'numeric', day: 'numeric' }).format(targetDate.toDate(MBTA_TIMEZONE))})` : '');
+    }
+});
 </script>
 
-<a href={linkHref} title={type === 'today' ? m.alertsToday() : (m.alertsCalendar())}>
+<a href={linkHref} title={linkTitle}>
     {#if type === 'today'}
         <div class="link-icon">‹</div>
     {/if}    
