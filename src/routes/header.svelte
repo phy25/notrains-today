@@ -7,6 +7,7 @@ import { m } from "$lib/paraglide/messages";
 import { DropdownMenu } from "bits-ui";
 import { fly } from "svelte/transition";
 import { getFormattedTime } from "$lib/mbta-display";
+import { invalidateAll } from "$app/navigation";
 
 const { alertsTodayAsync = Promise.resolve([]), lastUpdatedStringAsync = Promise.resolve(null), routeType = undefined} = $props();
 
@@ -98,6 +99,16 @@ let isMenuOpen = $state(false);
                                 <DropdownMenu.Group>
                                     <DropdownMenu.Item>
                                         {#snippet child({ props })}
+                                            <a
+                                                {...props}
+                                                href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}
+                                                onclick={(event: MouseEvent) => {event.preventDefault(); isMenuOpen = false; invalidateAll(); return false;}}>
+                                                    {m.refreshReminderButton()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
                                             <a {...props} href="/about">
                                                 {m.footerAbout()}
                                             </a>
@@ -174,6 +185,7 @@ let isMenuOpen = $state(false);
 }
 .tab-side-btn {
     display: flex;
+    justify-content: end;
     align-items: center;
     padding: 0.5em 0.2em;
     min-width: 48px;
