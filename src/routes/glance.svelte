@@ -37,7 +37,6 @@
             return new Map();
         } 
     });
-    const noTransferPossible = $derived([...(serviceEndedData.size ? serviceEndedData.values() : []).filter((value) => !value)].length <= 1);
 </script>
 
 <div class="glance-rapid-transit-grid">
@@ -118,7 +117,7 @@
         {/each}
     </div>
     {/if}
-    {#if isCurrentServiceNightOwl && !noTransferPossible}
+    {#if isCurrentServiceNightOwl}
     <div class="route-expanded"><p>
         {SECONDARY_SYMBOLS.NIGHT.symbol} {m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {
         timeStyle: "short",
