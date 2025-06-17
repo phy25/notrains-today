@@ -66,10 +66,10 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
         {/if}
     </div>
 
-    {#if isServiceEnded && lastTrainFormatted}
-        <div class="has-alert-text">{lastTrainMessage({time: lastTrainFormatted})}</div>
-    {:else if filterdAlerts.length == 0}
-        {#if lastTrainFormatted}
+    {#if filterdAlerts.length == 0}
+        {#if isServiceEnded && lastTrainFormatted}
+            <div class="has-alert-text">{lastTrainMessage({time: lastTrainFormatted})}</div>
+        {:else if lastTrainFormatted}
             <div class="no-alert-text">{lastTrainMessage({time: lastTrainFormatted})}</div>
         {:else}
             <div class="no-alert-text">{m.noAlert()}</div>
