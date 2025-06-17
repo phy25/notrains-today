@@ -2,7 +2,17 @@
 	import { getLineName, getPillName } from "./mbta-display";
 	import MbtaRouteBadge from "./mbta-route-badge.svelte";
 
-const { routeId, routeAttributes, type = 'auto' } = $props();
+const { routeId, routeAttributes, type = 'auto' }: {
+    routeId: string;
+    routeAttributes?: {
+        color?: string;
+        text_color?: string;
+        route_type?: number;
+        long_name?: string;
+        short_name?: string;
+    };
+    type?: 'long' | 'short' | 'auto';
+} = $props();
 
 const fullName = getLineName(routeId, routeAttributes);
 

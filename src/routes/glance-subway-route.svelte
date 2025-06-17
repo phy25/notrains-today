@@ -1,6 +1,7 @@
 <script lang="ts">
 import { mergeAlertInformedEntity } from "$lib/calendar";
 import { getAlertBadgeSecondarySymbol, getAlertBadgeSecondarySymbolForGreenLineGlance, getAlertBadgeSecondarySymbolTime, getEffect, getLineName, getPillName } from "$lib/mbta-display";
+import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
 import MbtaRouteBadge from "$lib/mbta-route-badge.svelte";
 import { SECONDARY_SYMBOLS } from "$lib/mbta-symbols";
 import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
@@ -37,11 +38,26 @@ const alertCountsPerRoute = $derived(filterdAlerts.reduce((accumulated, current)
         });
     return accumulated;
 }, new Map()));
+const branchBadgeId = $derived.by(() => {
+    const routeIds = new Set(filterdAlerts.flatMap(alert => alert.attributes.informed_entity).map(entity => entity.route));
+    if (routeIds.size == 1) {
+        const route = routeIds.values().next().value;
+        return route === mainRouteId ? null : route;
+    }
+    return null;
+});
 </script>
 
 <div class="subway-route">
     <div class="badge-group">
-        <MbtaRouteBadge pillLabel={getPillName(mainRouteId, {})} type="long" color={color} textColor={textColor} fullName={getLineName(mainRouteId)}></MbtaRouteBadge>
+        {#if branchBadgeId}
+            <MbtaRouteBadgeCompound routeId={branchBadgeId} type="long" routeAttributes={{
+                color: color.replace('#', ''),
+                text_color: textColor.replace('#', ''),
+            }}></MbtaRouteBadgeCompound>
+        {:else}
+            <MbtaRouteBadge pillLabel={getPillName(mainRouteId, {})} type="long" color={color} textColor={textColor} fullName={getLineName(mainRouteId)}></MbtaRouteBadge>
+        {/if}
         {#if isServiceEnded}
             <span>{SECONDARY_SYMBOLS.SERVICE_ENDED.symbol}</span>
         {:else if filterdAlerts.length == 0}
