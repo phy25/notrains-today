@@ -186,6 +186,10 @@ const getAlertBadgeSecondarySymbolWithoutTime = (alert: MbtaAlert, uniqueRoutes:
         // TODO: determine direction for general cases
         return SECONDARY_SYMBOLS.SOME_STOPS.symbol;
     }
+    if (uniqueRoutes.length == 1 && uniqueRoutes[0] === 'Red') {
+        // try detecting branch for red line even without stop information
+        return getAlertBadgeSecondarySymbolForRedLine(alert);
+    }
     if (uniqueRoutes[0].startsWith('CR-') && alert.attributes.informed_entity.every(entity => entity.trip)) {
         // if it impacts a trip, show inbound/outbound symbol
         return getAlertBadgeSecondarySymbolForCommuterRail(alert);
@@ -283,6 +287,10 @@ const RED_LINE_BRAINTREE_STOP_IDS = [
     "place-brntn"
 ];
 
+const RED_LINE_ALERT_KEYWORD_BRANCH_PREFIX = "red line ";
+const RED_LINE_ALERT_KEYWORD_ASHMONT = "ashmont branch";
+const RED_LINE_ALERT_KEYWORD_BRAINTREE = "braintree branch";
+
 const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
     // for now we do a simple check by checking if the alert impacts all stop on a branch rather than some
     // TODO: check stop by stop to determine range intersection
@@ -301,7 +309,7 @@ const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
         RED_LINE_BRAINTREE_STOP_IDS.every((stop) => informedStops.includes(stop))
     );
 
-    if (!hasAshmontBranch && !hasBraintreeBranch && !hasSharedHarvardNorthBranch && !hasSharedBranch) {
+    if (!hasAshmontBranch && !hasBraintreeBranch && !hasSharedHarvardNorthBranch && !hasSharedBranch && informedStops.length) {
         return SECONDARY_SYMBOLS.SOME_STOPS.symbol; // can't determine branch
     }
     if (hasSharedHarvardNorthBranch && !hasSharedBranch && !hasAshmontBranch && !hasBraintreeBranch) {
@@ -319,6 +327,19 @@ const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
     if (!hasSharedHarvardNorthBranch && !hasSharedBranch && hasAshmontBranch && hasBraintreeBranch) {
         return SECONDARY_SYMBOLS.RED_BOTH_SOUTHBOUND_BRANCHES.symbol; // both southbound branches
     }
+
+    const header = (alert?.attributes?.header || '').toLowerCase();
+    console.log(header);
+
+    if (header.includes(RED_LINE_ALERT_KEYWORD_BRANCH_PREFIX + RED_LINE_ALERT_KEYWORD_ASHMONT)
+        && !header.includes(RED_LINE_ALERT_KEYWORD_BRAINTREE)) {
+        return SECONDARY_SYMBOLS.RED_ASHMONT_BRANCH.symbol; // Ashmont branch
+    }
+    if (header.includes(RED_LINE_ALERT_KEYWORD_BRANCH_PREFIX + RED_LINE_ALERT_KEYWORD_BRAINTREE)
+        && !header.includes(RED_LINE_ALERT_KEYWORD_ASHMONT)) {
+        return SECONDARY_SYMBOLS.RED_BRAINTREE_BRANCH.symbol; // Braintree branch
+    }
+
     // assume all stops are affected. we could be wrong
     return SECONDARY_SYMBOLS.WHOLE_ROUTE.symbol;
 }
