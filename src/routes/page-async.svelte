@@ -13,6 +13,7 @@ import { invalidateAll } from "$app/navigation";
 import Alert from "$lib/alert.svelte";
 import { resolveRoute } from "$app/paths";
 import { page } from "$app/state";
+	import { SECONDARY_SYMBOLS } from "$lib/mbta-symbols";
 
 const { data, lastTrainData, currentServiceDate, isCurrentServiceNightOwl, routeType }: {
     data: {
@@ -31,6 +32,16 @@ const lastUpdatedDate = $derived(new Date(data.lastUpdated));
 
 const alertsToday = $derived(data.alertsByDay.get(currentServiceDate.toString()));
 const tomorrowDate = $derived(currentServiceDate.add({ days: 1 }));
+const lookingAheadHas7Days = $derived.by(() => {
+    let d = tomorrowDate;
+    for (let i = 0; i < 7; i++) {
+        if (data.alertsByDay.has(d.toString()) && data.alertsByDay.get(d.toString())?.length) {
+            return true;
+        }
+        d = d.add({ days: 1 });
+    }
+    return false;
+});
 
 let isOutdated = $state(false);
 let isOutdatedInvervalChecker: ReturnType<typeof setTimeout>|undefined = $state(undefined);
@@ -62,7 +73,9 @@ $effect(() => {
     routeType={routeType}
 />
 
-<CalendarLink type="calendar" alertsByDay={data.alertsByDay} routeMap={data.routeMap} {currentServiceDate} />
+{#if alertsToday}
+    <CalendarLink type="calendar" alertsByDay={data.alertsByDay} routeMap={data.routeMap} {currentServiceDate} />
+{/if}
 
 <div class="day-detail">
     {#if alertsToday}
@@ -74,11 +87,12 @@ $effect(() => {
         showNightOwl={isCurrentServiceNightOwl}
     />
     {:else}
-    <p>{m.calendarDayNoAlerts()}</p>
+    <p>{SECONDARY_SYMBOLS.ALL_GOOD_COLOR.symbol} {m.calendarDayNoAlerts()}</p>
     {/if}
 </div>
 
 <div class="looking-ahead">
+    {#if lookingAheadHas7Days}
     <a class="title-link" href={resolveRoute('/[[route_type]]/calendar', { route_type: page.params.route_type }) + '#date=' + tomorrowDate.toString()}>
         <h2>{m.tomorrowAndBeyondOneWeek()}</h2>
         <div class="link-icon">›</div>
@@ -96,6 +110,9 @@ $effect(() => {
         linkToCalendar={true}
         alwaysShowSecondarySymbol={true}
         />
+    {:else if !alertsToday}
+    <CalendarLink type="calendar" alertsByDay={data.alertsByDay} routeMap={data.routeMap} {currentServiceDate} />
+    {/if}
 </div>
 
 {#if isCurrentServiceNightOwl}
