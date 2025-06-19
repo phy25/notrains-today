@@ -105,7 +105,7 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
         ? parseDate(localStorage.getItem('debugDate') || '')
         : toCalendarDate(currentServiceTime);
         
-    let isNightOwl = currentServiceTime.hour < MBTA_SERVICE_START_HOUR || currentServiceTime.hour >= 23;
+    let isNightOwl = currentServiceTime.hour < MBTA_SERVICE_START_HOUR || currentServiceTime.hour >= 22;
     if ((typeof localStorage !== 'undefined') && localStorage.getItem('debugNightOwl') === 'true') {
         isNightOwl = true;
     }
