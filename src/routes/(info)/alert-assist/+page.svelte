@@ -119,7 +119,7 @@ const onInvokeSubmit = (e: SubmitEvent) => {
                 "messages": [
                     {
                         "role": "system",
-                        "content": `Follow the MBTA alerts schema to convert the provided announcement text into JSON.
+                        "content": `Follow the MBTA alerts schema to convert the provided announcement text into JSON. Make sure fields use the correct types, and most of the fields should be in the attributes object.
 
 The current timestamp is ${currentTime.toString()}. Use it for created_at. Write the time format as 2025-06-07T03:00:00-04:00 without the timezone name.
 
@@ -148,7 +148,15 @@ Commuter rail uses a different header format. Please use this instead. Example:
 {
 "header": "On Friday, April 25th through April, 27th, shuttle buses replace service on the Lowell Line from North Station to Anderson/Woburn to allow for signal improvement work. A weekend train schedule will be in effect.",
 "short_header": "On Friday, April 25th through April, 27th, shuttle buses replace service on the Lowell Line from North Station to Anderson/Woburn."
-}`
+}
+
+or
+
+{
+"description":"In May and June of 2025, MassDOT will replace the I-90 bridge over the MBTA Worcester Commuter Rail in Newton, MA. Accelerated Bridge Construction methods will be used to replace the bridge over two weekends to minimize impacts to the public.\r\n\nWHEN WILL THIS AFFECT YOU?\r\nThe First Rapid Replacement Weekend:\r\nFriday May 30, 2025 9 p.m. to\r\nMonday June 2, 2025 5 a.m.\r\nThe Second Rapid Replacement Weekend:\r\nFriday June 20, 2025 9 p.m. to\r\nMonday June 23, 2025 5 a.m.\r\n\nHOW WILL THIS AFFECT YOU?\r\nBuses will replace the last Worcester Commuter Rail train on Friday and replace all trains on Saturday and Sunday along the Worcester Commuter Rail Line between Framingham and South Station.\r\n\nFramingham Shuttle Bus Stop Locations:\r\nFramingham - Eastbound parking lot pickup/dropoff location.\r\nWest Natick - On Waverly St. adjacent to parking lot entrance. Outbound on the Northside and inbound on the South.\r\nNatick Center - South Ave. between Main and Washington Streets. Outbound on the Northside and inbound on the South.\r\nWellesley Square - Central St. between Railroad Ave. and Grove St. Outbound on the Northside and inbound on the South.\r\nWellesley Hills - Washington St. in front of the cafe. Outbound on the station side and inbound across the street.\r\nRiverside - At the designated MBTA bus stop.\r\nAuburndale - On Auburn St. at the Ash and Melrose St. intersection.\r\n\nWest Newton Shuttle Bus Stop Locations:\r\nWest Newton - Washington St. east of Cherry St. Outbound on the Northside and inbound on the South, East of Highland St.\r\nNewtonville - Outbound is on the Northside of Washington St. West of Walnut St. Inbound is on the Southside of Washington St. East of Walnut St. Both are at existing MBTA bus stops for 553 & 554.\r\nBoston Landing - South of the station on Guest St. West of Arthur St. Outbound on the Northside and Inbound on the South.\r\nKenmore - In the station busway.\r\n",
+"header":"On June 21 through June 22, shuttle buses will replace service between Framingham and Boston. Shuttle buses will make connections with Green Line service for continued travel at Riverside or Kenmore. Visit MBTA.com/FWwork for more information."
+}
+`
                     },
                     {
                         "role": "user",

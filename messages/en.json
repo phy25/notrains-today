@@ -104,5 +104,6 @@
     "mbtaAlertBadgeSecondarySymbolGreenGLX": "Stations north of North Station up to Medford/Tufts or Union Square are affected",
     "mbtaAlertBadgeSecondarySymbolGreenGLXD": "Stations north of North Station up to Union Square are affected",
     "mbtaAlertBadgeSecondarySymbolGreenGLXE": "Stations north of North Station up to Medford/Tufts are affected",
-    "mbtaAlertBadgeSecondarySymbolNorthIntoBoston": "Suburbs near Boston and North Station are affected"
+    "mbtaAlertBadgeSecondarySymbolNorthIntoBoston": "Suburbs near Boston and North Station are affected",
+    "mbtaAlertBadgeSecondarySymbolWorcesterEastFromFramingham": "Stations from Framingham to South Station are affected"
 }

@@ -136,4 +136,8 @@ export const SECONDARY_SYMBOLS: Record<string, {
         symbol: '◣',
         description_message_func: m['mbtaAlertBadgeSecondarySymbolNorthIntoBoston'],
     },
+    CR_WORCESTER_EAST_FROM_FRAMINGHAM: {
+        symbol: '⇒',
+        description_message_func: m['mbtaAlertBadgeSecondarySymbolWorcesterEastFromFramingham'],
+    }
 };

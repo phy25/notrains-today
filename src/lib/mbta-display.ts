@@ -683,6 +683,22 @@ const NEWBURYPORT_SOUTH_PARENT_STOP_IDS = [
     'place-ER-0128',
 ];
 
+const WORCESTER_EAST_TO_FRAMINGHAM_PARENT_STOP_IDS = [
+    'place-sstat',
+    'place-bbsta',
+    'place-WML-0025',
+    'place-WML-0035',
+    'place-WML-0081',
+    'place-WML-0091',
+    'place-WML-0102',
+    'place-WML-0125',
+    'place-WML-0135',
+    'place-WML-0147',
+    'place-WML-0177',
+    'place-WML-0199',
+    'place-WML-0214',
+];
+
 const getAlertBadgeSecondarySymbolForCommuterRail = (alert: MbtaAlert) => {
     // if it impacts a trip, show inbound/outbound symbol
     if (alert.attributes.informed_entity.every(entity => entity.trip)) {
@@ -711,6 +727,10 @@ const getAlertBadgeSecondarySymbolForCommuterRail = (alert: MbtaAlert) => {
         NEWBURYPORT_SOUTH_PARENT_STOP_IDS.every((stop) => informedStops.includes(stop))
     );
 
+    const hasWorcesterEastToFraminghamSegment = (
+        WORCESTER_EAST_TO_FRAMINGHAM_PARENT_STOP_IDS.every((stop) => informedStops.includes(stop))
+    );
+
     if (hasHavenhillSouthSegment || hasLowellSouthSegment) {
         return SECONDARY_SYMBOLS.CR_NORTH_INTO_BOSTON.symbol;
     }
@@ -718,6 +738,11 @@ const getAlertBadgeSecondarySymbolForCommuterRail = (alert: MbtaAlert) => {
     if (hasNewburyportSouthSegment) {
         return SECONDARY_SYMBOLS.CR_NEWBURYPORT_INFO_BOSTON.symbol;
     }
+
+    if (hasWorcesterEastToFraminghamSegment) {
+        return SECONDARY_SYMBOLS.CR_WORCESTER_EAST_FROM_FRAMINGHAM.symbol;
+    }
+
     // can't determine branch
     return SECONDARY_SYMBOLS.SOME_STOPS.symbol;
 }

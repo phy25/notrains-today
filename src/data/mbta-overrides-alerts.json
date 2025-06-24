@@ -69,9 +69,27 @@
             "note": "Outbound train does not impact shared routes",
             "item": {
                 "attributes": {
-                    "informed_entity":[
-                        {"stop":"NEC-1969-03","direction_id":0,"route_type":2,"route":"CR-Providence","activities":["BOARD"],"trip":"SPRING2025V2-715954-893"},
-                        {"stop":"place-NEC-1969","direction_id":0,"route_type":2,"route":"CR-Providence","activities":["BOARD"],"trip":"SPRING2025V2-715954-893"}
+                    "informed_entity": [
+                        {
+                            "stop": "NEC-1969-03",
+                            "direction_id": 0,
+                            "route_type": 2,
+                            "route": "CR-Providence",
+                            "activities": [
+                                "BOARD"
+                            ],
+                            "trip": "SPRING2025V2-715954-893"
+                        },
+                        {
+                            "stop": "place-NEC-1969",
+                            "direction_id": 0,
+                            "route_type": 2,
+                            "route": "CR-Providence",
+                            "activities": [
+                                "BOARD"
+                            ],
+                            "trip": "SPRING2025V2-715954-893"
+                        }
                     ]
                 }
             }
@@ -83,9 +101,27 @@
             "note": "Outbound train does not impact shared routes",
             "item": {
                 "attributes": {
-                    "informed_entity":[
-                        {"stop":"NEC-1969-03","direction_id":0,"route_type":2,"route":"CR-Providence","activities":["BOARD"],"trip":"SPRING2025V3-716195-5893"},
-                        {"stop":"place-NEC-1969","direction_id":0,"route_type":2,"route":"CR-Providence","activities":["BOARD"],"trip":"SPRING2025V3-716195-5893"}
+                    "informed_entity": [
+                        {
+                            "stop": "NEC-1969-03",
+                            "direction_id": 0,
+                            "route_type": 2,
+                            "route": "CR-Providence",
+                            "activities": [
+                                "BOARD"
+                            ],
+                            "trip": "SPRING2025V3-716195-5893"
+                        },
+                        {
+                            "stop": "place-NEC-1969",
+                            "direction_id": 0,
+                            "route_type": 2,
+                            "route": "CR-Providence",
+                            "activities": [
+                                "BOARD"
+                            ],
+                            "trip": "SPRING2025V3-716195-5893"
+                        }
                     ]
                 }
             }
@@ -295,6 +331,242 @@
                     ]
                 }
             }
+        },
+        {
+            "type": "replace",
+            "match_id": "651121",
+            "note": "append additional active_period",
+            "item": {
+                "attributes": {
+                    "active_period": [
+                        {
+                            "end": "2025-07-14T02:59:00-04:00",
+                            "start": "2025-07-10T20:30:00-04:00"
+                        },
+                        {
+                            "end": "2025-07-21T02:59:00-04:00",
+                            "start": "2025-07-17T20:30:00-04:00"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "type": "insert",
+            "item": {
+                "id": "notrains-today-cr-worcester-jul-26-27-suspension",
+                "type": "alert",
+                "attributes": {
+                    "active_period": [
+                        {
+                            "start": "2025-07-26T04:00:00-04:00",
+                            "end": "2025-07-28T02:59:00-04:00"
+                        }
+                    ],
+                    "banner": null,
+                    "cause": "CONSTRUCTION",
+                    "created_at": "2025-06-24T00:19:36-04:00",
+                    "description": "A dedicated diversion schedule will be available on mbta.com.\u001f\n\nFree and accessible shuttle bus service will replace train service between Framingham and South Station. There will be four shuttle routes available during this closure.\n\nShuttle Bus Route 1 will operate between Framingham, West Natick, Natick Center, Wellesley Square, Wellesley Hills, and South Station.\n\nShuttle Bus Route 2 will operate between Wellesley Hills, Riverside on the Green Line D Branch for connections to the subway, Auburndale, West Newton, Newtonville, Boston Landing, and South Station.\n\nShuttle Bus Route 3 will operate between Framingham, West Natick, Natick Center, Wellesley Square, Wellesley Hills, and Back Bay.\n\nShuttle Bus Route 4 will operate between Wellesley Hills, Riverside on the Green Line D Branch for connections to the subway, Auburndale, West Newton, Newtonville, Boston Landing, and Back Bay.\n\nThere will be no shuttle bus stops at Wellesley Farms and Lansdowne. \u001f\u001f\u001f\n\nPassengers who typically board at Wellesley Farms should instead travel to Riverside.\n\nPassengers who typically board at Lansdowne should instead travel to Kenmore (which is about a quarter mile or a six-minute walk) for shuttle bus service or to connect to the Green Line B, C, and D Branches for further Red Line connections toward South Station.\n\nPassengers should also note that Commuter Rail service between Worcester and Framingham will be fare-free during this service change.\u001f\n\nThis service change is in place due to work taking place on the Natick Center Station Accessibility Improvements project.",
+                    "duration_certainty": "KNOWN",
+                    "effect": "SHUTTLE",
+                    "header": "On July 26 and 27, Framingham/Worcester Line service will be suspended between Framingham and South Station for accessibility improvement work at Natick Center. Free shuttle buses will replace trains between Framingham and South Station; no shuttle stops at Wellesley Farms or Lansdowne.",
+                    "short_header": "July 26-27: Worcester Line service suspended between Framingham & South Station for Natick Center accessibility work. Free shuttles provided; no shuttle at Wellesley Farms or Lansdowne.",
+                    "image": null,
+                    "image_alternative_text": null,
+                    "informed_entity": [
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-WML-0214",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-WML-0199",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-WML-0177",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-WML-0147",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-WML-0135",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-WML-0125",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-WML-0102",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-WML-0091",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-WML-0081",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-WML-0035",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-WML-0025",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-bbsta",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        },
+                        {
+                            "route": "CR-Worcester",
+                            "route_type": 2,
+                            "stop": "place-sstat",
+                            "activities": [
+                                "BOARD",
+                                "EXIT",
+                                "RIDE"
+                            ]
+                        }
+                    ],
+                    "lifecycle": "NEW",
+                    "service_effect": "Service suspended between Framingham and South Station; free shuttle buses provided",
+                    "severity": 7,
+                    "timeframe": "weekend of July 26–27",
+                    "updated_at": "2025-06-24T00:19:36-04:00",
+                    "url": "https://www.mbta.com/news/2025-06-20/mbta-announces-july-service-changes"
+                },
+                "links": {
+                    "self": "/alerts/notrains-today-cr-worcester-jul-26-27-suspension"
+                },
+                "relationships": {
+                    "routes": {
+                        "data": [
+                            {
+                                "id": "CR-Worcester",
+                                "type": "route"
+                            }
+                        ]
+                    }
+                }
+            },
+            "included": [
+                {
+                    "attributes": {
+                        "color": "80276C",
+                        "description": "Regional Rail",
+                        "direction_destinations": [
+                            "Worcester",
+                            "South Station"
+                        ],
+                        "direction_names": [
+                            "Outbound",
+                            "Inbound"
+                        ],
+                        "fare_class": "Commuter Rail",
+                        "long_name": "Framingham/Worcester Line",
+                        "short_name": "",
+                        "sort_order": 20004,
+                        "text_color": "FFFFFF",
+                        "type": 2
+                    },
+                    "id": "CR-Worcester",
+                    "links": {
+                        "self": "/routes/CR-Worcester"
+                    },
+                    "relationships": {
+                        "agency": {
+                            "data": {
+                                "id": "1",
+                                "type": "agency"
+                            }
+                        },
+                        "line": {
+                            "data": {
+                                "id": "line-Worcester",
+                                "type": "line"
+                            }
+                        }
+                    },
+                    "type": "route"
+                }
+            ]
         }
     ]
 }
