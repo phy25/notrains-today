@@ -306,7 +306,9 @@ const RED_LINE_ALERT_KEYWORD_BRAINTREE = "braintree branch";
 const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
     // for now we do a simple check by checking if the alert impacts all stop on a branch rather than some
     // TODO: check stop by stop to determine range intersection
-    const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
+    const informedStops = alert.attributes.informed_entity
+        .filter((entity) => entity.stop && entity.stop.startsWith('place-'))
+        .map((entity) => entity.stop);
 
     const hasSharedHarvardNorthBranch = (
         RED_LINE_NORTH_STOP_IDS.every((stop) => informedStops.includes(stop))
@@ -321,9 +323,6 @@ const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
         RED_LINE_BRAINTREE_STOP_IDS.every((stop) => informedStops.includes(stop))
     );
 
-    if (!hasAshmontBranch && !hasBraintreeBranch && !hasSharedHarvardNorthBranch && !hasSharedBranch && informedStops.length) {
-        return SECONDARY_SYMBOLS.SOME_STOPS.symbol; // can't determine branch
-    }
     if (hasSharedHarvardNorthBranch && !hasSharedBranch && !hasAshmontBranch && !hasBraintreeBranch) {
         return SECONDARY_SYMBOLS.RED_NORTH_OF_HARVARD.symbol; // northbound branch, north of Harvard
     }
@@ -339,9 +338,14 @@ const getAlertBadgeSecondarySymbolForRedLine = (alert: MbtaAlert) => {
     if (!hasSharedHarvardNorthBranch && !hasSharedBranch && hasAshmontBranch && hasBraintreeBranch) {
         return SECONDARY_SYMBOLS.RED_BOTH_SOUTHBOUND_BRANCHES.symbol; // both southbound branches
     }
+    // check shared branch
+    if (!hasAshmontBranch && !hasBraintreeBranch && informedStops.length) {
+        if (informedStops.every((stop) => RED_LINE_SHARED_STOP_IDS.includes(stop))) {
+            return SECONDARY_SYMBOLS.RED_CORE.symbol; // red core
+        }
+    }
 
     const header = (alert?.attributes?.header || '').toLowerCase();
-    console.log(header);
 
     if (header.includes(RED_LINE_ALERT_KEYWORD_BRANCH_PREFIX + RED_LINE_ALERT_KEYWORD_ASHMONT)
         && !header.includes(RED_LINE_ALERT_KEYWORD_BRAINTREE)) {
@@ -389,7 +393,9 @@ const ORANGE_LINE_SOUTH_STOP_IDS = [
 const getAlertBadgeSecondarySymbolForOrangeLine = (alert: MbtaAlert) => {
     // I am too lazy to build out everything for now
     // TODO: check stop by stop to determine range intersection
-    const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
+    const informedStops = alert.attributes.informed_entity
+        .filter((entity) => entity.stop && entity.stop.startsWith('place-'))
+        .map((entity) => entity.stop);
 
     const hasNorthSegment = (
         ORANGE_LINE_NORTH_STOP_IDS.every((stop) => informedStops.includes(stop))
@@ -409,6 +415,15 @@ const getAlertBadgeSecondarySymbolForOrangeLine = (alert: MbtaAlert) => {
     if (!hasNorthSegment && hasCoreSegment && hasSouthSegment) {
         return SECONDARY_SYMBOLS.ORANGE_SOUTH_AND_CORE.symbol; // south and core segments
     }
+    // Alert # 651168, this peculiar service pattern :shrug: between Wellington and Back Bay
+    if (!hasNorthSegment && hasCoreSegment && !hasSouthSegment) {
+        // check if the rest of the informed stops are in north
+        let remainingStops = informedStops.filter((stop) => !ORANGE_LINE_CORE_STOP_IDS.includes(stop));
+        if (remainingStops.length && remainingStops.every((stop) => ORANGE_LINE_NORTH_STOP_IDS.includes(stop))) {
+            return SECONDARY_SYMBOLS.ORANGE_NORTH_AND_CORE.symbol; // north and core segments
+        }
+    }
+
     return SECONDARY_SYMBOLS.SOME_STOPS.symbol;
 }
 
@@ -494,7 +509,7 @@ export const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
         .map((entity) => entity.stop);
 
     // single stop, Boston College TODO this needs to be more generalized
-    if (informedStops.every(stop => stop === 'place-lake')) {
+    if (informedStops.length && informedStops.every(stop => stop === 'place-lake')) {
         return SECONDARY_SYMBOLS.GREEN_BOSTON_COLLEGE.symbol;
     }
 
@@ -530,7 +545,7 @@ export const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
         return SECONDARY_SYMBOLS.GREEN_GLX.symbol; // GLX E or charles river outage
     }
     // if we only get hits in core, show core symbol
-    if (informedStops.every((stop) => GREEN_LINE_CORE_SEGMENT_STOP_IDS.includes(stop))) {
+    if (informedStops.length && informedStops.every((stop) => GREEN_LINE_CORE_SEGMENT_STOP_IDS.includes(stop))) {
         return SECONDARY_SYMBOLS.GREEN_CORE.symbol; // core segment
     }
     // can't determine branch
@@ -575,7 +590,7 @@ export const getAlertBadgeSecondarySymbolForGreenLineGlance = (alert: MbtaAlert)
             return SECONDARY_SYMBOLS.GREEN_GLX_E.symbol; // E only
         }
         // if we only get hits in core, show core symbol
-        if (informedStops.every((stop) => GREEN_LINE_CORE_SEGMENT_STOP_IDS.includes(stop))) {
+        if (informedStops.length && informedStops.every((stop) => GREEN_LINE_CORE_SEGMENT_STOP_IDS.includes(stop))) {
             return SECONDARY_SYMBOLS.GREEN_CORE.symbol; // core segment
         }
         // TODO: charles river outage 🦆

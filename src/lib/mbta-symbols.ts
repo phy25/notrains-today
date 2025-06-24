@@ -64,6 +64,10 @@ export const SECONDARY_SYMBOLS: Record<string, {
         symbol: '▲',
         description_message_func: m['mbtaAlertBadgeSecondarySymbolRedNorthbound'],
     },
+    RED_CORE: {
+        symbol: '⇎',
+        description_message_func: m['mbtaAlertBadgeSecondarySymbolRedCore'],
+    },
     RED_ASHMONT_BRANCH: {
         symbol: '◣',
         description_message_func: m['mbtaAlertBadgeSecondarySymbolRedAshmontBranch'],
@@ -83,6 +87,10 @@ export const SECONDARY_SYMBOLS: Record<string, {
     ORANGE_SOUTH: {
         symbol: '◣',
         description_message_func: m['mbtaAlertBadgeSecondarySymbolOrangeSouth'],
+    },
+    ORANGE_NORTH_AND_CORE: {
+        symbol: '⇖',
+        description_message_func: m['mbtaAlertBadgeSecondarySymbolOrangeNorthAndCore'],
     },
     ORANGE_SOUTH_AND_CORE: {
         symbol: '⇙',
@@ -105,7 +113,7 @@ export const SECONDARY_SYMBOLS: Record<string, {
         description_message_func: m['mbtaAlertBadgeSecondarySymbolGreenNorthOfCore'],
     },
     GREEN_CORE: {
-        symbol: '⤄',
+        symbol: '⇎',
         description_message_func: m['mbtaAlertBadgeSecondarySymbolGreenCore'],
     },
     GREEN_GLX: {
