@@ -1,6 +1,7 @@
 {
     "$schema": "https://inlang.com/schema/inlang-message-format",
     "currentLocaleName": "English",
+    "lastUpdatedAtTime": "Last updated at {time}",
     "asOfTime": "as of {time}",
     "trainsRunningAll": "As of {time}, all trains are running normally on the {MBTA}.",
     "trainsRunningSome": "As of {time}, some trains are not running on the {MBTA}.",
