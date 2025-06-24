@@ -118,7 +118,7 @@
     </div>
     {/if}
     {#if isCurrentServiceNightOwl}
-    <div class="route-expanded"><p>
+    <div class="route-expanded"><p class="text-indent-with-symbol">
         {SECONDARY_SYMBOLS.NIGHT.symbol} {m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {
         timeStyle: "short",
     }).format(toCalendarDateTime(now(MBTA_TIMEZONE), MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME).toDate(MBTA_TIMEZONE))})}<a href="https://www.mbta.com/lasttrip">{m.learnMore()}</a></p>
@@ -192,5 +192,9 @@
 }
 .route-expanded p {
     margin: 0;
+}
+p.text-indent-with-symbol {
+    text-indent: -1.3rem;
+    margin-left: 1rem;
 }
 </style>
