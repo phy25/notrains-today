@@ -69,6 +69,7 @@
     "githubRepo": "GitHub 仓库",
     "currentVersion": "当前版本",
     "routeTypeTrains": "列车",
+    "routeTypeSubway": "地铁",
     "routeTypeRapidTransit": "快速交通",
     "routeTypeCommuterRail": "通勤铁路",
     "routeTypeBus": "公交车",

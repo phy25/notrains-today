@@ -69,6 +69,7 @@
     "githubRepo": "GitHub repo",
     "currentVersion": "Current version",
     "routeTypeTrains": "Trains",
+    "routeTypeSubway": "Subway",
     "routeTypeRapidTransit": "Rapid Transit",
     "routeTypeCommuterRail": "Commuter Rail",
     "routeTypeBus": "Bus",

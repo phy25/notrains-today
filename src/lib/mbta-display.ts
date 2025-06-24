@@ -43,6 +43,7 @@ const ROUTE_PILL_MAPPING: Record<string, string> = {
     'Orange': 'OL',
     'Blue': 'BL',
     'Green': 'GL',
+    'Subway': 'T',
     // Commuter Rail unofficial
     // https://github.com/mbta/screens/blob/6331e5c587b0ba31c6965cc1ce7dc6bb374950dc/lib/screens/v2/widget_instance/serializer/route_pill.ex#L41
     'CR-Fairmount': 'FMT',
@@ -79,6 +80,17 @@ export const COMMUTER_RAIL_COMMON_ROUTES = [
     'CR-Needham',
     'CR-Newburyport',
     'CR-Providence',
+];
+
+export const SUBWAY_COMMON_ROUTES = [
+    'Red',
+    'Mattapan',
+    'Orange',
+    'Blue',
+    'Green-B',
+    'Green-C',
+    'Green-D',
+    'Green-E',
 ];
 
 export const getFormattedTime = (timeString: string) => {
@@ -681,4 +693,14 @@ const getAlertBadgeSecondarySymbolForCommuterRail = (alert: MbtaAlert) => {
     }
     // can't determine branch
     return SECONDARY_SYMBOLS.SOME_STOPS.symbol;
+}
+
+export const mergeUniqueRoutesForDisplay = (routes: string[]) => {
+    if (routes.length == SUBWAY_COMMON_ROUTES.length) {
+        if (routes.every(route => SUBWAY_COMMON_ROUTES.includes(route))) {
+            // if all routes are common subway routes, return a single route
+            return ['Subway'];
+        }
+    }
+    return routes;
 }

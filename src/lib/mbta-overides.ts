@@ -241,6 +241,39 @@ export const overrideAlerts = (json: {data?: MbtaAlert[]; included: any;}) => {
         "type": "route"
     },{
         "attributes": {
+            "color": "494f5b",
+            "description": "Rapid Transit",
+            "direction_destinations": [],
+            "direction_names": [],
+            "fare_class": "Rapid Transit",
+            "long_name": "Subway",
+            "short_name": "",
+            "sort_order": 10000,
+            "text_color": "FFFFFF",
+            "type": 0
+        },
+        "id": "Subway",
+        "links": {
+            "self": "/routes/Subway"
+        },
+        "relationships": {
+            "agency": {
+                "data": {
+                    "id": "1",
+                    "type": "agency"
+                }
+            },
+            "line": {
+                "data": {
+                    "id": "line-Subway",
+                    "type": "line"
+                }
+            }
+        },
+        "type": "route"
+    },
+    {
+        "attributes": {
             "color": "80276C",
             "description": "Regional Rail",
             "direction_destinations": ["Outbound", "Inbound"],

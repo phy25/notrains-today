@@ -1,6 +1,6 @@
 <script lang="ts">
 import { getDateString, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
-import { EFFECT_MESSAGES, getEffect, getEffectWithLineMessage, getPillName } from "$lib/mbta-display";
+import { EFFECT_MESSAGES, getEffect, getEffectWithLineMessage, getPillName, mergeUniqueRoutesForDisplay } from "$lib/mbta-display";
 import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
@@ -36,19 +36,20 @@ if (showNightOwl && currentTime.getHours() < MBTA_SERVICE_START_HOUR) {
 {#each alerts || [] as alert}
     {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
     {@const unique_routes = alert.attributes.informed_entity.map(entity => entity.route).filter((value, index, self) => self.indexOf(value) === index).sort((a, b) => a.localeCompare(b))}
+    {@const unique_routes_display = mergeUniqueRoutesForDisplay(unique_routes)}
     {@const descriptionArr = alert.attributes?.description?.split(/\r?\n/g) || []}
     {@const updatedAtDate = parseZonedDateTime(alert.attributes.updated_at + '[' + MBTA_TIMEZONE + ']').toDate()}
     <details transition:fade id={'alert-'+alert.id}>
         <summary>
             <!-- remove <p> to work with the marker. Temporary anyway. -->
-            {#if unique_routes.length == 1}
-                {@const route_id = unique_routes[0]}
+            {#if unique_routes_display.length == 1}
+                {@const route_id = unique_routes_display[0]}
                 {@const attributes = (routeMap.get(route_id) as any)?.attributes}
                 <span class="badge-group"><MbtaRouteBadgeCompound type="long" routeId={route_id} routeAttributes={attributes} /></span>
                 <span class="alert-title">{getEffectWithLineMessage(effect, route_id, attributes)}</span>
             {:else}
                 <div class="badge-groups">
-                    {#each unique_routes as route_id}
+                    {#each unique_routes_display as route_id}
                         {@const attributes = (routeMap.get(route_id) as any)?.attributes}
                         <span class="badge-group"><MbtaRouteBadgeCompound type="long" routeId={route_id} routeAttributes={attributes} /></span>
                     {/each}
