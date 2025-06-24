@@ -489,7 +489,9 @@ const GREEN_LINE_CORE_SEGMENT_STOP_IDS = [
 export const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
     // for now we do a simple check by checking if the alert impacts all stop on a branch rather than some
     // TODO: check stop by stop to determine range intersection
-    const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
+    const informedStops = alert.attributes.informed_entity
+        .filter((entity) => entity.stop && entity.stop.startsWith('place-'))
+        .map((entity) => entity.stop);
 
     // single stop, Boston College TODO this needs to be more generalized
     if (informedStops.every(stop => stop === 'place-lake')) {
@@ -527,6 +529,10 @@ export const getAlertBadgeSecondarySymbolForGreenLine = (alert: MbtaAlert) => {
         // Green line has split branch routes on the same alert. This will show up alongside E.
         return SECONDARY_SYMBOLS.GREEN_GLX.symbol; // GLX E or charles river outage
     }
+    // if we only get hits in core, show core symbol
+    if (informedStops.every((stop) => GREEN_LINE_CORE_SEGMENT_STOP_IDS.includes(stop))) {
+        return SECONDARY_SYMBOLS.GREEN_CORE.symbol; // core segment
+    }
     // can't determine branch
     return SECONDARY_SYMBOLS.SOME_STOPS.symbol;
 }
@@ -539,7 +545,9 @@ export const getAlertBadgeSecondarySymbolForGreenLineGlance = (alert: MbtaAlert)
     const effectSymbol = getAlertBadgeSecondarySymbolForEffect(alert);
     // if informed entities includes a stop, attempt to determine direction
     if (alert.attributes.informed_entity.find((entity) => entity.stop)) {
-        const informedStops = alert.attributes.informed_entity.filter((entity) => entity.stop).map((entity) => entity.stop);
+        const informedStops = alert.attributes.informed_entity
+            .filter((entity) => entity.stop && entity.stop.startsWith('place-'))
+            .map((entity) => entity.stop);
 
         // TODO: Green line is the most complicated one. We build as new alerts surface.
         const hasGLXDSegment = (
@@ -565,6 +573,10 @@ export const getAlertBadgeSecondarySymbolForGreenLineGlance = (alert: MbtaAlert)
         if (hasGLXESegment && !hasGLXDSegment && !hasDESharedSegment && !hasCoreSegment) {
             // Green line has split branch routes on the same alert. This will show up alongside E.
             return SECONDARY_SYMBOLS.GREEN_GLX_E.symbol; // E only
+        }
+        // if we only get hits in core, show core symbol
+        if (informedStops.every((stop) => GREEN_LINE_CORE_SEGMENT_STOP_IDS.includes(stop))) {
+            return SECONDARY_SYMBOLS.GREEN_CORE.symbol; // core segment
         }
         // TODO: charles river outage 🦆
 

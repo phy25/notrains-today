@@ -104,6 +104,10 @@ export const SECONDARY_SYMBOLS: Record<string, {
         symbol: '▲',
         description_message_func: m['mbtaAlertBadgeSecondarySymbolGreenNorthOfCore'],
     },
+    GREEN_CORE: {
+        symbol: '⤄',
+        description_message_func: m['mbtaAlertBadgeSecondarySymbolGreenCore'],
+    },
     GREEN_GLX: {
         symbol: '◤',
         description_message_func: m['mbtaAlertBadgeSecondarySymbolGreenGLX'],
