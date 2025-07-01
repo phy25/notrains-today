@@ -35,6 +35,7 @@ export const LINE_NAMES = {
     'Blue': m['mbtaLineNameBlue'](),
     'Green': m['mbtaLineNameGreen'](),
     'CR': m.routeTypeCommuterRail(),
+    'Subway': m.routeTypeSubway(),
 }
 
 const ROUTE_PILL_MAPPING: Record<string, string> = {
