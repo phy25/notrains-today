@@ -13,7 +13,18 @@ import { DateFormatter } from "@internationalized/date";
 const { mainRouteId, color, textColor, branchRouteIds = [], unfilteredAlerts, serviceDate, currentServiceDate, noDowntownTransfer, lastTrainTime = undefined, isServiceEnded = false, isCurrentServiceNightOwl = false } = $props();
 const filterdAlerts: MbtaAlert[] = $derived(mergeAlertInformedEntity(unfilteredAlerts.filter((alert: MbtaAlert) =>
     alert.attributes.informed_entity.some(entity => entity.route === mainRouteId || branchRouteIds.includes(entity.route))
-)));
+)).filter((alert: MbtaAlert) => {
+    // Additional service impacting alerts filter; this only impacts glance, but not the alert details.
+    // Values are in sync with dotcom:
+    // https://github.com/mbta/dotcom/blob/af782ad1202e2b35154c4185968bd8a0b9132afe/lib/dotcom/alerts.ex#L33
+    if (alert.attributes.effect === 'DELAY') {
+        return alert.attributes.severity >= 2;
+    }
+    if (alert.attributes.effect === 'SERVICE_CHANGE') {
+        return alert.attributes.severity >= 3;
+    }
+    return true;
+}));
 const branchesAlerts = $derived(filterdAlerts.filter((alert: MbtaAlert) =>
     alert.attributes.informed_entity.some(entity => branchRouteIds.includes(entity.route))
 ));
