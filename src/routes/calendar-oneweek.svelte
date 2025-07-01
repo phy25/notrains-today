@@ -29,6 +29,7 @@ let {
     maxValue={maxValue}
     locale={locale}
     preventDeselect={true}
+    fixedWeeks={true}
 >
     {#snippet children({ months, weekdays })}
         {#each months as month, i (i)}
