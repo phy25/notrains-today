@@ -567,6 +567,16 @@
                     "type": "route"
                 }
             ]
+        },
+        {
+            "type": "replace",
+            "match_id": "653016",
+            "note": "this is not a closure, but opening",
+            "item": {
+                "attributes": {
+                    "effect": "SERVICE_CHANGE"
+                }
+            }
         }
     ]
 }
