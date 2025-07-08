@@ -51,7 +51,7 @@ const showFilterText = $derived(['', undefined, 'trains', 'commuter-rail', 'rapi
                 <button {...props} class="tab-side-btn {isMenuOpen ? 'open' : ''} {showFilterText ? '' : 'tabber active'}">
                     <div class="tab-side-btn-flex">
                         <span class="hide-xs">{showFilterText ? m.filterButton() : QUERY_ROUTE_TYPE_DROPDOWN_M[routeType]()}</span>
-                        <span class="show-xs">{QUERY_ROUTE_TYPE_DROPDOWN_M[routeType]()}</span>
+                        <span class="show-xs inline">{QUERY_ROUTE_TYPE_DROPDOWN_M[routeType]()}</span>
                         <span>▾</span>
                     </div>
                 </button>
@@ -77,7 +77,7 @@ const showFilterText = $derived(['', undefined, 'trains', 'commuter-rail', 'rapi
                                     {#if routeType !== 'rapid-transit'}
                                     <DropdownMenu.Item>
                                         {#snippet child({ props })}
-                                            <a {...props} href={resolveRoute(page.route.id || '/', { route_type: 'rapid-transit' })}>
+                                            <a {...props} class="show-xs flex" href={resolveRoute(page.route.id || '/', { route_type: 'rapid-transit' })}>
                                                 {m.routeTypeRapidTransit()}
                                             </a>
                                         {/snippet}
@@ -86,7 +86,7 @@ const showFilterText = $derived(['', undefined, 'trains', 'commuter-rail', 'rapi
                                     {#if routeType !== 'commuter-rail'}
                                     <DropdownMenu.Item>
                                         {#snippet child({ props })}
-                                            <a {...props} class="hide-xs" href={resolveRoute(page.route.id || '/', { route_type: 'commuter-rail' })}>
+                                            <a {...props} class="show-xs flex" href={resolveRoute(page.route.id || '/', { route_type: 'commuter-rail' })}>
                                                 {m.routeTypeCommuterRail()}
                                             </a>
                                         {/snippet}
@@ -95,7 +95,7 @@ const showFilterText = $derived(['', undefined, 'trains', 'commuter-rail', 'rapi
                                     {#if routeType !== 'bus'}
                                     <DropdownMenu.Item>
                                         {#snippet child({ props })}
-                                            <a {...props} class="hide-xs" href={resolveRoute(page.route.id || '/', { route_type: 'bus' })}>
+                                            <a {...props} href={resolveRoute(page.route.id || '/', { route_type: 'bus' })}>
                                                 {m.routeTypeBus()}
                                             </a>
                                         {/snippet}
@@ -159,21 +159,21 @@ const showFilterText = $derived(['', undefined, 'trains', 'commuter-rail', 'rapi
             </DropdownMenu.Portal>
         </DropdownMenu.Root>
         <a
-            class="tab-side-btn hide-xs tabber {routeType == 'commuter-rail' ? 'active' : ''}"
-            href={routeType == 'commuter-rail' ? resolveRoute(page.route.id || '/', { route_type: '' }) : resolveRoute(page.route.id || '/', { route_type: 'commuter-rail' })}
-            title={routeType == 'commuter-rail' ? m.filterExitText({filter: m.routeTypeCommuterRail()}) : m.routeTypeCommuterRail()}>
-            <div class="tab-side-btn-flex">
-                <span>🚂</span>
-                <span class="hide-mobile">{m.routeTypeCommuterRail()}</span>
-            </div>
-        </a>
-        <a
             class="tab-side-btn hide-xs tabber {routeType == 'rapid-transit' ? 'active' : ''}"
             href={routeType == 'rapid-transit' ? resolveRoute(page.route.id || '/', { route_type: '' }) : resolveRoute(page.route.id || '/', { route_type: 'rapid-transit' })}
             title={routeType == 'rapid-transit' ? m.filterExitText({filter: m.routeTypeRapidTransit()}) : m.routeTypeRapidTransit()}>
             <div class="tab-side-btn-flex">
                 <span>🚈</span>
                 <span class="hide-mobile">{m.routeTypeRapidTransit()}</span>
+            </div>
+        </a>
+        <a
+            class="tab-side-btn hide-xs tabber {routeType == 'commuter-rail' ? 'active' : ''}"
+            href={routeType == 'commuter-rail' ? resolveRoute(page.route.id || '/', { route_type: '' }) : resolveRoute(page.route.id || '/', { route_type: 'commuter-rail' })}
+            title={routeType == 'commuter-rail' ? m.filterExitText({filter: m.routeTypeCommuterRail()}) : m.routeTypeCommuterRail()}>
+            <div class="tab-side-btn-flex">
+                <span>🚂</span>
+                <span class="hide-mobile">{m.routeTypeCommuterRail()}</span>
             </div>
         </a>
         {/if}
@@ -399,12 +399,15 @@ const showFilterText = $derived(['', undefined, 'trains', 'commuter-rail', 'rapi
     background: #DDD;
     outline: none;
 }
-.show-xs {
+.show-xs, a.show-xs {
     display: none;
 }
 @media (max-width: 22rem) {
-    .show-xs {
-        display: inherit;
+    .show-xs.flex, a.show-xs.flex {
+        display: flex;
+    }
+    .show-xs.inline, a.show-xs.inline {
+        display: inline;
     }
     .hide-xs {
         display: none;
