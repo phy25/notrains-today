@@ -51,7 +51,7 @@ $effect(() => {
     // which means if the page hasn't refreshed yet, do not remove isOutdated flag
     isOutdated = false;
     isOutdatedInvervalChecker = setInterval(() => {
-        if (Date.now() - lastUpdatedDate.getTime() < 1000 * 60 * 10) {
+        if (Date.now() - lastUpdatedDate.getTime() < 1000 * 60 * 5) {
             return;
         }
         isOutdated = true;
