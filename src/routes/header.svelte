@@ -6,6 +6,7 @@ import { QUERY_ROUTE_TYPE_DROPDOWN_M } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
 import { DropdownMenu } from "bits-ui";
 import { fly } from "svelte/transition";
+import { MediaQuery } from 'svelte/reactivity';
 import { getFormattedTime } from "$lib/mbta-display";
 import { invalidateAll } from "$app/navigation";
 
@@ -24,6 +25,7 @@ const page_type = $derived.by(() => {
 let isMenuOpen = $state(false);
 
 const showFilterText = $derived(['', undefined, 'trains', 'commuter-rail', 'rapid-transit'].includes(routeType));
+const isXs = new MediaQuery('max-width: 22rem');
 </script>
 
 <header class="tab-wrapper {isDebug() ? 'debug' : ''}">
@@ -74,19 +76,19 @@ const showFilterText = $derived(['', undefined, 'trains', 'commuter-rail', 'rapi
                                         {/snippet}
                                     </DropdownMenu.Item>
                                     {/if}
-                                    {#if routeType !== 'rapid-transit'}
+                                    {#if routeType !== 'rapid-transit' && isXs.current}
                                     <DropdownMenu.Item>
                                         {#snippet child({ props })}
-                                            <a {...props} class="show-xs flex" href={resolveRoute(page.route.id || '/', { route_type: 'rapid-transit' })}>
+                                            <a {...props} href={resolveRoute(page.route.id || '/', { route_type: 'rapid-transit' })}>
                                                 {m.routeTypeRapidTransit()}
                                             </a>
                                         {/snippet}
                                     </DropdownMenu.Item>
                                     {/if}
-                                    {#if routeType !== 'commuter-rail'}
+                                    {#if routeType !== 'commuter-rail' && isXs.current}
                                     <DropdownMenu.Item>
                                         {#snippet child({ props })}
-                                            <a {...props} class="show-xs flex" href={resolveRoute(page.route.id || '/', { route_type: 'commuter-rail' })}>
+                                            <a {...props} href={resolveRoute(page.route.id || '/', { route_type: 'commuter-rail' })}>
                                                 {m.routeTypeCommuterRail()}
                                             </a>
                                         {/snippet}
@@ -109,7 +111,7 @@ const showFilterText = $derived(['', undefined, 'trains', 'commuter-rail', 'rapi
                                             </a>
                                         {/snippet}
                                     </DropdownMenu.Item>
-                                    {/if}                                    
+                                    {/if}
                                     {#if routeType !== 'mbta'}
                                     <DropdownMenu.Item>
                                         {#snippet child({ props })}
@@ -403,9 +405,6 @@ const showFilterText = $derived(['', undefined, 'trains', 'commuter-rail', 'rapi
     display: none;
 }
 @media (max-width: 22rem) {
-    .show-xs.flex, a.show-xs.flex {
-        display: flex;
-    }
     .show-xs.inline, a.show-xs.inline {
         display: inline;
     }
