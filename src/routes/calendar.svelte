@@ -189,7 +189,6 @@ const onStickyWeekValueChange = (value?: DateValue) => {
     locale={getLocale()} />
 </div>
 
-{#if isDebug()}
 <Glance
   alertsToday={alertsByDay.get(dayString) || []}
   lastTrainData={new Map()}
@@ -199,7 +198,6 @@ const onStickyWeekValueChange = (value?: DateValue) => {
   routeMap={routeMap}
   routeType={routeType}
 />
-{/if}
 
 <DayDetail alerts={alertsByDay.get(dayString)} day={dayString} showNightOwl={showNightOwl} routeMap={routeMap} />
 
