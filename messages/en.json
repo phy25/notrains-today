@@ -10,6 +10,8 @@
     "trainsRunningAllCr": "As of {time}, all commuter rail trains are running normally on the {MBTA}.",
     "trainsRunningSomeCr": "As of {time}, some commuter rail trains are not running on the {MBTA}.",
     "mbtaAbbreviation": "MBTA",
+    "filterButton": "Filter",
+    "filterExitText": "Exit {filter}",
     "calendar": "Calendar",
     "alertsToday": "Alerts Today",
     "alertsCalendar": "Alerts Calendar",

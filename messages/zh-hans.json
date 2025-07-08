@@ -14,6 +14,8 @@
     "alertsCalendar": "异常日历",
     "loading": "正在加载…",
     "mbtaAbbreviation": "MBTA",
+    "filterButton": "筛选",
+    "filterExitText": "退出{filter}",
     "noAlert": "服务正常",
     "multipleAlerts": "{count} 个通知",
     "noDowntownTransfer": "无市中心换乘",

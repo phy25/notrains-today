@@ -23,6 +23,7 @@ const page_type = $derived.by(() => {
 
 let isMenuOpen = $state(false);
 
+const showFilterText = $derived(['', undefined, 'trains', 'commuter-rail', 'rapid-transit'].includes(routeType));
 </script>
 
 <header class="tab-wrapper {isDebug() ? 'debug' : ''}">
@@ -43,7 +44,140 @@ let isMenuOpen = $state(false);
                 {#if page_type === 'today'}{#await lastUpdatedStringAsync}{:then string}{#if string}<small>{m.asOfTime({time: getFormattedTime(string)})}</small>{/if}{/await}{/if}
             </div>
         </a>
-        {#if page_type !== 'info'}
+        {#if page_type !== 'info' && isDebug()}
+        <DropdownMenu.Root bind:open={isMenuOpen}>
+            <DropdownMenu.Trigger>
+                {#snippet child({ props })}
+                <button {...props} class="tab-side-btn {isMenuOpen ? 'open' : ''} {showFilterText ? '' : 'tabber active'}">
+                    <div class="tab-side-btn-flex">
+                        <span class="hide-xs">{showFilterText ? m.filterButton() : QUERY_ROUTE_TYPE_DROPDOWN_M[routeType]()}</span>
+                        <span class="show-xs">{QUERY_ROUTE_TYPE_DROPDOWN_M[routeType]()}</span>
+                        <span>▾</span>
+                    </div>
+                </button>
+                {/snippet}
+            </DropdownMenu.Trigger>
+
+            <DropdownMenu.Portal>
+                <DropdownMenu.Content forceMount align="end" onInteractOutside={(event: PointerEvent) => {event.preventDefault(); isMenuOpen = false;}}>
+                    {#snippet child({ wrapperProps, props, open })}
+                        {#if open}
+                        <div {...wrapperProps} data-sveltekit-preload-data="false">
+                            <div {...props} class="dropdown-menu-content" transition:fly={{ duration: 200 }}>
+                                <DropdownMenu.Group>
+                                    {#if routeType !== 'trains'}
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} href={resolveRoute(page.route.id || '/', { route_type: '' })}>
+                                                {m.routeTypeTrains()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    {/if}
+                                    {#if routeType !== 'rapid-transit'}
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} href={resolveRoute(page.route.id || '/', { route_type: 'rapid-transit' })}>
+                                                {m.routeTypeRapidTransit()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    {/if}
+                                    {#if routeType !== 'commuter-rail'}
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} class="hide-xs" href={resolveRoute(page.route.id || '/', { route_type: 'commuter-rail' })}>
+                                                {m.routeTypeCommuterRail()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    {/if}
+                                    {#if routeType !== 'bus'}
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} class="hide-xs" href={resolveRoute(page.route.id || '/', { route_type: 'bus' })}>
+                                                {m.routeTypeBus()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    {/if}
+                                    {#if routeType !== 'ferry'}
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} href={resolveRoute(page.route.id || '/', { route_type: 'ferry' })}>
+                                                {m.routeTypeFerry()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    {/if}                                    
+                                    {#if routeType !== 'mbta'}
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} href={resolveRoute(page.route.id || '/', { route_type: 'mbta' })}>
+                                                {m.routeTypeMBTA()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    {/if}
+                                </DropdownMenu.Group>
+                                <DropdownMenu.Separator>
+                                    {#snippet child({ props })}
+                                        <hr {...props} />
+                                    {/snippet}
+                                </DropdownMenu.Separator>
+                                <DropdownMenu.Group>
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a
+                                                {...props}
+                                                href={resolveRoute('/[[route_type]]', { route_type: page.params.route_type })}
+                                                onclick={(event: MouseEvent) => {event.preventDefault(); isMenuOpen = false; invalidateAll(); return false;}}>
+                                                    {m.refreshReminderButton()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} href="/about">
+                                                {m.footerAbout()}
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                    <DropdownMenu.Item>
+                                        {#snippet child({ props })}
+                                            <a {...props} href="/about#languages">
+                                                Language 🌐
+                                            </a>
+                                        {/snippet}
+                                    </DropdownMenu.Item>
+                                </DropdownMenu.Group>
+                            </div>
+                        </div>
+                        {/if}
+                    {/snippet}
+                </DropdownMenu.Content>
+            </DropdownMenu.Portal>
+        </DropdownMenu.Root>
+        <a
+            class="tab-side-btn hide-xs tabber {routeType == 'commuter-rail' ? 'active' : ''}"
+            href={routeType == 'commuter-rail' ? resolveRoute(page.route.id || '/', { route_type: '' }) : resolveRoute(page.route.id || '/', { route_type: 'commuter-rail' })}
+            title={routeType == 'commuter-rail' ? m.filterExitText({filter: m.routeTypeCommuterRail()}) : m.routeTypeCommuterRail()}>
+            <div class="tab-side-btn-flex">
+                <span>🚂</span>
+                <span class="hide-mobile">{m.routeTypeCommuterRail()}</span>
+            </div>
+        </a>
+        <a
+            class="tab-side-btn hide-xs tabber {routeType == 'rapid-transit' ? 'active' : ''}"
+            href={routeType == 'rapid-transit' ? resolveRoute(page.route.id || '/', { route_type: '' }) : resolveRoute(page.route.id || '/', { route_type: 'rapid-transit' })}
+            title={routeType == 'rapid-transit' ? m.filterExitText({filter: m.routeTypeRapidTransit()}) : m.routeTypeRapidTransit()}>
+            <div class="tab-side-btn-flex">
+                <span>🚈</span>
+                <span class="hide-mobile">{m.routeTypeRapidTransit()}</span>
+            </div>
+        </a>
+        {/if}
+        {#if page_type !== 'info' && !isDebug()}
         <DropdownMenu.Root bind:open={isMenuOpen}>
             <DropdownMenu.Trigger>
                 {#snippet child({ props })}
@@ -185,9 +319,9 @@ let isMenuOpen = $state(false);
 }
 .tab-side-btn {
     display: flex;
-    justify-content: end;
-    align-items: center;
-    padding: 0.5em 0.2em;
+    justify-content: center;
+    align-items: baseline;
+    padding: 0.5em 0.2em 0.1em 0.2em;
     min-width: 48px;
     box-sizing: border-box;
     background: transparent;
@@ -195,9 +329,26 @@ let isMenuOpen = $state(false);
     color: inherit;
     cursor: pointer;
     font-size: 1em;
+    line-height: 2em;
+    border-bottom: 0.4em solid transparent;
+    text-decoration: none;
+}
+.tab-side-btn.tabber:focus, .tab-side-btn.tabber:hover {
+    border-bottom-color: #DDD;
 }
 .tab-side-btn:hover {
     color: #DDD;
+}
+.tab-side-btn.tabber.active {
+    border-bottom-color: #FFF;
+}
+@media (prefers-color-scheme: dark) {
+    .tab-side-btn.tabber:focus, .tab-side-btn.tabber:hover {
+        border-bottom-color: #444;
+    }
+    .tab-side-btn.tabber.active {
+        border-bottom-color: #121212;
+    }
 }
 .tab-side-btn.open {
     user-select: none;
@@ -247,5 +398,21 @@ let isMenuOpen = $state(false);
     color: #195581;
     background: #DDD;
     outline: none;
+}
+.show-xs {
+    display: none;
+}
+@media (max-width: 22rem) {
+    .show-xs {
+        display: inherit;
+    }
+    .hide-xs {
+        display: none;
+    }
+}
+@media (max-width: 40rem) {
+    .hide-mobile {
+        display: none;
+    }
 }
 </style>

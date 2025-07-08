@@ -55,6 +55,9 @@ export const QUERY_ROUTE_TYPE_DROPDOWN_M: Record<string, typeof m.routeTypeTrain
     'trains': m.routeTypeTrains,
     'rapid-transit': m.routeTypeRapidTransit,
     'commuter-rail': m.routeTypeCommuterRail,
+    'bus': m.routeTypeBus,
+    'ferry': m.routeTypeFerry,
+    'mbta': m.routeTypeMBTA,
 };
 
 export const QUERY_ROUTE_TYPE_WITH_SUBWAY = [
