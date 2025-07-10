@@ -23,7 +23,7 @@
 		"@inlang/paraglide-js": "2.2.0",
 		"@sveltejs/adapter-auto": "^6.0.1",
 		"@sveltejs/adapter-static": "^3.0.8",
-		"@sveltejs/kit": "^2.22.4",
+		"@sveltejs/kit": "^2.22.5",
 		"@sveltejs/vite-plugin-svelte": "^5.1.0",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/svelte": "^5.2.8",
@@ -42,7 +42,7 @@
 		"vitest": "^3.2.4"
 	},
 	"dependencies": {
-		"@sentry/sveltekit": "^9.36.0",
+		"@sentry/sveltekit": "^9.37.0",
 		"bits-ui": "^2.8.10"
 	}
 }
