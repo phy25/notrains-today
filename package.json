@@ -43,6 +43,6 @@
 	},
 	"dependencies": {
 		"@sentry/sveltekit": "^9.43.0",
-		"bits-ui": "^2.8.13"
+		"bits-ui": "^2.9.0"
 	}
 }
