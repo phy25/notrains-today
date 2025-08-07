@@ -21,9 +21,9 @@
 		"@eslint/js": "^9.32.0",
 		"@inlang/cli": "^3.0.12",
 		"@inlang/paraglide-js": "2.2.0",
-		"@sveltejs/adapter-auto": "^6.0.1",
-		"@sveltejs/adapter-static": "^3.0.8",
-		"@sveltejs/kit": "^2.27.0",
+		"@sveltejs/adapter-auto": "^6.0.2",
+		"@sveltejs/adapter-static": "^3.0.9",
+		"@sveltejs/kit": "^2.27.3",
 		"@sveltejs/vite-plugin-svelte": "^6.1.0",
 		"@testing-library/jest-dom": "^6.6.4",
 		"@testing-library/svelte": "^5.2.8",
@@ -34,7 +34,7 @@
 		"jsdom": "^26.1.0",
 		"prettier": "^3.6.2",
 		"prettier-plugin-svelte": "^3.4.0",
-		"svelte": "^5.37.3",
+		"svelte": "^5.38.0",
 		"svelte-check": "^4.3.1",
 		"typescript": "^5.9.2",
 		"typescript-eslint": "^8.39.0",
@@ -43,6 +43,6 @@
 	},
 	"dependencies": {
 		"@sentry/sveltekit": "^9.43.0",
-		"bits-ui": "^2.9.1"
+		"bits-ui": "^2.9.2"
 	}
 }
