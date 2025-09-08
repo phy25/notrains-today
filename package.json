@@ -42,7 +42,7 @@
 		"vitest": "^3.2.4"
 	},
 	"dependencies": {
-		"@sentry/sveltekit": "^9.43.0",
+		"@sentry/sveltekit": "^10.10.0",
 		"bits-ui": "^2.9.6"
 	}
 }
