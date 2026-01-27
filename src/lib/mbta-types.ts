@@ -1,4 +1,4 @@
-import {Time} from '@internationalized/date';
+import {Time, getDayOfWeek, type AnyCalendarDate, type CalendarDate} from '@internationalized/date';
 import { m } from './paraglide/messages';
 
 export interface MbtaAlert {
@@ -72,4 +72,7 @@ export const DEFAULT_QUERY_ROUTE_TYPE = 'trains';
 export const MBTA_TIMEZONE = 'America/New_York';
 
 // To make the final train connections of the night, get to core downtown stations by
-export const MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME = new Time(0, 35);
+export const getMbtaDowntownCoreLastTransferTime = (date: AnyCalendarDate) => {
+    const dayOfWeek = getDayOfWeek(date as CalendarDate, 'en-US'); // 0 = Sunday
+    return dayOfWeek >= 0 && dayOfWeek <= 4 ? new Time(0, 35) : new Time(1, 30); // 12:35 AM or 1:30 AM
+};

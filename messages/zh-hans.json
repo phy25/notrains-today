@@ -19,7 +19,7 @@
     "noAlert": "服务正常",
     "multipleAlerts": "{count} 个通知",
     "noDowntownTransfer": "无市中心换乘",
-    "noDowntownTransferDescription": "不同站点和方向的末班车会更晚。市中心地铁换乘截止于 {time}。",
+    "noDowntownTransferDescription": "不同站点和方向的末班车会更晚。今天市中心地铁换乘截止于 {time}。",
     "glanceFirstTrainTime": "首班 {time}",
     "glanceLastTrainTime": "末班 {time}",
     "glanceLastTrainEnded": "末班已结束",

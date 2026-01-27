@@ -19,7 +19,7 @@
     "noAlert": "All good",
     "multipleAlerts": "{count} alerts",
     "noDowntownTransfer": "No downtown transfer",
-    "noDowntownTransferDescription": "Last train is later for some stops and directions. Downtown subway transfer is not guaranteed after {time}. ",
+    "noDowntownTransferDescription": "Last train is later for some stops and directions. Downtown subway transfer is not guaranteed after {time} today. ",
     "glanceFirstTrainTime": "First {time}",
     "glanceLastTrainTime": "Last {time}",
     "glanceLastTrainEnded": "Last train ended",

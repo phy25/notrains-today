@@ -3,7 +3,7 @@
 	import { m } from "$lib/paraglide/messages";
     import { now, toCalendarDateTime, toTime, type AnyCalendarDate } from "@internationalized/date";
 	import GlanceSubwayRoute from "./glance-subway-route.svelte";
-	import { MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME, MBTA_TIMEZONE, QUERY_ROUTE_TYPE_WITH_SUBWAY, RAPID_TRANSIT_QUERY_ROUTE_TYPE, type MbtaAlert } from "$lib/mbta-types";
+	import { getMbtaDowntownCoreLastTransferTime, MBTA_TIMEZONE, QUERY_ROUTE_TYPE_WITH_SUBWAY, RAPID_TRANSIT_QUERY_ROUTE_TYPE, type MbtaAlert } from "$lib/mbta-types";
 	import { getLocale } from "$lib/paraglide/runtime";
 	import { alertsToRouteRenderingList, getAlertsMapByEffect } from "$lib/calendar";
 	import { getAlertBadgeSecondarySymbol, getEffect } from "$lib/mbta-display";
@@ -25,7 +25,7 @@
         expandedAlerts.filter(alert => alert.attributes.informed_entity.some(entity => entity.route_type !== 0 && entity.route_type !== 1))));
     
     const nowTime = toTime(now(MBTA_TIMEZONE));
-    const noDowntownTransfer = $derived(isCurrentServiceNightOwl && MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME.compare(nowTime) <= 0);
+    const noDowntownTransfer = $derived(isCurrentServiceNightOwl && getMbtaDowntownCoreLastTransferTime(currentServiceDate).compare(nowTime) <= 0);
     const serviceEndedData = $derived.by(() => {
         const currentDate = Date.now();
         if (lastTrainData?.entries()?.map !== undefined) {
@@ -121,7 +121,7 @@
     <div class="route-expanded"><p class="text-indent-with-symbol">
         {SECONDARY_SYMBOLS.NIGHT.symbol} {m.noDowntownTransferDescription({time: new Intl.DateTimeFormat(getLocale(), {
         timeStyle: "short",
-    }).format(toCalendarDateTime(now(MBTA_TIMEZONE), MBTA_DOWNTOWN_CORE_LAST_TRANSFER_TIME).toDate(MBTA_TIMEZONE))})}<a href="https://www.mbta.com/lasttrip">{m.learnMore()}</a></p>
+    }).format(toCalendarDateTime(now(MBTA_TIMEZONE), getMbtaDowntownCoreLastTransferTime(currentServiceDate)).toDate(MBTA_TIMEZONE))})}<a href="https://www.mbta.com/lasttrip">{m.learnMore()}</a></p>
     </div>
     {/if}
 </div>
