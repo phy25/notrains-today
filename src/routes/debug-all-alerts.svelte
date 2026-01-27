@@ -18,7 +18,7 @@ const {data, routeMap} = $props();
             {@const color = attributes?.color ? '#' + attributes?.color : 'inherit'}
             {@const textColor = attributes?.text_color ? '#' + attributes?.text_color : 'inherit'}
             <div>
-                <MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} fullName={getLineName(route_id, attributes)} />
+                {#if route_id}<MbtaRouteBadge type="long" pillLabel={getPillName(route_id, attributes)} color={color} textColor={textColor} fullName={getLineName(route_id, attributes)} />{/if}
                 <mark>{getEffectWithLineMessage(effect, route_id, attributes)}</mark>
                 {alert.id} {alert.attributes.short_header}
             </div>
