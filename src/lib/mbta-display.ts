@@ -23,6 +23,7 @@ export const EFFECT_MESSAGES = {
     'MODIFIED_SERVICE': m['mbtaAlertEffectModifiedService'],
     'TRACK_CHANGE': m['mbtaAlertEffectTrackChange'],
     'SNOW_ROUTE': m['mbtaAlertEffectSnowRoute'],
+    'SUMMARY': m['mbtaAlertEffectSummary'],
 };
 
 export const EFFECT_WITH_LINE_MESSAGES: Record<string, (args: { line: string }) => string> = {
