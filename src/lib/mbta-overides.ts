@@ -304,6 +304,38 @@ export const overrideAlerts = (json: {data?: MbtaAlert[]; included: any;}) => {
             }
         },
         "type": "route"
+    },{
+        "attributes": {
+            "color": "ffc72c",
+            "description": "Rapid Transit",
+            "direction_destinations": [],
+            "direction_names": [],
+            "fare_class": "Rapid Transit",
+            "long_name": "Bus",
+            "short_name": "",
+            "sort_order": 10000,
+            "text_color": "000000",
+            "type": 0
+        },
+        "id": "Bus",
+        "links": {
+            "self": "/routes/Bus"
+        },
+        "relationships": {
+            "agency": {
+                "data": {
+                    "id": "1",
+                    "type": "agency"
+                }
+            },
+            "line": {
+                "data": {
+                    "id": "line-Bus",
+                    "type": "line"
+                }
+            }
+        },
+        "type": "route"
     });
 
     return {

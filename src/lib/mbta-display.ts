@@ -36,6 +36,7 @@ export const LINE_NAMES = {
     'Green': m['mbtaLineNameGreen'](),
     'CR': m.routeTypeCommuterRail(),
     'Subway': m.routeTypeSubway(),
+    'Bus': m.routeTypeBus(),
 }
 
 const ROUTE_PILL_MAPPING: Record<string, string> = {
@@ -748,7 +749,7 @@ const getAlertBadgeSecondarySymbolForCommuterRail = (alert: MbtaAlert) => {
     return SECONDARY_SYMBOLS.SOME_STOPS.symbol;
 }
 
-export const mergeUniqueRoutesForDisplay = (routes: string[]) => {
+const mergeUniqueRoutesForDisplay = (routes: string[]) => {
     if (routes.length == SUBWAY_COMMON_ROUTES.length) {
         if (routes.every(route => SUBWAY_COMMON_ROUTES.includes(route))) {
             // if all routes are common subway routes, return a single route
@@ -756,4 +757,16 @@ export const mergeUniqueRoutesForDisplay = (routes: string[]) => {
         }
     }
     return routes;
+}
+
+export const getUniqueRoutesForDisplay = (alert: MbtaAlert) => {
+    const routes = alert.attributes.informed_entity.map(entity => entity.route)
+        .filter(route => route)
+        .filter((value, index, self) => self.indexOf(value) === index).sort((a, b) => a.localeCompare(b));
+    
+    if (alert.attributes.informed_entity.some(entity => !entity.route && entity.route_type === 3)) {
+        routes.push('Bus');
+    }
+
+    return mergeUniqueRoutesForDisplay(routes);
 }

@@ -1,10 +1,10 @@
 <script lang="ts">
 import { getDateString, MBTA_SERVICE_START_HOUR } from "$lib/calendar";
-import { EFFECT_MESSAGES, getEffect, getEffectWithLineMessage, getPillName, mergeUniqueRoutesForDisplay } from "$lib/mbta-display";
+import { EFFECT_MESSAGES, getEffect, getEffectWithLineMessage, getUniqueRoutesForDisplay } from "$lib/mbta-display";
 import { MBTA_TIMEZONE, type MbtaAlert } from "$lib/mbta-types";
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
-import { parseDate, DateFormatter, fromDate, toCalendarDate, parseZonedDateTime } from "@internationalized/date";
+import { parseDate, DateFormatter, parseZonedDateTime } from "@internationalized/date";
 import { fade } from "$lib/transition";
 import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
 
@@ -35,10 +35,7 @@ if (showNightOwl && currentTime.getHours() < MBTA_SERVICE_START_HOUR) {
 
 {#each alerts || [] as alert}
     {@const effect = alert.attributes.effect as keyof typeof EFFECT_MESSAGES}
-    {@const unique_routes = alert.attributes.informed_entity.map(entity => entity.route)
-        .filter(route => route)
-        .filter((value, index, self) => self.indexOf(value) === index).sort((a, b) => a.localeCompare(b))}
-    {@const unique_routes_display = mergeUniqueRoutesForDisplay(unique_routes)}
+    {@const unique_routes_display = getUniqueRoutesForDisplay(alert)}
     {@const descriptionArr = alert.attributes?.description?.split(/\r?\n/g) || []}
     {@const updatedAtDate = parseZonedDateTime(alert.attributes.updated_at + '[' + MBTA_TIMEZONE + ']').toDate()}
     <details transition:fade id={'alert-'+alert.id}>
@@ -92,7 +89,7 @@ if (showNightOwl && currentTime.getHours() < MBTA_SERVICE_START_HOUR) {
         </em></p>
         {:else}
         <p><em>
-            <a href="https://www.mbta.com/schedules/{unique_routes[0]}/alerts" target="_blank">{m.alert()} #{alert.id}</a>; 
+            <a href="https://www.mbta.com/schedules/{unique_routes_display[0]}/alerts" target="_blank">{m.alert()} #{alert.id}</a>; 
             {m.lastUpdatedAtTime({time: new DateFormatter(getLocale(), {
                 dateStyle: getDateString(updatedAtDate) == getDateString(currentServiceDate) ? undefined : "short",
                 timeStyle: "short",

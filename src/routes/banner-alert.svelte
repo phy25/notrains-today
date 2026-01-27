@@ -58,7 +58,7 @@
 }
 @media (min-width: 40rem) {
     .alert-banner {
-        padding: 0.5rem 0.8rem;
+        padding: 0.8rem;
     }
 }
 .alert-banner.urgent {
