@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getFormattedTime } from "$lib/mbta-display";
+	import { getFormattedTime, getEffect } from "$lib/mbta-display";
 	import { MBTA_URGENT_SEVERITY } from "$lib/mbta-overides";
 	import { SECONDARY_SYMBOLS } from "$lib/mbta-symbols";
 	import { m } from "$lib/paraglide/messages";
@@ -10,9 +10,9 @@
 </script>
 
 <div class="alert-banner {isUrgent ? 'urgent' : ''}">
-    <h2 class="alert-banner-title">{isUrgent ? (SECONDARY_SYMBOLS.ALERT_COLOR.symbol + ' ') : ''}{alert.attributes.banner}</h2>
+    <h2 class="alert-banner-title">{isUrgent ? (SECONDARY_SYMBOLS.ALERT_COLOR.symbol + ' ') : ''}{getEffect(alert.attributes.effect)}</h2>
     <p class="alert-banner-description">
-        {alert.attributes.header}
+        {alert.attributes.banner}
     </p>
     {#if alert.attributes.image || descriptionArr.length > 0}
     <details>
@@ -40,7 +40,7 @@
     </details>
     {/if}
     {#if alert.attributes?.updated_at}
-        <p><em title={alert.attributes?.updated_at}>{m.asOfTime({time: getFormattedTime(alert.attributes?.updated_at)})}</em></p>
+        <p><em title={alert.attributes?.updated_at}>{m.lastUpdatedAtTime({time: getFormattedTime(alert.attributes?.updated_at)})}</em></p>
     {/if}
 </div>
 
@@ -55,6 +55,11 @@
     border-radius: 0.3rem;
     margin: 1rem 0;
     border-left: #195581 0.5rem solid;
+}
+@media (min-width: 40rem) {
+    .alert-banner {
+        padding: 0.5rem 0.8rem;
+    }
 }
 .alert-banner.urgent {
     border-left-color: #814418;

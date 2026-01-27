@@ -63,7 +63,8 @@ export const load: LayoutLoad = async ({ params, route, fetch }) => {
                         if (alert.attributes.informed_entity[0].route_type !== 3) {
                             return true;
                         }
-                        return alert.attributes.informed_entity.some((entity: any) => RAPID_TRANSIT_BUS_ROUTES.includes(entity.route));
+                        // entity.route === undefined for system-wide bus alerts
+                        return alert.attributes.informed_entity.some((entity: any) => RAPID_TRANSIT_BUS_ROUTES.includes(entity.route) || entity.route === undefined);
                     })
                 };
             })();
