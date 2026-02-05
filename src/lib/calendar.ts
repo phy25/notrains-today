@@ -159,9 +159,10 @@ export const getDateString = (date: Date) => {
 
 export const alertsToRouteRenderingList = (alerts: MbtaAlert[], routeMap: Map<string, any>) => {
     return alerts?.flatMap(alert => 
-        alert.attributes.informed_entity.sort((a, b) => (a.route_type - b.route_type) || a.route.localeCompare(b.route)))
+        alert.attributes.informed_entity
+        ?.filter(a => !!a.route)
+        ?.sort((a, b) => (a.route_type - b.route_type) || a.route.localeCompare(b.route)))
         ?.map(entity => entity.route)
-        ?.filter(route_id => !!route_id)
         ?.filter((value, index, self) => self.indexOf(value) === index)
         ?.map(route_id => {
             return {
