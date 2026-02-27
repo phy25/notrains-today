@@ -87,7 +87,7 @@ if (showNightOwl && currentTime.getHours() < MBTA_SERVICE_START_HOUR) {
                 timeStyle: "short",
                 timeZone: MBTA_TIMEZONE,
             }).format(updatedAtDate)})}
-            {#if isDebug()}; <a href="/alert/{alert.id}">History</a>{/if}
+            {#if isDebug()}; <a href="/alert?id={alert.id}">History</a>{/if}
         </em></p>
         {:else}
         <p><em>
@@ -97,7 +97,7 @@ if (showNightOwl && currentTime.getHours() < MBTA_SERVICE_START_HOUR) {
                 timeStyle: "short",
                 timeZone: MBTA_TIMEZONE,
             }).format(updatedAtDate)})}
-            {#if isDebug()}; <a href="/alert/{alert.id}">History</a>{/if}
+            {#if isDebug()}; <a href="/alert?id={alert.id}">History</a>{/if}
         </em></p>
         {/if}
 

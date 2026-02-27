@@ -8,7 +8,7 @@ import { getDateString } from '$lib/calendar';
 import { m } from '$lib/paraglide/messages';
 import { getLocale } from '$lib/paraglide/runtime';
 import { isDebug } from '$lib/common';
-import Header from '../../../header.svelte';
+import Header from '../../header.svelte';
 import MbtaRouteBadgeCompound from '$lib/mbta-route-badge-compound.svelte';
 
 const { data }: PageProps = $props();
@@ -90,7 +90,7 @@ const alertTitle = $derived.by(() => {
     {:else if data.mbtaExpired}
         <p class="alert-status-expired">{m.alertExpired()}</p>
     {/if}
-        
+
     {#if data.alertId}
         {#if data.pastHistory.length > 0}
         <section class="past-history">
@@ -153,7 +153,7 @@ const alertTitle = $derived.by(() => {
 </div>
 
 <style>
-@import '../../../alert-detail.css';
+@import '../../alert-detail.css';
 
 .page-content {
     padding: 1em 0.4em;

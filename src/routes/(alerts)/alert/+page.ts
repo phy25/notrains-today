@@ -1,12 +1,12 @@
-export const prerender = false;
+export const prerender = true;
 export const ssr = false;
 
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
 import type { MbtaAlert } from '$lib/mbta-types';
 
-export const load: PageLoad = async ({ params, fetch }) => {
-    const alertId = params.alert_id;
+export const load: PageLoad = async ({ url, fetch }) => {
+    const alertId = url.searchParams.get('id');
 
     if (!alertId) {
         return {
