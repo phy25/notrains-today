@@ -7,6 +7,7 @@ import { getLocale } from "$lib/paraglide/runtime";
 import { parseDate, DateFormatter, parseZonedDateTime } from "@internationalized/date";
 import { fade } from "$lib/transition";
 import MbtaRouteBadgeCompound from "$lib/mbta-route-badge-compound.svelte";
+import { isDebug } from "$lib/common";
 
 const { day, alerts, showNightOwl, routeMap, hideAuxiliary = false }: {
     day: string;
@@ -80,21 +81,23 @@ if (showNightOwl && currentTime.getHours() < MBTA_SERVICE_START_HOUR) {
 
         {#if alert.attributes?.url}
         <p><em>
-            {m.learnMoreAt()}<a href={alert.attributes?.url} target="_blank">{alert.attributes?.url}</a> ({m.alert()} #{alert.id}); 
+            {m.learnMoreAt()}<a href={alert.attributes?.url} target="_blank">{alert.attributes?.url}</a> ({m.alert()} #{alert.id});
                 {m.lastUpdatedAtTime({time: new DateFormatter(getLocale(), {
                 dateStyle: getDateString(updatedAtDate) == getDateString(currentServiceDate) ? undefined : "short",
                 timeStyle: "short",
                 timeZone: MBTA_TIMEZONE,
             }).format(updatedAtDate)})}
+            {#if isDebug()}; <a href="/alert/{alert.id}">History</a>{/if}
         </em></p>
         {:else}
         <p><em>
-            <a href="https://www.mbta.com/schedules/{unique_routes_display[0]}/alerts" target="_blank">{m.alert()} #{alert.id}</a>; 
+            <a href="https://www.mbta.com/schedules/{unique_routes_display[0]}/alerts" target="_blank">{m.alert()} #{alert.id}</a>;
             {m.lastUpdatedAtTime({time: new DateFormatter(getLocale(), {
                 dateStyle: getDateString(updatedAtDate) == getDateString(currentServiceDate) ? undefined : "short",
                 timeStyle: "short",
                 timeZone: MBTA_TIMEZONE,
             }).format(updatedAtDate)})}
+            {#if isDebug()}; <a href="/alert/{alert.id}">History</a>{/if}
         </em></p>
         {/if}
 
