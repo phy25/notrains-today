@@ -57,8 +57,13 @@ interface MbtaApiResponse {
 const LATEST_UPDATES_KEY = 'latest-updates.json';
 
 function isSameAlertContent(existing: MbtaAlert, incoming: MbtaAlert): boolean {
-	// A placeholder for whole-content block comparisons in the future.
-	return existing.attributes.updated_at === incoming.attributes.updated_at;
+	if (existing.attributes.updated_at === incoming.attributes.updated_at) {
+		return true;
+	}
+	// Treat as same content if only `timeframe` (and `updated_at`) changed
+	const { timeframe: _et, updated_at: _eu, ...existingRest } = existing.attributes;
+	const { timeframe: _it, updated_at: _iu, ...incomingRest } = incoming.attributes;
+	return JSON.stringify(existingRest) === JSON.stringify(incomingRest);
 }
 
 export default {
