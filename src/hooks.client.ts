@@ -1,5 +1,5 @@
 import { dev } from '$app/environment';
-import { getLocale, overwriteGetLocale } from '$lib/paraglide/runtime';
+import { getLocale, overwriteGetLocale, isLocale, setLocale } from '$lib/paraglide/runtime';
 import { handleErrorWithSentry } from '@sentry/sveltekit';
 import * as Sentry from '@sentry/sveltekit';
 
@@ -36,6 +36,11 @@ try {
 	});
 } catch (e) {
 	console.warn('Failed to patch navigator.languages', e);
+}
+
+const hlParam = new URLSearchParams(window.location.search).get('hl');
+if (hlParam && isLocale(hlParam)) {
+	setLocale(hlParam, { reload: false });
 }
 
 overwriteGetLocale(() => {
