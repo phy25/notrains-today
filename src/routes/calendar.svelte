@@ -91,7 +91,7 @@ export const scrollToDayDetail = () => {
   }
 };
 
-const onStickyWeekValueChange = (value?: DateValue) => {
+const onStickyWeekValueChange = (value: DateValue | undefined) => {
   window.requestAnimationFrame(() => {
     scrollToDayDetail();
   });
