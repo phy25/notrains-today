@@ -36,6 +36,22 @@ export interface MbtaAlert {
     type: string;
 }
 
+export interface ExpiredMarker {
+    type: 'expired';
+    expiredAt: string; // when the archiving cron first noticed the alert missing from the feed
+    expiredAroundAfter: string; // lower bound: last confirmed-present timestamp before that
+}
+
+export type ArchiveEntry = MbtaAlert | ExpiredMarker;
+
+export interface ArchivedAlertFile {
+    data: ArchiveEntry[];
+}
+
+export function isExpiredMarker(entry: ArchiveEntry): entry is ExpiredMarker {
+    return entry.type === 'expired';
+}
+
 export const RAPID_TRANSIT_QUERY_ROUTE_TYPE = 'rapid-transit';
 // https://github.com/mbta/dotcom/blob/78599a3b9c590675bfb35beb8324fb5bea125abc/lib/routes/route.ex#L92
 export const RAPID_TRANSIT_BUS_ROUTES = ['741', '742', '743', '746', '749', '751'];

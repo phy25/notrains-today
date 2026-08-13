@@ -2,7 +2,7 @@
 import '$lib/style.css';
 import type { PageProps } from './$types';
 import { DateFormatter, parseZonedDateTime, toCalendarDate, now } from '@internationalized/date';
-import { MBTA_TIMEZONE, type MbtaAlert } from '$lib/mbta-types';
+import { MBTA_TIMEZONE, isExpiredMarker, type MbtaAlert } from '$lib/mbta-types';
 import { getEffect, getEffectWithLineMessage, getUniqueRoutesForDisplay } from '$lib/mbta-display';
 import { getDateString } from '$lib/calendar';
 import { m } from '$lib/paraglide/messages';
@@ -96,41 +96,50 @@ const alertTitle = $derived.by(() => {
         <section class="past-history">
             <h2>{m.alertPastHistory()}</h2>
             <ol class="timeline">
-                {#each data.pastHistory as historicalAlert, i}
-                    {@const updatedAtDate = parseZonedDateTime(historicalAlert.attributes.updated_at + '[' + MBTA_TIMEZONE + ']').toDate()}
+                {#each data.pastHistory as historicalEntry, i}
                     {@const dateFormatter = new DateFormatter(getLocale(), { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: MBTA_TIMEZONE })}
-                    {@const descriptionArr = historicalAlert.attributes?.description?.split(/\r?\n/g) || []}
-                    {@const prevAlert = i === 0 ? null : data.pastHistory[data.pastHistory.length - i]}
-                    {@const isDitto = data.pastHistory.length === 1 || (prevAlert !== null &&
-                        historicalAlert.attributes.header === prevAlert.attributes.header &&
-                        (historicalAlert.attributes.description ?? null) === (prevAlert.attributes.description ?? null))}
-                    <li class="timeline-item">
-                        <time class="timeline-date">{dateFormatter.format(updatedAtDate)}</time>
-                        <details class="timeline-details">
-                            <summary class="timeline-summary {isDitto ? 'timeline-summary-ditto' : ''}">{isDitto ? m.alertHistoryDitto() : historicalAlert.attributes.header}</summary>
-                            {#if !isDitto}
-                            {#if historicalAlert.attributes.image}
-                            <div class="alert-image-container">
-                                <img src={historicalAlert.attributes.image} alt={historicalAlert.attributes.image_alternative_text} loading="lazy" />
-                            </div>
-                            {/if}
-                            {#if descriptionArr.length > 0}
-                            <p class="timeline-description">
-                                {#each descriptionArr as text, index}
-                                    {#if index > 0}<br />{/if}
-                                    {text}
-                                {/each}
-                            </p>
-                            {/if}
-                            {#if historicalAlert.attributes.url}
-                            <p class="timeline-url"><a href={historicalAlert.attributes.url} target="_blank">{historicalAlert.attributes.url}</a></p>
-                            {/if}
-                            {/if}
-                            {#if isDebug()}
-                            <pre class="timeline-debug">{JSON.stringify(historicalAlert, null, 2)}</pre>
-                            {/if}
-                        </details>
-                    </li>
+                    {#if isExpiredMarker(historicalEntry)}
+                        <li class="timeline-item">
+                            <time class="timeline-date">{dateFormatter.format(new Date(historicalEntry.expiredAt))}</time>
+                            <p class="timeline-summary timeline-summary-expired">{m.alertExpired()}</p>
+                        </li>
+                    {:else}
+                        {@const historicalAlert = historicalEntry}
+                        {@const updatedAtDate = parseZonedDateTime(historicalAlert.attributes.updated_at + '[' + MBTA_TIMEZONE + ']').toDate()}
+                        {@const descriptionArr = historicalAlert.attributes?.description?.split(/\r?\n/g) || []}
+                        {@const prevEntry = i === 0 ? null : data.pastHistory[data.pastHistory.length - i]}
+                        {@const prevAlert = prevEntry && !isExpiredMarker(prevEntry) ? prevEntry : null}
+                        {@const isDitto = data.pastHistory.length === 1 || (prevAlert !== null &&
+                            historicalAlert.attributes.header === prevAlert.attributes.header &&
+                            (historicalAlert.attributes.description ?? null) === (prevAlert.attributes.description ?? null))}
+                        <li class="timeline-item">
+                            <time class="timeline-date">{dateFormatter.format(updatedAtDate)}</time>
+                            <details class="timeline-details">
+                                <summary class="timeline-summary {isDitto ? 'timeline-summary-ditto' : ''}">{isDitto ? m.alertHistoryDitto() : historicalAlert.attributes.header}</summary>
+                                {#if !isDitto}
+                                {#if historicalAlert.attributes.image}
+                                <div class="alert-image-container">
+                                    <img src={historicalAlert.attributes.image} alt={historicalAlert.attributes.image_alternative_text} loading="lazy" />
+                                </div>
+                                {/if}
+                                {#if descriptionArr.length > 0}
+                                <p class="timeline-description">
+                                    {#each descriptionArr as text, index}
+                                        {#if index > 0}<br />{/if}
+                                        {text}
+                                    {/each}
+                                </p>
+                                {/if}
+                                {#if historicalAlert.attributes.url}
+                                <p class="timeline-url"><a href={historicalAlert.attributes.url} target="_blank">{historicalAlert.attributes.url}</a></p>
+                                {/if}
+                                {/if}
+                                {#if isDebug()}
+                                <pre class="timeline-debug">{JSON.stringify(historicalAlert, null, 2)}</pre>
+                                {/if}
+                            </details>
+                        </li>
+                    {/if}
                 {/each}
             </ol>
         </section>
@@ -277,6 +286,12 @@ details[open] > .timeline-summary::after {
 }
 .timeline-summary-ditto::after {
     font-style: normal;
+}
+.timeline-summary-expired {
+    color: var(--text-secondary, #555);
+    font-style: italic;
+    font-size: 0.95em;
+    margin: 0;
 }
 .timeline-debug {
     margin: 0.5em 0 0;

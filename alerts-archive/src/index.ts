@@ -54,16 +54,44 @@ interface MbtaApiResponse {
 	data: MbtaAlert[];
 }
 
+interface ExpiredMarker {
+	type: 'expired';
+	expiredAt: string;
+	expiredAroundAfter: string;
+}
+
+type ArchiveEntry = MbtaAlert | ExpiredMarker;
+
+interface ArchivedAlertFile {
+	data: ArchiveEntry[];
+}
+
+interface LatestUpdateEntry {
+	signature: string;
+	updatedAt: string;
+	lastSeenAt: string;
+}
+
+type LatestUpdates = Record<string, LatestUpdateEntry | string>;
+
 const LATEST_UPDATES_KEY = 'latest-updates.json';
+const CACHE_CONTROL = 'public, max-age=60';
+
+function normalizedAttributesString(attrs: MbtaAlert['attributes']): string {
+	const { timeframe: _t, updated_at: _u, ...rest } = attrs;
+	return JSON.stringify(rest);
+}
+
+function computeSignature(alert: MbtaAlert): string {
+	return normalizedAttributesString(alert.attributes);
+}
 
 function isSameAlertContent(existing: MbtaAlert, incoming: MbtaAlert): boolean {
 	if (existing.attributes.updated_at === incoming.attributes.updated_at) {
 		return true;
 	}
 	// Treat as same content if only `timeframe` (and `updated_at`) changed
-	const { timeframe: _et, updated_at: _eu, ...existingRest } = existing.attributes;
-	const { timeframe: _it, updated_at: _iu, ...incomingRest } = incoming.attributes;
-	return JSON.stringify(existingRest) === JSON.stringify(incomingRest);
+	return normalizedAttributesString(existing.attributes) === normalizedAttributesString(incoming.attributes);
 }
 
 export default {
@@ -82,8 +110,10 @@ export default {
 			}
 			const data: MbtaApiResponse = await response.json();
 			const alerts = data.data;
+			const currentIds = new Set(alerts.map((a) => a.id));
+			const nowIso = new Date().toISOString();
 
-			let latestUpdates: Record<string, string> = {};
+			let latestUpdates: LatestUpdates = {};
 			try {
 				const latestUpdatesResponse = await env.ALERTS_ARCHIVE.get(LATEST_UPDATES_KEY);
 				if (latestUpdatesResponse) {
@@ -98,38 +128,78 @@ export default {
 			for (const alert of alerts) {
 				try {
 					const currentUpdatedAt = alert.attributes.updated_at;
+					const incomingSignature = computeSignature(alert);
+					const prevEntry = latestUpdates[alert.id];
+					const prevSignature = typeof prevEntry === 'object' && prevEntry !== null ? prevEntry.signature : undefined;
 
-					// Skip if we already have the latest version of this alert
-					if (latestUpdates[alert.id] === currentUpdatedAt) {
+					if (prevSignature !== undefined && prevSignature === incomingSignature) {
+						// Content unchanged since last recorded signature — no R2 GET needed.
+						latestUpdates[alert.id] = { signature: prevSignature, updatedAt: currentUpdatedAt, lastSeenAt: nowIso };
+						hasUpdates = true;
 						continue;
 					}
 
 					const key = `alerts/${alert.id}.json`;
 					const existing = await env.ALERTS_ARCHIVE.get(key);
-					let history: MbtaAlert[] = [];
-					if (existing) {
-						const existingText = await existing.text();
-						const existingData: MbtaApiResponse = JSON.parse(existingText);
-						history = existingData.data;
-						// Just to be safe, check the last item's whole content block.
-						// You can expand isSameAlertContent for more additional checks in the future.
-						const latest = history[history.length - 1];
-						if (latest && isSameAlertContent(latest, alert)) {
-							latestUpdates[alert.id] = currentUpdatedAt;
-							hasUpdates = true;
-							continue; // No change
-						}
-					}
-					history.push(alert);
-					await env.ALERTS_ARCHIVE.put(key, JSON.stringify({ data: history }));
+					const existingData: ArchivedAlertFile = existing ? JSON.parse(await existing.text()) : { data: [] };
+					const history = existingData.data ?? [];
+					const last = history[history.length - 1];
+					const isReappearing = !!last && last.type === 'expired';
 
-					// Update our cache
-					latestUpdates[alert.id] = currentUpdatedAt;
+					// Find the last real alert entry to compare content against (skip a trailing marker).
+					const lastAlert = isReappearing
+						? [...history].reverse().find((e): e is MbtaAlert => e.type !== 'expired')
+						: (last as MbtaAlert | undefined);
+					const contentChanged = isReappearing || !lastAlert || !isSameAlertContent(lastAlert, alert);
+
+					if (!contentChanged) {
+						// Unchanged, never expired — just refresh the tracking entry, no R2 write.
+						latestUpdates[alert.id] = { signature: incomingSignature, updatedAt: currentUpdatedAt, lastSeenAt: nowIso };
+						hasUpdates = true;
+						continue;
+					}
+
+					history.push(alert); // reappearance always pushes fresh, even if content matches the pre-expiry entry
+					await env.ALERTS_ARCHIVE.put(key, JSON.stringify({ data: history }), {
+						httpMetadata: { cacheControl: CACHE_CONTROL },
+					});
+
+					latestUpdates[alert.id] = { signature: incomingSignature, updatedAt: currentUpdatedAt, lastSeenAt: nowIso };
 					hasUpdates = true;
 
 					console.log(`Updated history for alert ${alert.id} (length: ${history.length})`);
 				} catch (error) {
 					console.error(`Failed to store alert ${alert.id}:`, error);
+				}
+			}
+
+			// Detect alerts that have disappeared from the feed since the last run and mark them expired.
+			for (const [id, entry] of Object.entries(latestUpdates)) {
+				if (currentIds.has(id)) continue;
+
+				try {
+					const key = `alerts/${id}.json`;
+					const existing = await env.ALERTS_ARCHIVE.get(key);
+					if (existing) {
+						const existingData: ArchivedAlertFile = JSON.parse(await existing.text());
+						const history = existingData.data ?? [];
+						const last = history[history.length - 1];
+						if (!last || last.type !== 'expired') {
+							const after = typeof entry === 'string' ? entry : entry.lastSeenAt;
+							history.push({ type: 'expired', expiredAt: nowIso, expiredAroundAfter: after });
+							await env.ALERTS_ARCHIVE.put(key, JSON.stringify({ data: history }), {
+								httpMetadata: { cacheControl: CACHE_CONTROL },
+							});
+							console.log(`Marked alert ${id} expired (window ${after} .. ${nowIso})`);
+						}
+					} else {
+						console.warn(`Tracked alert ${id} disappeared but no archive object exists`);
+					}
+				} catch (error) {
+					console.error(`Failed to mark alert ${id} as expired:`, error);
+				} finally {
+					delete latestUpdates[id];
+					hasUpdates = true;
 				}
 			}
 
