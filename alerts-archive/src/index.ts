@@ -174,8 +174,19 @@ export default {
 			}
 
 			// Detect alerts that have disappeared from the feed since the last run and mark them expired.
+			// Only consider ids already tracked in the new format (i.e. seen at least once under the
+			// new code, so we have a real lastSeenAt to report). Legacy string-format entries are stale
+			// tracking left over from before this migration — potentially a large backlog accumulated
+			// over months, since the old code never pruned this file — and are just dropped from
+			// tracking rather than bulk-processed, which would blow the per-invocation resource budget
+			// and produce meaningless "just expired" timestamps for alerts that vanished long ago.
 			for (const [id, entry] of Object.entries(latestUpdates)) {
 				if (currentIds.has(id)) continue;
+				if (typeof entry === 'string') {
+					delete latestUpdates[id];
+					hasUpdates = true;
+					continue;
+				}
 
 				try {
 					const key = `alerts/${id}.json`;
@@ -185,7 +196,7 @@ export default {
 						const history = existingData.data ?? [];
 						const last = history[history.length - 1];
 						if (!last || last.type !== 'expired') {
-							const after = typeof entry === 'string' ? entry : entry.lastSeenAt;
+							const after = entry.lastSeenAt;
 							history.push({ type: 'expired', expiredAt: nowIso, expiredAroundAfter: after });
 							await env.ALERTS_ARCHIVE.put(key, JSON.stringify({ data: history }), {
 								httpMetadata: { cacheControl: CACHE_CONTROL },
